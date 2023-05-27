@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-advanced';
+
+  onUploadFile(event: File): void {
+    console.log('File to upload',event.name);
+  }
 }
