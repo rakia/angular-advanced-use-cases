@@ -1,8 +1,14 @@
-<input type="file" hidden (change)="onFileSelected($event)" #fileUpload>
+<input type="file" hidden [accept]="accept" (change)="onFileSelected($event)" #fileUpload>
 
-<div class="file-upload">
-  {{ fileName || "No file uploaded yet" }}
-  <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()"><!--[disabled]="!fileControl.valid"-->
+<div [ngClass]="{'text-gray-500': disabled}" (click)="fileUpload.click()">
+  {{ fileName || placeholder }}
+</div>
+
+<!-- Another possible template for this component -->
+<!--<div class="flex items-center space-x-2 mb-4">
+  <div [ngClass]="{'text-gray-500': disabled}">{{ fileName || placeholder }}</div>
+
+  <button mat-mini-fab color="primary" [disabled]="disabled" (click)="fileUpload.click()">
     <mat-icon>attach_file</mat-icon>
   </button>
-</div>
+</div>-->
