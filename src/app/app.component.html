@@ -4,6 +4,7 @@
   <mat-label>File name</mat-label>
   <lib-file-upload
     [formControlName]="'uploadFile'"
+    [required]="true"
     [placeholder]="'Select a file'"
     [accept]="'text/yaml,.yaml,.yml'"
     (uploadFile)="onUploadFile($event)">
