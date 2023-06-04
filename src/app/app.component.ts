@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class AppComponent implements OnInit {
   formBuilder = inject(FormBuilder);
   title = 'angular-advanced';
+  fileToUpload: string = '';
   public form!: FormGroup;
 
   ngOnInit(): void {
@@ -18,6 +19,6 @@ export class AppComponent implements OnInit {
   }
 
   onUploadFile(): void {
-    console.log('File to upload',this.form.controls['uploadFile'].value[0].name);
+    this.fileToUpload = this.form.controls['uploadFile'].value[0].name;
   }
 }
