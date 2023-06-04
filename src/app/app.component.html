@@ -1,21 +1,20 @@
-<form *ngIf="form" [formGroup]="form">
+<form *ngIf="form" [formGroup]="form" class="file-upload-form">
 
-<mat-form-field [appearance]="'outline'" [floatLabel]="'always'">
-  <mat-label>File name</mat-label>
-  <lib-file-upload
-    [formControlName]="'uploadFile'"
-    [required]="true"
-    [placeholder]="'Select a file'"
-    [accept]="'text/yaml,.yaml,.yml'"
-    (uploadFile)="onUploadFile($event)">
-  </lib-file-upload>
-  <mat-icon matSuffix>attach_file</mat-icon>
-  <mat-error *ngIf="form.get('uploadFile')?.hasError('required')">
-    A file is required
-  </mat-error>
-</mat-form-field>
+  <mat-form-field [appearance]="'outline'" [floatLabel]="'always'">
+    <mat-label>File name</mat-label>
+    <lib-file-upload
+      [formControlName]="'uploadFile'"
+      [required]="true"
+      [placeholder]="'Select a file'"
+      [accept]="'text/yaml,.yaml,.yml'">
+    </lib-file-upload>
+    <mat-icon matSuffix>attach_file</mat-icon>
+    <mat-error *ngIf="form.get('uploadFile')?.hasError('required')">
+      A file is required
+    </mat-error>
+  </mat-form-field>
 
-<!--<button mat-mini-fab color="primary" [disabled]="!form.valid" (click)="onUploadFile()">
-  <mat-icon>attach_file</mat-icon>
-</button>-->
+  <button mat-raised-button color="primary" [disabled]="!form.valid" (click)="onUploadFile()">
+    Upload
+  </button>
 </form>

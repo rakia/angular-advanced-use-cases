@@ -17,8 +17,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onUploadFile(event: File): void {
-    this.form.controls['uploadFile'].setValue(event);
-    console.log('File to upload',this.form.controls['uploadFile'].value.name);
+  onUploadFile(): void {
+    console.log('File to upload',this.form.controls['uploadFile'].value[0].name);
   }
 }
