@@ -1,0 +1,49 @@
+<div class="flex justify-end items-center mb-4 space-x-2">
+  <button
+    mat-raised-button
+    color="primary"
+    id="ecsSchemeUpload"
+    [disabled]="isUploadEcsFieldsMode"
+    [attr.aria-label]="'ECS_FIELDSETS.ECS_UPLOAD' | transloco"
+    [matTooltip]="'ECS_FIELDSETS.ECS_UPLOAD' | transloco"
+    (click)="isUploadEcsFieldsMode = true"
+  >
+    {{ "ECS_FIELDSETS.ECS_UPLOAD" | transloco }}
+    <mat-icon>cloud_upload</mat-icon>
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="isCreateMode"
+    [attr.aria-label]="'ECS_FIELDSETS.CREATE_NEW_CUSTOM_FIELDSET' | transloco"
+    [matTooltip]="'ECS_FIELDSETS.CREATE_NEW_CUSTOM_FIELDSET' | transloco"
+    (click)="isCreateMode = true"
+  >
+    {{ "ECS_FIELDSETS.CREATE_NEW_CUSTOM_FIELDSET" | transloco }}
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+
+<ng-container *ngIf="isUploadEcsFieldsMode">
+  <app-upload-ecs-fieldsets
+    [uploadStatus]="uploadStatus$ | async"
+    (uploadEcsFields)="uploadEcsFields($event)"
+    (cancelUploadMode)="isUploadEcsFieldsMode = false"
+  >
+  </app-upload-ecs-fieldsets>
+</ng-container>
+
+<app-ecs-fieldsets-with-details
+  [ecsVersion]="ecsVersion$ | async"
+  [ecsFieldsets]="(ecsFieldsets$ | async) || []"
+  [requestResponse]="requestResponse$ | async"
+  [isCreateMode]="isCreateMode"
+  (cancelCreateMode)="isCreateMode = false"
+  (getEcsFieldsets)="getEcsFieldsets($event)"
+  (updateEcsFieldset)="updateEcsFieldset($event)"
+  (deleteEcsFieldset)="deleteEcsFieldset($event)"
+  (createCustomFieldset)="createCustomFieldset($event)"
+  (filterEcsFieldsets)="filterEcsFieldsets($event)"
+>
+</app-ecs-fieldsets-with-details>

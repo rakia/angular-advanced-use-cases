@@ -1,0 +1,141 @@
+<!-- New EcsFieldset -->
+<ng-container *ngIf="isCreateMode">
+  <app-create-custom-fieldset
+    [ecsVersion]="ecsVersion?.id!"
+    [ecsFieldsetsLightList]="ecsFieldsetsLightList"
+    [requestResponse]="requestResponse"
+    [parameterDescriptions]="(parameterDescriptions$ | async) || []"
+    (save)="createCustomFieldset.emit($event)"
+    (removeCreateForm)="cancelCreateMode.emit()"
+  >
+  </app-create-custom-fieldset>
+</ng-container>
+
+<div class="xl:col-span-2 flex flex-col flex-auto shadow rounded-2xl overflow-hidden bg-card">
+  <!-- Filter -->
+  <div class="px-6">
+    <div class="flex items-center justify-between w-full">
+      <div class="mr-4">
+        <div class="text-lg font-medium tracking-tight leading-6 truncate">
+          {{
+            "ECS_FIELDSETS.ECS_FIELDSETS_OF"
+              | transloco : { schemaEcsVersion: ecsVersion?.version, releaseVersion: ecsVersion?.releaseVersion }
+          }}
+        </div>
+        <div class="font-medium text-gray-400" *ngIf="filteredEcsFieldsets?.length">
+          {{ filteredEcsFieldsets.length }} {{ "GENERAL.FIELDSETS" | transloco }}
+        </div>
+      </div>
+
+      <div class="flex items-center">
+        <div class="flex items-center pr-2">
+          <div class="text-base font-semibold pr-4">{{ "ECS_FIELDSETS.ATTRIBUTES.FIELDSET_TYPE" | transloco }}</div>
+          <mat-button-toggle-group multiple (change)="onFieldsetTypesChange($event)">
+            <mat-button-toggle value="ecs">{{ "ECS_FIELDSETS.ATTRIBUTES.ECS" | transloco }}</mat-button-toggle>
+            <mat-button-toggle value="custom">{{ "ECS_FIELDSETS.ATTRIBUTES.CUSTOM" | transloco }}</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+
+        <div class="pt-5">
+          <lib-search (searchQuery)="filterBySearchQuery($event)"></lib-search>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="flex flex-auto overflow-hidden">
+    <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+      <ng-container *ngIf="filteredEcsFieldsets">
+        <ng-container *ngIf="filteredEcsFieldsets.length > 0">
+          <div class="grid">
+            <!-- Header -->
+            <div
+              class="fieldsets-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-40"
+              matSort
+              matSortDisableClear
+              (matSortChange)="onSort($event)"
+            >
+              <div [mat-sort-header]="'title'">
+                {{ "ECS_FIELDSETS.ATTRIBUTES.TITLE" | transloco }}
+              </div>
+              <div [mat-sort-header]="'short'">{{ "ECS_FIELDSETS.ATTRIBUTES.SHORT" | transloco }}</div>
+              <div [mat-sort-header]="'isEcs'">{{ "ECS_FIELDSETS.ATTRIBUTES.FIELDSET_TYPE" | transloco }}</div>
+              <div [mat-sort-header]="'created'">{{ "shared.FIELDS.CREATED_AT" | transloco }}</div>
+              <div [mat-sort-header]="'createdBy'">{{ "shared.FIELDS.CREATED_BY" | transloco }}</div>
+            </div>
+
+            <!-- Rows -->
+            <ng-container *ngIf="filteredEcsFieldsets?.length">
+              <ng-container *ngFor="let ecsFieldset of filteredEcsFieldsets; trackBy: trackByFn">
+                <div
+                  class="fieldsets-grid grid items-center gap-4 py-3 px-6 md:px-8 hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 border-b dark:border-b-gray-500"
+                  [ngClass]="{ 'bg-accent': selectedEcsFieldset?.id === ecsFieldset.id }"
+                  [id]="ecsFieldset.id"
+                  (click)="toggleDetails(ecsFieldset)"
+                >
+                  <!-- TITLE -->
+                  <div class="truncate">{{ ecsFieldset.title }}</div>
+
+                  <!-- Name -->
+                  <div class="truncate">{{ ecsFieldset.short }}</div>
+
+                  <!-- isEcs -->
+                  <div>
+                    <span class="pr-6 whitespace-nowrap">
+                      <ng-container *ngIf="ecsFieldset.isEcs">{{
+                        "ECS_FIELDSETS.ATTRIBUTES.ECS" | transloco
+                      }}</ng-container>
+                      <ng-container *ngIf="!ecsFieldset.isEcs">{{
+                        "ECS_FIELDSETS.ATTRIBUTES.CUSTOM" | transloco
+                      }}</ng-container>
+                    </span>
+                  </div>
+
+                  <!-- Created At -->
+                  <div class="flex items-center">
+                    <div class="min-w-4">{{ ecsFieldset.created | date : "dd.MM.yyyy" }}</div>
+                  </div>
+
+                  <!-- Created By -->
+                  <div>
+                    <span class="pr-6 font-medium whitespace-nowrap">{{ ecsFieldset.createdBy }}</span>
+                  </div>
+                </div>
+
+                <!-- EcsFieldset Details -->
+                <div class="grid">
+                  <ng-container *ngIf="selectedEcsFieldset?.id === ecsFieldset.id">
+                    <ng-container
+                      *ngTemplateOutlet="rowDetailsTemplate; context: { ecsFieldset: ecsFieldset }"
+                    ></ng-container>
+                  </ng-container>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+        </ng-container>
+      </ng-container>
+
+      <!-- Template for EcsFieldset Details -->
+      <ng-template #rowDetailsTemplate let-ecsFieldset="ecsFieldset">
+        <app-ecs-fieldset
+          [entity]="ecsFieldset"
+          [fields]="(ecsFields$ | async) || []"
+          [ecsFieldsetsLightList]="ecsFieldsetsLightList"
+          [parameterDescriptions]="(parameterDescriptions$ | async) || []"
+          [requestResponse]="requestResponse"
+          [requestResponseEcsField]="requestResponseEcsField$ | async"
+          [ecsFieldTypes]="(ecsFieldTypes$ | async) || []"
+          [ecsFieldLevels]="(ecsFieldLevels$ | async) || []"
+          (updateEcsFieldset)="updateEcsFieldset.emit($event)"
+          (delete)="deleteEcsFieldset.emit($event)"
+          (updateEcsField)="updateEcsField($event)"
+          (deleteEcsField)="deleteEcsField($event)"
+          (createCustomField)="createCustomField($event)"
+        >
+        </app-ecs-fieldset>
+      </ng-template>
+    </div>
+  </div>
+</div>

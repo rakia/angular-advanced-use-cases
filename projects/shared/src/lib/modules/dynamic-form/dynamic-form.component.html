@@ -1,0 +1,206 @@
+<ng-container *ngFor="let formControl of formModel; trackBy: trackByFn">
+  <!-- If FormGroup -->
+  <ng-container *ngIf="formControl.group">
+    <div class="flex flex-col">
+      <div class="mb-4">
+        <div *ngIf="formControl.label" class="font-semibold mb-4">{{ formControl.label | transloco }}</div>
+
+        <div class="flex space-x-2">
+          <div class="flex flex-auto flex-wrap items-center">
+            <ng-container *ngFor="let fControl of formControl.group">
+              <!-- Many Rows in Same Group -->
+              <ng-container *ngIf="fControl.groupRow">
+                <div class="flex flex-row flex-nowrap items-center">
+                  <ng-container *ngFor="let control of fControl.groupRow">
+                    <ng-container
+                      *ngTemplateOutlet="formControlTemplate; context: { formControl: control, formGroup: form }"
+                    ></ng-container>
+                  </ng-container>
+                </div>
+              </ng-container>
+
+              <!-- All Controls in Group Together -->
+              <ng-container *ngIf="!fControl.groupRow">
+                <ng-container
+                  *ngTemplateOutlet="formControlTemplate; context: { formControl: fControl, formGroup: form }"
+                ></ng-container>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- If FormArray -->
+  <ng-container *ngIf="formControl.formArray">
+    <div class="flex flex-col p-4">
+      <div *ngFor="let itemFormGroup of formControl.formArray; let i = index" [formArrayName]="formControl.key">
+        <!-- FormGroup (one item) -->
+        <div class="flex-nowrap" [formGroupName]="i">
+          <ng-container *ngFor="let fControl of formControl.formArray">
+            <ng-container
+              *ngTemplateOutlet="formControlTemplate; context: { formControl: fControl, formGroup: form }"
+            ></ng-container>
+          </ng-container>
+
+          <div *ngIf="i === 0">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="addFormArrayItem(formControl.key, formControl.formArray)"
+              [disabled]="form.get(formControl.key)?.disabled"
+              [matTooltip]="'BUTTONS.CREATE' | transloco"
+            >
+              <mat-icon>add_circle</mat-icon>
+            </button>
+          </div>
+
+          <div *ngIf="i !== 0">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="removeFormArrayItem(formControl.key, i)"
+              [disabled]="form.get(formControl.key)?.disabled"
+              [matTooltip]="'shared.BUTTONS.DELETE' | transloco"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!formControl.group">
+    <ng-container
+      *ngTemplateOutlet="formControlTemplate; context: { formControl: formControl, formGroup: form }"
+    ></ng-container>
+  </ng-container>
+</ng-container>
+
+<!-- Template for mat-form-field -->
+<ng-template #formControlTemplate let-formControl="formControl" let-formGroup="formGroup">
+  <!--<lib-dynamic-form-control [formControl]="formControl" [form]="formGroup"></lib-dynamic-form-control>-->
+
+  <ng-container [ngSwitch]="formControl.controlType">
+    <!-- Input -->
+    <mat-form-field *ngSwitchCase="'textbox'" class="pr-2 w-1/3">
+      <mat-label [matTooltip]="formControl.description">{{ formControl.label | transloco }}</mat-label>
+      <input
+        matInput
+        [formControl]="formGroup.get(formControl.key)"
+        [name]="formControl.key"
+        [id]="formControl.key"
+        [type]="formControl.type"
+      />
+      <mat-error *ngIf="formGroup.get(formControl.key).hasError('required')">
+        {{ "shared.MESSAGES.REQUIRED_FIELD" | transloco }}
+      </mat-error>
+      <mat-error *ngIf="formGroup.get(formControl.key).hasError('minlength')">
+        {{ "shared.MESSAGES.MIN_LENGTH" | transloco : { value: formControl.minLength } }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Textarea -->
+    <mat-form-field *ngSwitchCase="'textarea'" class="pr-2 w-1/3">
+      <mat-label [matTooltip]="formControl.description">{{ formControl.label | transloco }}</mat-label>
+      <textarea matInput [formControl]="formGroup.get(formControl.key)" cdkTextareaAutosize></textarea>
+      <mat-hint>{{ formControl.hint }}</mat-hint>
+      <mat-error *ngIf="formGroup.get(formControl.key)?.hasError('required')">
+        {{ "shared.MESSAGES.REQUIRED_FIELD" | transloco }}
+      </mat-error>
+      <mat-error *ngIf="formGroup.get(formControl.key)?.hasError('isNotJson')">
+        {{ "shared.MESSAGES.JSON_OBJECT_REQUIRED" | transloco }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- buttonToggleGroup -->
+    <ng-container *ngSwitchCase="'buttonToggleGroup'">
+      <mat-button-toggle-group
+        [name]="formControl.key"
+        [formControl]="formGroup.get(formControl.key)"
+        [matTooltip]="formControl.description"
+        class="pr-2 w-1/6"
+      >
+        <mat-button-toggle *ngFor="let option of formControl.options" [value]="option.value">{{
+          option.label | transloco
+        }}</mat-button-toggle>
+      </mat-button-toggle-group>
+      <mat-error *ngIf="formGroup.get(formControl.key)?.hasError('required')">{{
+        "shared.MESSAGES.REQUIRED_FIELD" | transloco
+      }}</mat-error>
+    </ng-container>
+
+    <!-- Slide Toggle -->
+    <ng-container *ngSwitchCase="'slideToggle'">
+      <mat-slide-toggle
+        color="primary"
+        class="pr-2 w-1/6"
+        [formControl]="formGroup.get(formControl.key)"
+        [checked]="formGroup.get(formControl.key).value"
+        [matTooltip]="formControl.description"
+      >
+        {{ formControl.label | transloco }}
+      </mat-slide-toggle>
+      <mat-error *ngIf="formGroup.get(formControl.key)?.hasError('required')">{{
+        "shared.MESSAGES.REQUIRED_FIELD" | transloco
+      }}</mat-error>
+    </ng-container>
+
+    <!-- Checkbox -->
+    <ng-container *ngSwitchCase="'checkbox'">
+      <mat-checkbox
+        [formControl]="formGroup.get(formControl.key)"
+        [matTooltip]="formControl.description"
+        class="pr-2 w-1/6"
+      >
+        {{ formControl.label | transloco }}
+      </mat-checkbox>
+    </ng-container>
+
+    <!-- dropdown -->
+    <mat-form-field *ngSwitchCase="'dropdown'" class="pr-2 w-1/3">
+      <mat-label [matTooltip]="formControl.description">{{ formControl.label | transloco }}</mat-label>
+      <!--(valueChange)="onDropdownlistChange($event, formControl.key, formGroup)"-->
+      <mat-select [id]="formControl.key" [formControl]="formGroup.get(formControl.key)">
+        <mat-option *ngFor="let option of formControl.options" [value]="option">{{ option }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="formGroup.get(formControl.key)?.hasError('required')">
+        {{ "shared.MESSAGES.REQUIRED_FIELD" | transloco }}
+      </mat-error>
+      <mat-error *ngIf="formGroup.get(formControl.key)?.hasError('minlength')">
+        {{ "shared.MESSAGES.MIN_LENGTH" | transloco : { value: formControl.minLength } }}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- chipsList -->
+    <ng-container *ngSwitchCase="'chipsList'">
+      <div class="py-3 w-full">
+        <lib-edit-chips-list
+          [form]="form"
+          [nameFormArray]="formControl.key"
+          [title]="formControl.label | transloco"
+          [hoverDescription]="formControl.description || ''"
+          [stringValues]="formControl.defaultValue"
+        ></lib-edit-chips-list>
+      </div>
+    </ng-container>
+
+    <!-- customAutocomplete -->
+    <ng-container *ngSwitchCase="'customAutocomplete'">
+      <div class="pr-2">
+        <lib-custom-autocomplete
+          [searchColumn]="formControl.searchColumn"
+          [filterableColumns]="formControl.filterableColumns"
+          [formControl]="formGroup.get(formControl.key)"
+          [required]="formControl.required"
+          [searchLabel]="formControl.label"
+          [displayColumnDefs]="formControl.displayColumnDefs"
+          [optionsList]="formControl.valueOptions"
+        >
+        </lib-custom-autocomplete>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-template>

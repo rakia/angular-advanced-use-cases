@@ -1,0 +1,48 @@
+<h2>{{ data.title | transloco : { value: data.itemIdentifier || "" } }}</h2>
+
+<div class="mb-4">
+  <p>{{ data.text | transloco : { value: data.itemIdentifier || "" } }}</p>
+</div>
+
+<div class="mb-4" *ngIf="data.question">
+  <p>{{ data.question | transloco }}</p>
+</div>
+
+<div *ngIf="data.mode === 'confirmAction' || data.mode === 'delete'">
+  <ng-container *ngTemplateOutlet="confirmOrDelete; context: { hasAction: data.hasActions }"></ng-container>
+</div>
+
+<div *ngIf="data.mode === 'create'">
+  <ng-container *ngTemplateOutlet="create; context: { hasAction: data.hasActions }"></ng-container>
+</div>
+
+<div *ngIf="data.mode === 'activate'">
+  <ng-container *ngTemplateOutlet="activate; context: { hasAction: data.hasActions }"></ng-container>
+</div>
+
+<ng-template #confirmOrDelete let-hasAction="hasAction">
+  <div mat-dialog-actions *ngIf="hasAction">
+    <button mat-stroked-button (click)="onNoClick()">{{ "shared.BUTTONS.CANCEL" | transloco }}</button>
+    <button mat-raised-button [mat-dialog-close]="true" cdkFocusInitial>{{ "shared.BUTTONS.OK" | transloco }}</button>
+  </div>
+</ng-template>
+
+<ng-template #create let-hasAction="hasAction">
+  <div mat-dialog-actions *ngIf="hasAction">
+    <button mat-stroked-button (click)="onNoClick()">{{ "shared.BUTTONS.CANCEL" | transloco }}</button>
+    <button mat-raised-button [mat-dialog-close]="true" cdkFocusInitial>
+      {{ "shared.BUTTONS.CREATE" | transloco }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #activate let-hasAction="hasAction">
+  <div mat-dialog-actions *ngIf="hasAction">
+    <button mat-stroked-button (click)="onNoClick()" cdkFocusInitial>{{ "shared.BUTTONS.CANCEL" | transloco }}</button>
+    <ng-container *ngFor="let questionAction of data.questionActions">
+      <button mat-raised-button [mat-dialog-close]="questionAction.action">
+        {{ questionAction.answer | transloco }}
+      </button>
+    </ng-container>
+  </div>
+</ng-template>

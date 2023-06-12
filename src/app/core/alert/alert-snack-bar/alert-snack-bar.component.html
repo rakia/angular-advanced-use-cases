@@ -1,0 +1,8 @@
+<div class="flex items-center">
+  <div class="flex items-center space-x-2" matSnackBarLabel>
+    <mat-icon>{{ data.icon }}</mat-icon>
+    <div>{{ data.message }}</div>
+  </div>
+
+  <button mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">{{ data.buttonLabel }}</button>
+</div>

@@ -1,0 +1,46 @@
+<div class="font-medium" *ngIf="title" [matTooltip]="hoverDescription">{{ title }}</div>
+
+<ng-container *ngIf="form">
+  <div class="flex flex-wrap mt-1 mb-3" [formGroup]="form">
+    <mat-form-field class="w-full">
+      <mat-chip-grid
+        #chipGrid
+        [attr.aria-label]="'GENERAL.VALUE_SELECTION' | transloco"
+        [formArrayName]="nameFormArray"
+        [disabled]="form.disabled"
+        *ngIf="nameFormArray"
+      >
+        <mat-chip-row
+          *ngFor="let option of chipSelectedOptionList; let i = index"
+          (removed)="removeFormSelectedOptions(i)"
+        >
+          {{ option["name"] }}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+
+        <!-- Disable AddOnBlur when mat-autocomplete is used (when optionList.length) -->
+        <input
+          #optionInput
+          [formControl]="optionInputCtrl"
+          [placeholder]="'GENERAL.ADD_NEW_VALUE' | transloco"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipGrid"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur && (!optionList || !optionList.length)"
+          (matChipInputTokenEnd)="addOption($event)"
+        />
+      </mat-chip-grid>
+      <mat-hint *ngIf="!optionList || !optionList.length">{{
+        "shared.MESSAGES.ENTER_OR_COMMA_AFTER_EACH_TAG" | transloco
+      }}</mat-hint>
+
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOption($event)">
+        <mat-option *ngFor="let option of filteredOptionList | async" [value]="option.name">
+          {{ option.name }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+</ng-container>

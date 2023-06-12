@@ -1,0 +1,57 @@
+<button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+
+<mat-menu #userMenu="matMenu">
+  <div mat-menu-item>
+    <div class="items-center py-2 flex">
+      <div>
+        <mat-icon>person</mat-icon>
+      </div>
+      <div class="flex flex-col">
+        <div class="font-bold">{{ "shared.TOOLBAR.LOGGED_IN_AS" | transloco }}</div>
+        <div class="m-0 font-small">{{ userProfile.firstName }} {{ userProfile.lastName }}</div>
+        <div>({{ userProfile.email }})</div>
+      </div>
+    </div>
+  </div>
+
+  <mat-divider class="my-2"></mat-divider>
+
+  <div mat-menu-item *ngIf="versionInfo">
+    <div class="items-center py-2 flex">
+      <div>
+        <mat-icon>description</mat-icon>
+      </div>
+      <div class="flex flex-col">
+        <div class="font-bold" id="versionNumber">{{ "shared.TOOLBAR.META_INFO.VERSION_NUMBER" | transloco }}</div>
+
+        <div class="flex flex-row">
+          <div class="text-sm leading-6 pr-2 text-gray-400" id="frontendCommitHash">
+            {{ "shared.TOOLBAR.META_INFO.FRONTEND" | transloco }}
+          </div>
+          <div>{{ versionInfo.frontendCommitHash }}</div>
+        </div>
+        <div class="flex flex-row">
+          <div class="text-sm leading-6 pr-2 text-gray-400" id="backendCommitHash">
+            {{ "shared.TOOLBAR.META_INFO.BACKEND" | transloco }}
+          </div>
+          <div>{{ versionInfo.backendCommitHash }}</div>
+        </div>
+        <div class="flex flex-row">
+          <div class="text-sm leading-6 pr-2 text-gray-400" id="logprepVersion">
+            {{ "shared.TOOLBAR.META_INFO.LOGPREP" | transloco }}
+          </div>
+          <div>{{ versionInfo.logprepVersion }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <mat-divider class="my-2"></mat-divider>
+
+  <button mat-menu-item (click)="logout.emit()">
+    <mat-icon>logout</mat-icon>
+    <span>{{ "shared.TOOLBAR.LOGOUT" | transloco }}</span>
+  </button>
+</mat-menu>

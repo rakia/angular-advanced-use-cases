@@ -1,0 +1,72 @@
+{
+  "SCHEME": {
+    "LIGHT": "Light",
+    "DARK": "Dark",
+    "SYSTEM": "System"
+  },
+  "TOOLBAR": {
+    "TITLE": "Name der Anwendung",
+    "LOGGED_IN_AS": "Eingeloggt als:",
+    "LOGIN_ONBOARDER": "Login (Onboarder)",
+    "LOGIN_ADMIN": "Login (Admin)",
+    "LOGOUT": "Logout",
+    "META_INFO": {
+      "VERSION_NUMBER": "Versionsnummer",
+      "FRONTEND": "Frontend",
+      "BACKEND": "Backend",
+      "LOGPREP": "Logprep"
+    }
+  },
+  "BUTTONS": {
+    "CANCEL": "Abbrechen",
+    "CREATE": "Erstellen",
+    "DELETE": "Löschen",
+    "CLONE": "Klonen",
+    "GO_BACK": "Zurück",
+    "OK": "OK",
+    "OPEN": "Öffnen",
+    "SAVE": "Speichern",
+    "UPDATE": "Bearbeiten",
+    "CLOSE": "Schließen",
+    "RESET": "Zurücksetzen",
+    "RESTORE": "Wiederherstellen",
+    "ACTIVATE": "Aktivieren",
+    "DEACTIVATE": "Deaktivieren",
+    "SCROLL_TO_TOP": "Nach oben scrollen"
+  },
+  "FIELDS": {
+    "CREATED_AT": "Created at",
+    "CREATED_BY": "Created by",
+    "UPDATED_AT": "Updated at",
+    "UPDATED_BY": "Updated by",
+    "DETAILS": "Details"
+  },
+  "MESSAGES": {
+    "CREATED_SUCCESSFULLY": "{{value}} wurde erfolgreich erstellt.",
+    "DELETED_SUCCESSFULLY": "{{value}} wurde erfolgreich gelöscht.",
+    "SAVED_SUCCESSFULLY": "{{value}} wurde erfolgreich gespeichert.",
+    "UPDATED_SUCCESSFULLY": "{{value}} wurde erfolgreich aktualisiert.",
+    "RESTORED_SUCCESSFULLY": "{{value}} wurde erfolgreich wiederhergestellt.",
+    "ACTIVATED_SUCCESSFULLY": "{{value}} wurde erfolgreich aktiviert.",
+    "DEACTIVATED_SUCCESSFULLY": "{{value}} wurde erfolgreich deaktiviert.",
+    "ERROR_OCCURRED": "Ein Fehler ist aufgetreten, versuchen Sie es erneut.",
+    "NO_DATA_FOUND": "Es wurden leider keine Daten gefunden",
+    "ENTER_OR_COMMA_AFTER_EACH_TAG": "Geben Sie nach jedem Tag ENTER oder ein Komma ein",
+    "CONFIRM_CANCEL": {
+      "TITLE": "Möchten Sie Ihre Änderungen verwerfen?",
+      "TEXT": "Ihre Änderungen werden verworfen."
+    },
+    "CONFIRM_DELETE": {
+      "TITLE": "Möchten Sie dieses Item entfernen?",
+      "TITLE_WITH_ITEM_NAME": "Möchten Sie {{value}} entfernen?",
+      "TEXT": "Das Item wird endgültig entfernt.",
+      "TEXT_WITH_ITEM_NAME": "{{value}} wird endgültig entfernt."
+    },
+    "REQUIRED_FIELD": "Dieses Feld ist ein Pflichtfeld.",
+    "MIN_LENGTH": "Dieses Feld sollte mindestens {{value}} Zeichen enthalten.",
+    "JSON_OBJECT_REQUIRED": "Bitte ein gültiges JSON Objekt eintragen."
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Suche"
+  }
+}

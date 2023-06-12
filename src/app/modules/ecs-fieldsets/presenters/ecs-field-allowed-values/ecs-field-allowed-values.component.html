@@ -1,0 +1,24 @@
+<ng-container *ngIf="ecsFieldAllowedValues?.length">
+  <span class="mb-2 font-medium leading-tight" [matTooltip]="hoverDescription">{{
+    "ECS_FIELDSETS.ATTRIBUTES.ALLOWED_VALUES" | transloco
+  }}</span>
+
+  <div>
+    <ng-container *ngFor="let ecsFieldAllowedValue of ecsFieldAllowedValues">
+      <div class="mt-1.5 rounded-md border border-gray-300 dark:border-gray-500 shadow-sm overflow-hidden">
+        <!-- name, description -->
+        <div class="flex items-center -my-px py-2 px-3">
+          <div class="flex flex-col flex-auto min-w-0 text-gray-400">
+            <div class="font-medium mb-2 dark:text-gray-300">{{ ecsFieldAllowedValue.name }}</div>
+            <div class="mb-1">{{ ecsFieldAllowedValue.description }}</div>
+          </div>
+        </div>
+
+        <!-- expectedEventTypes -->
+        <div class="h-10 leading-none h-auto border-t items-center pt-2 border-gray-300 dark:border-gray-500">
+          <lib-chips-list [stringValues]="ecsFieldAllowedValue.expectedEventTypes || []"></lib-chips-list>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>

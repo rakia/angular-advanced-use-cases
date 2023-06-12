@@ -1,0 +1,273 @@
+<div class="flex flex-col w-full">
+  <lib-card>
+    <ng-container ngProjectAs="[cardHeader]">
+      <div class="font-semibold">{{ "ECS_FIELDSETS.NEW_CUSTOM_FIELD" | transloco }}</div>
+
+      <lib-actions-buttons
+        [isCreateMode]="true"
+        [form]="form"
+        (clickCancel)="onClickCancel()"
+        (clickSave)="onClickSave()"
+      ></lib-actions-buttons>
+    </ng-container>
+
+    <ng-container ngProjectAs="[cardContent]">
+      <form class="flex flex-col w-full" [formGroup]="form">
+        <mat-form-field class="w-full">
+          <mat-label [matTooltip]="parameterDescriptions.get('name') || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.NAME" | transloco
+          }}</mat-label>
+          <input matInput [formControlName]="'name'" />
+        </mat-form-field>
+
+        <!-- isEcs, type, level -->
+        <div class="flex">
+          <mat-form-field class="w-1/5 pr-2">
+            <mat-label>{{ "ECS_FIELDSETS.ATTRIBUTES.FIELD_TYPE" | transloco }}</mat-label>
+            <input matInput [value]="'ECS_FIELDSETS.ATTRIBUTES.CUSTOM' | transloco" [disabled]="true" />
+          </mat-form-field>
+
+          <mat-form-field class="w-2/5 pr-2">
+            <mat-label [matTooltip]="parameterDescriptions.get('type') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.TYPE" | transloco
+            }}</mat-label>
+            <mat-select [formControlName]="'type'">
+              <ng-container *ngFor="let ecsFieldType of ecsFieldTypes">
+                <mat-option [value]="ecsFieldType.name">{{ ecsFieldType.name }}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="w-2/5">
+            <mat-label [matTooltip]="parameterDescriptions.get('level') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.LEVEL" | transloco
+            }}</mat-label>
+            <mat-select [formControlName]="'level'">
+              <ng-container *ngFor="let ecsFieldLevel of ecsFieldLevels">
+                <mat-option [value]="ecsFieldLevel.name">{{ ecsFieldLevel.name }}</mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- created at, createdBy, example -->
+        <div class="flex">
+          <mat-form-field class="w-1/5 pr-2">
+            <mat-label>{{ "shared.FIELDS.CREATED_AT" | transloco }}</mat-label>
+            <input matInput [formControlName]="'created'" />
+          </mat-form-field>
+
+          <mat-form-field class="w-2/5 pr-2">
+            <mat-label>{{ "shared.FIELDS.CREATED_BY" | transloco }}</mat-label>
+            <input matInput [formControlName]="'createdBy'" />
+          </mat-form-field>
+
+          <mat-form-field class="w-2/5">
+            <mat-label [matTooltip]="parameterDescriptions.get('example') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.EXAMPLE" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'example'" class="example" />
+          </mat-form-field>
+        </div>
+
+        <!-- short -->
+        <div class="flex">
+          <mat-form-field class="w-full">
+            <mat-label [matTooltip]="parameterDescriptions.get('short') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.SHORT" | transloco
+            }}</mat-label>
+            <textarea
+              matInput
+              [formControlName]="'short'"
+              [rows]="1"
+              cdkTextareaAutosize
+              [cdkAutosizeMinRows]="1"
+            ></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- description -->
+        <mat-form-field class="w-full">
+          <mat-label [matTooltip]="parameterDescriptions.get('description') || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.DESCRIPTION" | transloco
+          }}</mat-label>
+          <textarea
+            matInput
+            [formControlName]="'description'"
+            [rows]="1"
+            cdkTextareaAutosize
+            [cdkAutosizeMinRows]="1"
+          ></textarea>
+        </mat-form-field>
+
+        <!-- required, ignoreAbove, scalingFactor -->
+        <div class="flex">
+          <ng-container>
+            <mat-form-field class="w-1/5 pr-2">
+              <mat-label [matTooltip]="parameterDescriptions.get('required') || ''" [matTooltipDisabled]="false">{{
+                "ECS_FIELDSETS.ATTRIBUTES.REQUIRED" | transloco
+              }}</mat-label>
+              <input matInput [formControlName]="'required'" />
+            </mat-form-field>
+          </ng-container>
+
+          <mat-form-field class="w-2/5 pr-2">
+            <mat-label [matTooltip]="parameterDescriptions.get('ignoreAbove') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.IGNORE_ABOVE" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'ignoreAbove'" type="number" />
+          </mat-form-field>
+
+          <mat-form-field class="w-2/5">
+            <mat-label [matTooltip]="parameterDescriptions.get('scalingFactor') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.SCALING_FACTOR" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'scalingFactor'" type="number" />
+          </mat-form-field>
+        </div>
+
+        <!-- beta, docValues, index, objectType, format -->
+        <div class="flex">
+          <mat-form-field class="w-1/5 pr-2">
+            <mat-label [matTooltip]="parameterDescriptions.get('beta') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.BETA" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'beta'" />
+          </mat-form-field>
+
+          <mat-form-field class="w-1/5 pr-2">
+            <mat-label [matTooltip]="parameterDescriptions.get('docValues') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.DOC_VALUES" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'docValues'" />
+          </mat-form-field>
+
+          <mat-form-field class="w-1/5 pr-2">
+            <mat-label [matTooltip]="parameterDescriptions.get('index') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.INDEX" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'index'" />
+          </mat-form-field>
+
+          <mat-form-field class="w-1/5 pr-2">
+            <mat-label [matTooltip]="parameterDescriptions.get('objectType') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.OBJECT_TYPE" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'objectType'" />
+          </mat-form-field>
+
+          <mat-form-field class="w-1/5">
+            <mat-label [matTooltip]="parameterDescriptions.get('format') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.FORMAT" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'format'" />
+          </mat-form-field>
+        </div>
+
+        <!-- inputFormat, outputFormat, outputPrecision, pattern -->
+        <div class="flex">
+          <mat-form-field class="w-1/4 pr-2">
+            <mat-label [matTooltip]="parameterDescriptions.get('inputFormat') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.INPUT_FORMAT" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'inputFormat'" />
+          </mat-form-field>
+
+          <mat-form-field class="w-1/4 pr-2">
+            <mat-label [matTooltip]="parameterDescriptions.get('outputFormat') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.OUTPUT_FORMAT" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'outputFormat'" />
+          </mat-form-field>
+
+          <mat-form-field class="w-1/4 pr-2">
+            <mat-label [matTooltip]="parameterDescriptions.get('outputPrecision') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.OUTPUT_PRECISION" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'outputPrecision'" type="number" />
+          </mat-form-field>
+
+          <mat-form-field class="w-1/4">
+            <mat-label [matTooltip]="parameterDescriptions.get('pattern') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.PATTERN" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'pattern'" />
+          </mat-form-field>
+        </div>
+
+        <!-- normalize -->
+        <lib-edit-chips-list
+          [form]="form"
+          [nameFormArray]="'normalize'"
+          [title]="'ECS_FIELDSETS.ATTRIBUTES.NORMALIZE' | transloco"
+          [hoverDescription]="parameterDescriptions.get('normalize') || ''"
+          [stringValues]="[]"
+        ></lib-edit-chips-list>
+
+        <!-- expectedValues -->
+        <lib-edit-chips-list
+          [form]="form"
+          [nameFormArray]="'expectedValues'"
+          [title]="'ECS_FIELDSETS.ATTRIBUTES.EXPECTED_VALUES' | transloco"
+          [hoverDescription]="parameterDescriptions.get('expectedValues') || ''"
+          [stringValues]="[]"
+        ></lib-edit-chips-list>
+
+        <!-- Custom Fields -->
+        <div class="font-medium mb-4">{{ "ECS_FIELDSETS.ATTRIBUTES.ADDITIONAL_PARAMETERS" | transloco }}</div>
+
+        <!-- customDescription, customExample -->
+        <div class="flex">
+          <mat-form-field class="w-1/2 pr-2">
+            <mat-label [matTooltip]="parameterDescriptions.get('customDescription') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_DESCRIPTION" | transloco
+            }}</mat-label>
+            <textarea
+              matInput
+              [formControlName]="'customDescription'"
+              [rows]="1"
+              cdkTextareaAutosize
+              [cdkAutosizeMinRows]="1"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field class="w-1/2">
+            <mat-label [matTooltip]="parameterDescriptions.get('customExample') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_EXAMPLE" | transloco
+            }}</mat-label>
+            <input matInput [formControlName]="'customExample'" />
+          </mat-form-field>
+        </div>
+
+        <!-- customComment, customHelp -->
+        <div class="flex">
+          <mat-form-field class="w-1/2 pr-2">
+            <mat-label [matTooltip]="parameterDescriptions.get('customComment') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_COMMENT" | transloco
+            }}</mat-label>
+            <textarea
+              matInput
+              [formControlName]="'customComment'"
+              [rows]="1"
+              cdkTextareaAutosize
+              [cdkAutosizeMinRows]="1"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field class="w-1/2">
+            <mat-label [matTooltip]="parameterDescriptions.get('customHelp') || ''" [matTooltipDisabled]="false">{{
+              "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_HELP" | transloco
+            }}</mat-label>
+            <textarea
+              matInput
+              [formControlName]="'customHelp'"
+              [rows]="1"
+              cdkTextareaAutosize
+              [cdkAutosizeMinRows]="1"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </form>
+    </ng-container>
+  </lib-card>
+</div>

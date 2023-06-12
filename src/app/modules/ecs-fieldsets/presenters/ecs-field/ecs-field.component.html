@@ -1,0 +1,389 @@
+<ng-container *ngIf="entity?.id">
+  <div class="flex flex-col w-full">
+    <lib-expansion-card [title]="entity!.name" [id]="entity.id" [expanded]="expanded">
+      <ng-container ngProjectAs="[cardHeader]">
+        <lib-actions-buttons
+          [isEditMode]="isEditMode"
+          [form]="form"
+          [customActionsButtons]="entity.isEcs ? [] : customActionsButtons"
+          (clickEdit)="enableEditMode()"
+          (clickCancel)="onClickCancel()"
+          (clickSave)="onClickSave()"
+          (clickAction)="onClickActionButton($event)"
+        ></lib-actions-buttons>
+      </ng-container>
+
+      <ng-container ngProjectAs="[cardContent]">
+        <form class="flex flex-col w-full" [formGroup]="form">
+          <!-- name, flat_name -->
+          <div class="flex">
+            <mat-form-field class="w-2/3 pr-2" *ngIf="!entity.isEcs && isEditMode">
+              <mat-label [matTooltip]="parameterDescriptions.get('name') || ''" [matTooltipDisabled]="false">{{
+                "ECS_FIELDSETS.ATTRIBUTES.NAME" | transloco
+              }}</mat-label>
+              <input matInput [formControlName]="'name'" />
+            </mat-form-field>
+            <mat-form-field class="w-full" [ngClass]="{ 'w-1/3': !entity.isEcs && isEditMode }">
+              <mat-label [matTooltip]="parameterDescriptions.get('flat_name') || ''" [matTooltipDisabled]="false">{{
+                "ECS_FIELDSETS.ATTRIBUTES.FLAT_NAME" | transloco
+              }}</mat-label>
+              <input matInput [formControlName]="'flatName'" />
+            </mat-form-field>
+          </div>
+
+          <!-- isEcs, type, level -->
+          <div class="flex">
+            <mat-form-field class="w-1/5 pr-2">
+              <mat-label>{{ "ECS_FIELDSETS.ATTRIBUTES.FIELD_TYPE" | transloco }}</mat-label>
+              <ng-container *ngIf="entity.isEcs">
+                <input matInput [value]="'ECS_FIELDSETS.ATTRIBUTES.ECS' | transloco" [disabled]="true" />
+              </ng-container>
+              <ng-container *ngIf="!entity.isEcs">
+                <input matInput [value]="'ECS_FIELDSETS.ATTRIBUTES.CUSTOM' | transloco" [disabled]="true" />
+              </ng-container>
+            </mat-form-field>
+
+            <mat-form-field class="w-2/5 pr-2">
+              <mat-label [matTooltip]="parameterDescriptions.get('type') || ''" [matTooltipDisabled]="false">{{
+                "ECS_FIELDSETS.ATTRIBUTES.TYPE" | transloco
+              }}</mat-label>
+              <mat-select [formControlName]="'type'">
+                <ng-container *ngFor="let ecsFieldType of ecsFieldTypes">
+                  <mat-option [value]="ecsFieldType.name">{{ ecsFieldType.name }}</mat-option>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="w-2/5">
+              <mat-label [matTooltip]="parameterDescriptions.get('level') || ''" [matTooltipDisabled]="false">{{
+                "ECS_FIELDSETS.ATTRIBUTES.LEVEL" | transloco
+              }}</mat-label>
+              <mat-select [formControlName]="'level'">
+                <ng-container *ngFor="let ecsFieldLevel of ecsFieldLevels">
+                  <mat-option [value]="ecsFieldLevel.name">{{ ecsFieldLevel.name }}</mat-option>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <!-- created at, createdBy, example -->
+          <div class="flex">
+            <mat-form-field class="w-1/5 pr-2">
+              <mat-label>{{ "shared.FIELDS.CREATED_AT" | transloco }}</mat-label>
+              <input matInput [formControlName]="'created'" />
+            </mat-form-field>
+
+            <mat-form-field class="w-2/5 pr-2">
+              <mat-label>{{ "shared.FIELDS.CREATED_BY" | transloco }}</mat-label>
+              <input matInput [formControlName]="'createdBy'" />
+            </mat-form-field>
+
+            <mat-form-field class="w-2/5">
+              <mat-label [matTooltip]="parameterDescriptions.get('example') || ''" [matTooltipDisabled]="false">{{
+                "ECS_FIELDSETS.ATTRIBUTES.EXAMPLE" | transloco
+              }}</mat-label>
+              <input matInput [formControlName]="'example'" class="example" />
+            </mat-form-field>
+          </div>
+
+          <ng-container *ngIf="entity.updated">
+            <!-- updated, updatedBy -->
+            <div class="flex">
+              <mat-form-field class="w-1/2 pr-2">
+                <mat-label>{{ "shared.FIELDS.UPDATED_AT" | transloco }}</mat-label>
+                <input matInput [formControlName]="'updated'" />
+              </mat-form-field>
+
+              <mat-form-field class="w-1/2">
+                <mat-label>{{ "shared.FIELDS.UPDATED_BY" | transloco }}</mat-label>
+                <input matInput [formControlName]="'updatedBy'" />
+              </mat-form-field>
+            </div>
+          </ng-container>
+
+          <!-- short -->
+          <div class="flex">
+            <mat-form-field class="w-full">
+              <mat-label [matTooltip]="parameterDescriptions.get('short') || ''" [matTooltipDisabled]="false">{{
+                "ECS_FIELDSETS.ATTRIBUTES.SHORT" | transloco
+              }}</mat-label>
+              <textarea
+                matInput
+                [formControlName]="'short'"
+                [rows]="1"
+                cdkTextareaAutosize
+                [cdkAutosizeMinRows]="1"
+              ></textarea>
+            </mat-form-field>
+          </div>
+
+          <!-- description -->
+          <ng-container *ngIf="entity.description">
+            <mat-form-field class="w-full">
+              <mat-label [matTooltip]="parameterDescriptions.get('description') || ''" [matTooltipDisabled]="false">{{
+                "ECS_FIELDSETS.ATTRIBUTES.DESCRIPTION" | transloco
+              }}</mat-label>
+              <textarea
+                matInput
+                [formControlName]="'description'"
+                [rows]="1"
+                cdkTextareaAutosize
+                [cdkAutosizeMinRows]="1"
+              ></textarea>
+            </mat-form-field>
+          </ng-container>
+
+          <!-- required, ignoreAbove, scalingFactor -->
+          <div class="flex">
+            <ng-container>
+              <mat-form-field class="w-1/5 pr-2">
+                <mat-label [matTooltip]="parameterDescriptions.get('required') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.REQUIRED" | transloco
+                }}</mat-label>
+                <input matInput [formControlName]="'required'" />
+              </mat-form-field>
+            </ng-container>
+
+            <mat-form-field class="w-2/5 pr-2">
+              <mat-label [matTooltip]="parameterDescriptions.get('ignoreAbove') || ''" [matTooltipDisabled]="false">{{
+                "ECS_FIELDSETS.ATTRIBUTES.IGNORE_ABOVE" | transloco
+              }}</mat-label>
+              <input matInput [formControlName]="'ignoreAbove'" type="number" />
+            </mat-form-field>
+
+            <mat-form-field class="w-2/5">
+              <mat-label [matTooltip]="parameterDescriptions.get('scalingFactor') || ''" [matTooltipDisabled]="false">{{
+                "ECS_FIELDSETS.ATTRIBUTES.SCALING_FACTOR" | transloco
+              }}</mat-label>
+              <input matInput [formControlName]="'scalingFactor'" type="number" />
+            </mat-form-field>
+          </div>
+
+          <!-- beta, docValues, index, objectType, format -->
+          <div
+            class="flex"
+            *ngIf="isEditMode || entity.beta || entity.docValues || entity.index || entity.objectType || entity.format"
+          >
+            <ng-container *ngIf="isEditMode || entity.beta">
+              <mat-form-field class="w-1/5 pr-2">
+                <mat-label [matTooltip]="parameterDescriptions.get('beta') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.BETA" | transloco
+                }}</mat-label>
+                <input matInput [formControlName]="'beta'" />
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="isEditMode || entity.docValues">
+              <mat-form-field class="w-1/5 pr-2">
+                <mat-label [matTooltip]="parameterDescriptions.get('docValues') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.DOC_VALUES" | transloco
+                }}</mat-label>
+                <input matInput [formControlName]="'docValues'" />
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="isEditMode || entity.index">
+              <mat-form-field class="w-1/5 pr-2">
+                <mat-label [matTooltip]="parameterDescriptions.get('index') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.INDEX" | transloco
+                }}</mat-label>
+                <input matInput [formControlName]="'index'" />
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="isEditMode || entity.objectType">
+              <mat-form-field class="w-1/5 pr-2">
+                <mat-label [matTooltip]="parameterDescriptions.get('objectType') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.OBJECT_TYPE" | transloco
+                }}</mat-label>
+                <input matInput [formControlName]="'objectType'" />
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="isEditMode || entity.format">
+              <mat-form-field class="w-1/5">
+                <mat-label [matTooltip]="parameterDescriptions.get('format') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.FORMAT" | transloco
+                }}</mat-label>
+                <input matInput [formControlName]="'format'" />
+              </mat-form-field>
+            </ng-container>
+          </div>
+
+          <!-- inputFormat, outputFormat, outputPrecision, pattern -->
+          <div
+            class="flex"
+            *ngIf="
+              isEditMode ||
+              entity.inputFormat ||
+              entity.outputFormat ||
+              entity.outputPrecision ||
+              entity.pattern ||
+              entity.required
+            "
+          >
+            <ng-container *ngIf="isEditMode || entity.inputFormat">
+              <mat-form-field class="w-1/4 pr-2">
+                <mat-label [matTooltip]="parameterDescriptions.get('inputFormat') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.INPUT_FORMAT" | transloco
+                }}</mat-label>
+                <input matInput [formControlName]="'inputFormat'" />
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="isEditMode || entity.outputFormat">
+              <mat-form-field class="w-1/4 pr-2">
+                <mat-label [matTooltip]="parameterDescriptions.get('outputFormat') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.OUTPUT_FORMAT" | transloco
+                }}</mat-label>
+                <input matInput [formControlName]="'outputFormat'" />
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="isEditMode || entity.outputPrecision">
+              <mat-form-field class="w-1/4 pr-2">
+                <mat-label [matTooltip]="parameterDescriptions.get('outputPrecision') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.OUTPUT_PRECISION" | transloco
+                }}</mat-label>
+                <input matInput [formControlName]="'outputPrecision'" type="number" />
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="isEditMode || entity.pattern">
+              <mat-form-field class="w-1/4">
+                <mat-label [matTooltip]="parameterDescriptions.get('pattern') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.PATTERN" | transloco
+                }}</mat-label>
+                <input matInput [formControlName]="'pattern'" />
+              </mat-form-field>
+            </ng-container>
+          </div>
+
+          <ng-container *ngIf="entity.isEcs || !isEditMode">
+            <!-- normalize -->
+            <lib-chips-list
+              [title]="'ECS_FIELDSETS.ATTRIBUTES.NORMALIZE' | transloco"
+              [hoverDescription]="parameterDescriptions.get('normalize') || ''"
+              [stringValues]="entity.normalize || []"
+            ></lib-chips-list>
+
+            <!-- expectedValues -->
+            <lib-chips-list
+              [title]="'ECS_FIELDSETS.ATTRIBUTES.EXPECTED_VALUES' | transloco"
+              [hoverDescription]="parameterDescriptions.get('expectedValues') || ''"
+              [stringValues]="entity.expectedValues || []"
+            ></lib-chips-list>
+          </ng-container>
+
+          <ng-container *ngIf="!entity.isEcs && isEditMode">
+            <!-- normalize -->
+            <lib-edit-chips-list
+              [form]="form"
+              [nameFormArray]="'normalize'"
+              [title]="'ECS_FIELDSETS.ATTRIBUTES.NORMALIZE' | transloco"
+              [hoverDescription]="parameterDescriptions.get('normalize') || ''"
+              [stringValues]="entity.normalize || []"
+            ></lib-edit-chips-list>
+
+            <!-- expectedValues -->
+            <lib-edit-chips-list
+              [form]="form"
+              [nameFormArray]="'expectedValues'"
+              [title]="'ECS_FIELDSETS.ATTRIBUTES.EXPECTED_VALUES' | transloco"
+              [hoverDescription]="parameterDescriptions.get('expectedValues') || ''"
+              [stringValues]="entity.expectedValues || []"
+            ></lib-edit-chips-list>
+          </ng-container>
+
+          <!-- ecsMultifields -->
+          <lib-chips-list
+            [title]="'ECS_FIELDSETS.ATTRIBUTES.MULTI_FIELDS' | transloco"
+            [hoverDescription]="parameterDescriptions.get('ecsMultiFields') || ''"
+            [values]="entity.ecsMultifields || []"
+            [keyToDisplay]="'name'"
+            [id]="'ecsField'"
+          ></lib-chips-list>
+
+          <!-- ecsFieldAllowedValues -->
+          <app-ecs-field-allowed-values
+            [ecsFieldAllowedValues]="entity.ecsFieldAllowedValues || []"
+            [hoverDescription]="parameterDescriptions.get('ecsFieldAllowedValues') || ''"
+          ></app-ecs-field-allowed-values>
+
+          <!-- Custom Fields -->
+          <ng-container
+            *ngIf="
+              isEditMode ||
+              entity.customDescription ||
+              entity.customExample ||
+              entity.customComment ||
+              entity.customHelp
+            "
+          >
+            <div class="font-medium mb-4">{{ "ECS_FIELDSETS.ATTRIBUTES.ADDITIONAL_PARAMETERS" | transloco }}</div>
+          </ng-container>
+
+          <!-- customDescription, customExample -->
+          <div class="flex" *ngIf="isEditMode || entity.customDescription || entity.customExample">
+            <ng-container *ngIf="isEditMode || entity.customDescription">
+              <mat-form-field class="w-1/2 pr-2">
+                <mat-label [matTooltip]="parameterDescriptions.get('customDescription') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_DESCRIPTION" | transloco
+                }}</mat-label>
+                <textarea
+                  matInput
+                  [formControlName]="'customDescription'"
+                  [rows]="1"
+                  cdkTextareaAutosize
+                  [cdkAutosizeMinRows]="1"
+                ></textarea>
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="isEditMode || entity.customExample">
+              <mat-form-field class="w-1/2">
+                <mat-label [matTooltip]="parameterDescriptions.get('customExample') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_EXAMPLE" | transloco
+                }}</mat-label>
+                <input matInput [formControlName]="'customExample'" />
+              </mat-form-field>
+            </ng-container>
+          </div>
+
+          <!-- customComment, customHelp -->
+          <div class="flex" *ngIf="isEditMode || entity.customComment || entity.customHelp">
+            <ng-container *ngIf="isEditMode || entity.customComment">
+              <mat-form-field class="w-1/2 pr-2">
+                <mat-label [matTooltip]="parameterDescriptions.get('customComment') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_COMMENT" | transloco
+                }}</mat-label>
+                <textarea
+                  matInput
+                  [formControlName]="'customComment'"
+                  [rows]="1"
+                  cdkTextareaAutosize
+                  [cdkAutosizeMinRows]="1"
+                ></textarea>
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="isEditMode || entity.customHelp">
+              <mat-form-field class="w-1/2">
+                <mat-label [matTooltip]="parameterDescriptions.get('customHelp') || ''" [matTooltipDisabled]="false">{{
+                  "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_HELP" | transloco
+                }}</mat-label>
+                <textarea
+                  matInput
+                  [formControlName]="'customHelp'"
+                  [rows]="1"
+                  cdkTextareaAutosize
+                  [cdkAutosizeMinRows]="1"
+                ></textarea>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </form>
+      </ng-container>
+    </lib-expansion-card>
+  </div>
+</ng-container>

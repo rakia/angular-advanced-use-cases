@@ -1,0 +1,49 @@
+<div class="flex flex-row space-x-2">
+  <mat-form-field class="flex w-full">
+    <mat-label>{{ searchLabel | transloco }}</mat-label>
+    <input
+      matInput
+      [formControl]="searchFormControl"
+      autocomplete="off"
+      cdkOverlayOrigin
+      #searchInputField="cdkOverlayOrigin"
+      (focus)="onFocusSearchField()"
+      (blur)="onBlurSearchField()"
+    />
+    <mat-icon *ngIf="hasCancelButton && !searchFormControl.disabled && searchFormControl.value" matSuffix (click)="onClickRemoveSearchQuery($event)">cancel</mat-icon>
+    <mat-error *ngIf="searchFormControl.hasError('required')">
+      {{ "shared.MESSAGES.REQUIRED_FIELD" | transloco }}
+    </mat-error>
+    <mat-hint *ngIf="hintMessage">{{ hintMessage }}</mat-hint>
+  </mat-form-field>
+</div>
+
+<!-- This template displays the overlay content: a table in an overlay -->
+<ng-template
+  *ngIf="displayColumnDefs"
+  #searchResultTablePanel
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="searchInputField"
+  [cdkConnectedOverlayOpen]="isOverlayOpen"
+  [cdkConnectedOverlayPositions]="overlayPositions"
+  [cdkConnectedOverlayBackdropClass]="'overlay-backdrop'"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  (backdropClick)="closeOverlay()"
+  (detach)="onDetachOverlay()"
+>
+  <div class="flex-col mat-elevation-z2 overflow-y-auto overlay-content">
+    <lib-dynamic-table
+      [dataList]="dataSource.filteredData"
+      [displayColumnDefs]="displayColumnDefs || []"
+      [highlightRowIndex]="highlightRowIndex"
+      (rowSelected)="selectRow($event)"
+    >
+      <!-- Row shown when there is no matching data -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">
+          {{ "shared.MESSAGES.NO_DATA_FOUND" | transloco }}
+        </td>
+      </tr>
+    </lib-dynamic-table>
+  </div>
+</ng-template>

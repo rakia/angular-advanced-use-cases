@@ -1,0 +1,15 @@
+<mat-expansion-panel [(expanded)]="expanded" (click)="$event.stopPropagation(); toggleExpand.emit()" class="bg-card">
+  <!-- Not Expanded Layout -->
+  <mat-expansion-panel-header [ngClass]="{ 'border-b dark:border-b-gray-500 pb-1 mb-4': expanded }">
+    <mat-panel-title class="dark:text-gray-100" [id]="id">{{ title }}</mat-panel-title>
+
+    <mat-panel-description class="justify-end items-center">
+      <ng-content select="[cardHeader]"></ng-content>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <div class="flex flex-col">
+    <!-- Expanded Layout -->
+    <ng-content select="[cardContent]"></ng-content>
+  </div>
+</mat-expansion-panel>

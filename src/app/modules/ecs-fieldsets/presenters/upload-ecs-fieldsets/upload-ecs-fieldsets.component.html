@@ -1,0 +1,65 @@
+<lib-card>
+  <ng-container ngProjectAs="[cardHeader]">
+    <div class="mr-4 text-lg font-medium tracking-tight leading-6 truncate">
+      {{ "ECS_FIELDSETS.ECS_UPLOAD" | transloco }}
+    </div>
+
+    <div class="flex items-center">
+      <div class="flex items-center mr-4">
+        <button
+          class="ml-4"
+          mat-raised-button
+          [disabled]="form!.disabled"
+          [matTooltip]="'shared.BUTTONS.CANCEL' | transloco"
+          (click)="onClickCancel()"
+        >
+          {{ "shared.BUTTONS.CANCEL" | transloco }}
+        </button>
+      </div>
+
+      <button
+        mat-flat-button
+        [color]="'primary'"
+        [disabled]="form!.invalid || form!.disabled"
+        [matTooltip]="'ECS_FIELDSETS.ECS_UPLOAD' | transloco"
+        (click)="onUploadEcsFields()"
+      >
+        {{ "ECS_FIELDSETS.ECS_UPLOAD" | transloco }}
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container ngProjectAs="[cardContent]">
+    <!-- Form -->
+    <form class="flex flex-col w-full" *ngIf="form" [formGroup]="form">
+      <div class="flex flex-auto flex-wrap justify-start items-center w-full">
+        <mat-form-field class="lg:w-1/4 md:w-2/5 w-1/3 pr-2">
+          <mat-label>{{ "ECS_FIELDSETS.ECS_VERSION" | transloco }}</mat-label>
+          <input
+            matInput
+            [formControlName]="'ecsVersion'"
+            [pattern]="ecsVersionPattern"
+            [placeholder]="'ECS_FIELDSETS.ENTER_ECS_VERSION' | transloco"
+          />
+          <mat-error>
+            {{ "ECS_FIELDSETS.ENTER_VALID_ECS_VERSION" | transloco }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="lg:w-1/4 md:w-2/5 w-2/3 pr-2">
+          <mat-label>{{ "ECS_FIELDSETS.YAML_FILE" | transloco }}</mat-label>
+          <lib-file-upload
+            [formControlName]="'uploadFile'"
+            [required]="true"
+            [placeholder]="'ECS_FIELDSETS.SELECT_YAML_FILE' | transloco"
+            [accept]="'text/yaml,.yaml,.yml'">
+          </lib-file-upload>
+          <mat-icon matSuffix>attach_file</mat-icon>
+          <mat-error *ngIf="form.get('uploadFile')?.hasError('required')">
+            {{ "ECS_FIELDSETS.FILE_NEEDED" | transloco }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </ng-container>
+</lib-card>

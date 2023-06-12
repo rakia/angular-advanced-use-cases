@@ -1,0 +1,193 @@
+<lib-card>
+  <ng-container ngProjectAs="[cardHeader]">
+    <div class="font-semibold">{{ "ECS_FIELDSETS.NEW_CUSTOM_FIELDSET" | transloco }}</div>
+
+    <lib-actions-buttons
+      [isCreateMode]="true"
+      [form]="form"
+      (clickCancel)="onClickCancel()"
+      (clickSave)="onClickSave()"
+    ></lib-actions-buttons>
+  </ng-container>
+
+  <ng-container ngProjectAs="[cardContent]">
+    <form class="flex flex-col w-full" [formGroup]="form">
+      <div class="flex">
+        <mat-form-field class="w-1/2 pr-2">
+          <mat-label [matTooltip]="fieldsetParameterDescriptions.get('title')  || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.TITLE" | transloco
+          }}</mat-label>
+          <input matInput [formControlName]="'title'" [placeholder]="'ECS_FIELDSETS.ATTRIBUTES.TITLE' | transloco" />
+        </mat-form-field>
+
+        <!-- Name -->
+        <mat-form-field class="w-1/2">
+          <mat-label [matTooltip]="fieldsetParameterDescriptions.get('name') || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.NAME" | transloco
+          }}</mat-label>
+          <input matInput [formControlName]="'name'" [placeholder]="'ECS_FIELDSETS.ATTRIBUTES.NAME' | transloco" />
+        </mat-form-field>
+      </div>
+
+      <!-- isEcs, created at, createdBy -->
+      <div class="flex">
+        <mat-form-field class="w-1/4 pr-2">
+          <mat-label>{{ "ECS_FIELDSETS.ATTRIBUTES.FIELDSET_TYPE" | transloco }}</mat-label>
+          <input matInput [value]="'ECS_FIELDSETS.ATTRIBUTES.CUSTOM' | transloco" [disabled]="true" />
+        </mat-form-field>
+
+        <mat-form-field class="w-1/4 pr-2">
+          <mat-label>{{ "shared.FIELDS.CREATED_AT" | transloco }}</mat-label>
+          <input matInput [formControlName]="'created'" />
+        </mat-form-field>
+
+        <mat-form-field class="w-2/4">
+          <mat-label>{{ "shared.FIELDS.CREATED_BY" | transloco }}</mat-label>
+          <input matInput [formControlName]="'createdBy'" />
+        </mat-form-field>
+      </div>
+
+      <!-- short, shortOverride -->
+      <div class="flex">
+        <mat-form-field class="w-1/2 pr-2">
+          <mat-label [matTooltip]="fieldsetParameterDescriptions.get('short') || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.SHORT" | transloco
+          }}</mat-label>
+          <textarea
+            matInput
+            [formControlName]="'short'"
+            [rows]="1"
+            cdkTextareaAutosize
+            [cdkAutosizeMinRows]="1"
+          ></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="w-1/2">
+          <mat-label [matTooltip]="fieldsetParameterDescriptions.get('shortOverride') || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.SHORT_OVERRIDE" | transloco
+          }}</mat-label>
+          <textarea
+            matInput
+            [formControlName]="'shortOverride'"
+            [rows]="1"
+            cdkTextareaAutosize
+            [cdkAutosizeMinRows]="1"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- description, comment -->
+      <div class="flex">
+        <mat-form-field class="w-1/2 pr-2">
+          <mat-label [matTooltip]="fieldsetParameterDescriptions.get('description') || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.DESCRIPTION" | transloco
+          }}</mat-label>
+          <textarea
+            matInput
+            [formControlName]="'description'"
+            [rows]="1"
+            cdkTextareaAutosize
+            [cdkAutosizeMinRows]="1"
+          ></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="w-1/2">
+          <mat-label [matTooltip]="fieldsetParameterDescriptions.get('comment') || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.COMMENT" | transloco
+          }}</mat-label>
+          <textarea
+            matInput
+            [formControlName]="'comment'"
+            [rows]="1"
+            cdkTextareaAutosize
+            [cdkAutosizeMinRows]="1"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="flex">
+        <!-- footnote -->
+        <mat-form-field class="w-full">
+          <mat-label [matTooltip]="fieldsetParameterDescriptions.get('footnote') || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.FOOTNOTE" | transloco
+          }}</mat-label>
+          <textarea
+            matInput
+            [formControlName]="'footnote'"
+            [rows]="1"
+            cdkTextareaAutosize
+            [cdkAutosizeMinRows]="1"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="flex items-center">
+        <!-- Root, beta -->
+        <mat-slide-toggle
+          color="primary"
+          class="w-1/5 mb-4 pr-2"
+          [formControlName]="'root'"
+          [checked]="form.get('root')?.value"
+          [matTooltip]="fieldsetParameterDescriptions.get('root') || ''"
+          [matTooltipDisabled]="false"
+        >
+          {{ "ECS_FIELDSETS.ATTRIBUTES.ROOT" | transloco | transloco }}
+        </mat-slide-toggle>
+
+        <mat-form-field class="w-4/5">
+          <mat-label [matTooltip]="fieldsetParameterDescriptions.get('beta') || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.BETA" | transloco
+          }}</mat-label>
+          <input matInput [formControlName]="'beta'" />
+        </mat-form-field>
+      </div>
+
+      <!-- Reuses -->
+      <ng-container *ngIf="form.get('name')?.value">
+        <lib-edit-chips-list
+          [form]="form"
+          [nameFormArray]="'reuses'"
+          [keyToDisplay]="'reusedAs'"
+          [id]="'ecsFieldset'"
+          [prefix]="form.get('name')?.value + '.'"
+          [optionList]="ecsFieldsetsLightList"
+          [values]="[]"
+          [title]="'ECS_FIELDSETS.ATTRIBUTES.REUSES' | transloco"
+          [hoverDescription]="fieldsetParameterDescriptions.get('reuses') || ''"
+        ></lib-edit-chips-list>
+      </ng-container>
+
+      <!-- Custom Fields -->
+      <div class="font-medium mb-4">{{ "ECS_FIELDSETS.ATTRIBUTES.ADDITIONAL_PARAMETERS" | transloco }}</div>
+
+      <div class="flex">
+        <!-- customDescription, customComment -->
+        <mat-form-field class="w-1/2 pr-2">
+          <mat-label [matTooltip]="fieldsetParameterDescriptions.get('customDescription') || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_DESCRIPTION" | transloco
+          }}</mat-label>
+          <textarea
+            matInput
+            [formControlName]="'customDescription'"
+            [rows]="1"
+            cdkTextareaAutosize
+            [cdkAutosizeMinRows]="1"
+          ></textarea>
+        </mat-form-field>
+
+        <mat-form-field class="w-1/2">
+          <mat-label [matTooltip]="fieldsetParameterDescriptions.get('customComment') || ''" [matTooltipDisabled]="false">{{
+            "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_COMMENT" | transloco
+          }}</mat-label>
+          <textarea
+            matInput
+            [formControlName]="'customComment'"
+            [rows]="1"
+            cdkTextareaAutosize
+            [cdkAutosizeMinRows]="1"
+          ></textarea>
+        </mat-form-field>
+      </div>
+    </form>
+  </ng-container>
+</lib-card>

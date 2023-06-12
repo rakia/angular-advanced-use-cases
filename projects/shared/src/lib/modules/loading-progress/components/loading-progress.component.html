@@ -1,0 +1,5 @@
+<ng-container *ngIf="isLoading$ | async">
+  <div class="flex fixed inset-0 pointer-events-none items-center justify-center z-[999999]">
+    <mat-spinner [diameter]="50"></mat-spinner>
+  </div>
+</ng-container>

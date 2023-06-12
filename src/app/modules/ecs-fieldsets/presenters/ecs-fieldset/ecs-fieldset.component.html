@@ -1,0 +1,382 @@
+<div class="shadow-lg overflow-hidden bg-gray-100 bg-opacity-12 dark:bg-transparent">
+  <div class="flex p-4">
+    <ng-container *ngIf="entity?.id">
+      <div class="flex flex-col w-full">
+        <lib-card>
+          <ng-container ngProjectAs="[cardHeader]">
+            <!-- ECS FIELD PARAMETER -->
+            <div class="text-base font-semibold mb-4">{{ "ECS_FIELDSETS.ECS_FIELDSET_PARAMETER" | transloco }}</div>
+
+            <lib-actions-buttons
+              [isEditMode]="isEditMode"
+              [form]="form"
+              [customActionsButtons]="entity.isEcs ? [] : customActionsButtons"
+              (clickEdit)="enableEditMode()"
+              (clickCancel)="onClickCancel()"
+              (clickSave)="onClickSave()"
+              (clickAction)="onClickActionButton($event)"
+            ></lib-actions-buttons>
+          </ng-container>
+
+          <ng-container ngProjectAs="[cardContent]">
+            <form class="flex flex-col w-full m-4" [formGroup]="form">
+              <div class="flex">
+                <!-- Title -->
+                <mat-form-field class="w-1/2 pr-2">
+                  <mat-label [matTooltip]="fieldsetParameterDescriptions.get('title') || ''" [matTooltipDisabled]="false">{{
+                    "ECS_FIELDSETS.ATTRIBUTES.TITLE" | transloco
+                  }}</mat-label>
+                  <input
+                    matInput
+                    [formControlName]="'title'"
+                    [placeholder]="'ECS_FIELDSETS.ATTRIBUTES.TITLE' | transloco"
+                  />
+                </mat-form-field>
+                <!-- Name -->
+                <mat-form-field class="w-1/2">
+                  <mat-label [matTooltip]="fieldsetParameterDescriptions.get('name') || ''" [matTooltipDisabled]="false">{{
+                    "ECS_FIELDSETS.ATTRIBUTES.NAME" | transloco
+                  }}</mat-label>
+                  <input
+                    matInput
+                    [formControlName]="'name'"
+                    [placeholder]="'ECS_FIELDSETS.ATTRIBUTES.NAME' | transloco"
+                  />
+                </mat-form-field>
+              </div>
+
+              <!-- isEcs, created at, createdBy -->
+              <div class="flex">
+                <mat-form-field class="w-1/4 pr-2">
+                  <mat-label>{{ "ECS_FIELDSETS.ATTRIBUTES.FIELDSET_TYPE" | transloco }}</mat-label>
+                  <ng-container *ngIf="entity.isEcs">
+                    <input matInput [value]="'ECS_FIELDSETS.ATTRIBUTES.ECS' | transloco" [disabled]="true" />
+                  </ng-container>
+                  <ng-container *ngIf="!entity.isEcs">
+                    <input matInput [value]="'ECS_FIELDSETS.ATTRIBUTES.CUSTOM' | transloco" [disabled]="true" />
+                  </ng-container>
+                </mat-form-field>
+
+                <mat-form-field class="w-1/4 pr-2">
+                  <mat-label>{{ "shared.FIELDS.CREATED_AT" | transloco }}</mat-label>
+                  <input matInput [formControlName]="'created'" />
+                </mat-form-field>
+
+                <mat-form-field class="w-2/4">
+                  <mat-label>{{ "shared.FIELDS.CREATED_BY" | transloco }}</mat-label>
+                  <input matInput [formControlName]="'createdBy'" />
+                </mat-form-field>
+              </div>
+
+              <ng-container *ngIf="entity.updated">
+                <!-- updated, updatedBy -->
+                <div class="flex">
+                  <mat-form-field class="w-1/2 pr-2">
+                    <mat-label>{{ "shared.FIELDS.UPDATED_AT" | transloco }}</mat-label>
+                    <input matInput [formControlName]="'updated'" />
+                  </mat-form-field>
+
+                  <mat-form-field class="w-1/2">
+                    <mat-label>{{ "shared.FIELDS.UPDATED_BY" | transloco }}</mat-label>
+                    <input matInput [formControlName]="'updatedBy'" />
+                  </mat-form-field>
+                </div>
+              </ng-container>
+
+              <!-- short, shortOverride -->
+              <div class="flex">
+                <mat-form-field class="w-1/2 pr-2">
+                  <mat-label [matTooltip]="fieldsetParameterDescriptions.get('short') || ''" [matTooltipDisabled]="false">{{
+                    "ECS_FIELDSETS.ATTRIBUTES.SHORT" | transloco
+                  }}</mat-label>
+                  <textarea
+                    matInput
+                    [formControlName]="'short'"
+                    [rows]="1"
+                    cdkTextareaAutosize
+                    [cdkAutosizeMinRows]="1"
+                  ></textarea>
+                </mat-form-field>
+
+                <mat-form-field class="w-1/2">
+                  <mat-label
+                    [matTooltip]="fieldsetParameterDescriptions.get('shortOverride') || ''"
+                    [matTooltipDisabled]="false"
+                    >{{ "ECS_FIELDSETS.ATTRIBUTES.SHORT_OVERRIDE" | transloco }}</mat-label
+                  >
+                  <textarea
+                    matInput
+                    [formControlName]="'shortOverride'"
+                    [rows]="1"
+                    cdkTextareaAutosize
+                    [cdkAutosizeMinRows]="1"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+
+              <!-- description, comment -->
+              <div class="flex">
+                <mat-form-field class="w-1/2 pr-2">
+                  <mat-label [matTooltip]="fieldsetParameterDescriptions.get('description') || ''" [matTooltipDisabled]="false">{{
+                    "ECS_FIELDSETS.ATTRIBUTES.DESCRIPTION" | transloco
+                  }}</mat-label>
+                  <textarea
+                    matInput
+                    [formControlName]="'description'"
+                    [rows]="1"
+                    cdkTextareaAutosize
+                    [cdkAutosizeMinRows]="1"
+                  ></textarea>
+                </mat-form-field>
+
+                <mat-form-field class="w-1/2">
+                  <mat-label [matTooltip]="fieldsetParameterDescriptions.get('comment') || ''" [matTooltipDisabled]="false">{{
+                    "ECS_FIELDSETS.ATTRIBUTES.COMMENT" | transloco
+                  }}</mat-label>
+                  <textarea
+                    matInput
+                    [formControlName]="'comment'"
+                    [rows]="1"
+                    cdkTextareaAutosize
+                    [cdkAutosizeMinRows]="1"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+
+              <div class="flex">
+                <!-- footnote -->
+                <mat-form-field class="w-full">
+                  <mat-label [matTooltip]="fieldsetParameterDescriptions.get('footnote') || ''" [matTooltipDisabled]="false">{{
+                    "ECS_FIELDSETS.ATTRIBUTES.FOOTNOTE" | transloco
+                  }}</mat-label>
+                  <textarea
+                    matInput
+                    [formControlName]="'footnote'"
+                    [rows]="1"
+                    cdkTextareaAutosize
+                    [cdkAutosizeMinRows]="1"
+                  ></textarea>
+                </mat-form-field>
+              </div>
+
+              <div class="flex items-center">
+                <!-- Root, beta -->
+                <mat-slide-toggle
+                  color="primary"
+                  class="w-1/5 mb-4 pr-2"
+                  [formControlName]="'root'"
+                  [checked]="form.get('root')?.value"
+                  [matTooltip]="fieldsetParameterDescriptions.get('root') || ''"
+                  [matTooltipDisabled]="false"
+                >
+                  {{ "ECS_FIELDSETS.ATTRIBUTES.ROOT" | transloco | transloco }}
+                </mat-slide-toggle>
+
+                <mat-form-field class="w-4/5">
+                  <mat-label [matTooltip]="fieldsetParameterDescriptions.get('beta') || ''" [matTooltipDisabled]="false">{{
+                    "ECS_FIELDSETS.ATTRIBUTES.BETA" | transloco
+                  }}</mat-label>
+                  <input matInput [formControlName]="'beta'" />
+                </mat-form-field>
+              </div>
+
+              <!-- Custom Fields -->
+              <ng-container *ngIf="isEditMode || entity.customDescription || entity.customComment">
+                <div class="font-medium mb-4">{{ "ECS_FIELDSETS.ATTRIBUTES.ADDITIONAL_PARAMETERS" | transloco }}</div>
+              </ng-container>
+
+              <div class="flex">
+                <!-- customDescription, customComment -->
+                <ng-container *ngIf="isEditMode || entity.customDescription">
+                  <mat-form-field class="w-1/2 pr-2">
+                    <mat-label
+                      [matTooltip]="fieldsetParameterDescriptions.get('customDescription') || ''"
+                      [matTooltipDisabled]="false"
+                      >
+                      {{ "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_DESCRIPTION" | transloco }}
+                    </mat-label>
+                    <textarea
+                      matInput
+                      [formControlName]="'customDescription'"
+                      [rows]="1"
+                      cdkTextareaAutosize
+                      [cdkAutosizeMinRows]="1"
+                    ></textarea>
+                  </mat-form-field>
+                </ng-container>
+
+                <ng-container *ngIf="isEditMode || entity.customComment">
+                  <mat-form-field class="w-1/2">
+                    <mat-label
+                      [matTooltip]="fieldsetParameterDescriptions.get('customComment') || ''"
+                      [matTooltipDisabled]="false"
+                      >
+                      {{ "ECS_FIELDSETS.ATTRIBUTES.CUSTOM_COMMENT" | transloco }}
+                    </mat-label>
+                    <textarea
+                      matInput
+                      [formControlName]="'customComment'"
+                      [rows]="1"
+                      cdkTextareaAutosize
+                      [cdkAutosizeMinRows]="1"
+                    ></textarea>
+                  </mat-form-field>
+                </ng-container>
+              </div>
+
+              <!-- Reuses -->
+              <mat-divider *ngIf="entity.reuses?.length" class="pb-4"></mat-divider>
+              <ng-container *ngIf="entity.isEcs || !isEditMode">
+                <lib-chips-list
+                  [values]="entity.reuses || []"
+                  [keyToDisplay]="'reusedAs'"
+                  [id]="'ecsFieldset'"
+                  [title]="'ECS_FIELDSETS.ATTRIBUTES.REUSES' | transloco"
+                  [hoverDescription]="fieldsetParameterDescriptions.get('reuses') || ''"
+                  [isClickable]="true"
+                ></lib-chips-list>
+              </ng-container>
+
+              <ng-container *ngIf="!entity.isEcs && isEditMode && form.get('name')?.value">
+                <lib-edit-chips-list
+                  [form]="form"
+                  [nameFormArray]="'reuses'"
+                  [keyToDisplay]="'reusedAs'"
+                  [id]="'ecsFieldset'"
+                  [prefix]="form.get('name')?.value + '.'"
+                  [optionList]="ecsFieldsetsLightList"
+                  [values]="entity.reuses || []"
+                  [title]="'ECS_FIELDSETS.ATTRIBUTES.REUSES' | transloco"
+                  [hoverDescription]="fieldsetParameterDescriptions.get('reuses') || ''"
+                  (itemDeleted)="onDeleteReuse($event)"
+                  (itemAdded)="onAddReuse($event)"
+                ></lib-edit-chips-list>
+              </ng-container>
+
+              <!-- Filter -->
+              <mat-divider *ngIf="fields?.length"></mat-divider>
+              <div class="flex items-center justify-between w-full">
+                <div class="text-base font-semibold mr-4">
+                  {{ fields.length }} {{ "ECS_FIELDSETS.FIELDS" | transloco }}
+                </div>
+
+                <div class="flex items-center pt-4">
+                  <div class="flex justify-end items-center ml-2 space-x-2">
+                    <button
+                      *ngIf="ecsFields?.length"
+                      mat-mini-fab
+                      color="primary"
+                      [attr.aria-label]="'ECS_FIELDSETS.OPEN_ALL_FIELDS' | transloco"
+                      [matTooltip]="'ECS_FIELDSETS.OPEN_ALL_FIELDS' | transloco"
+                      (click)="toggleOpenAllFields()"
+                    >
+                      <mat-icon>remove_red_eye</mat-icon>
+                    </button>
+                    <button
+                      mat-mini-fab
+                      color="primary"
+                      [attr.aria-label]="'ECS_FIELDSETS.CREATE_NEW_CUSTOM_FIELD' | transloco"
+                      [disabled]="isCreateMode"
+                      [matTooltip]="'ECS_FIELDSETS.CREATE_NEW_CUSTOM_FIELD' | transloco"
+                      (click)="isCreateMode = true"
+                    >
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ECS FIELD PARAMETER -->
+              <!-- ECS FIELDs -->
+              <lib-chips-list
+                [values]="ecsFields || []"
+                [keyToDisplay]="'name'"
+                [id]="'id'"
+                [title]="'ECS_FIELDSETS.ECS_FIELDS' | transloco"
+                [selectedId]="selectedId"
+                [allSelected]="openAllFields"
+                [isClickable]="true"
+                (clickValue)="setSelectedEcsField($event)"
+              ></lib-chips-list>
+
+              <!-- CUSTOM FIELDs -->
+              <lib-chips-list
+                [values]="customFields || []"
+                [keyToDisplay]="'name'"
+                [id]="'id'"
+                [title]="'ECS_FIELDSETS.CUSTOM_FIELDS' | transloco"
+                [selectedId]="selectedId"
+                [allSelected]="openAllFields"
+                [isClickable]="true"
+                (clickValue)="setSelectedEcsField($event)"
+              ></lib-chips-list>
+            </form>
+          </ng-container>
+        </lib-card>
+
+        <!-- ECS FIELD PARAMETER -->
+        <ng-container *ngIf="isCreateMode">
+          <div class="mt-0">
+            <app-create-custom-field
+              [ecsFieldset]="entity.id!"
+              [ecsFieldTypes]="ecsFieldTypes"
+              [ecsFieldLevels]="ecsFieldLevels"
+              [requestResponse]="requestResponseEcsField"
+              [parameterDescriptions]="fieldParameterDescriptions"
+              (save)="createCustomField.emit($event)"
+              (removeCreateForm)="isCreateMode = false"
+            >
+            </app-create-custom-field>
+          </div>
+        </ng-container>
+
+        <!-- Template for Ecs Fields Details -->
+        <!-- If only 1 ECS Field is selected -->
+        <ng-container *ngIf="!openAllFields && selectedEcsField?.id">
+          <div class="mt-2">
+            <app-ecs-field
+              [entity]="selectedEcsField!"
+              [expanded]="true"
+              [ecsFieldTypes]="ecsFieldTypes"
+              [ecsFieldLevels]="ecsFieldLevels"
+              [requestResponse]="requestResponseEcsField"
+              [parameterDescriptions]="fieldParameterDescriptions"
+              (updateEcsField)="updateEcsField.emit($event)"
+              (delete)="deleteEcsField.emit($event)"
+            >
+            </app-ecs-field>
+          </div>
+        </ng-container>
+
+        <!-- If all ECS Fields are selected -->
+        <ng-container *ngIf="openAllFields">
+          <ng-container *ngFor="let ecsField of fields; trackBy: trackByFn">
+            <div class="mt-2">
+              <app-ecs-field
+                [entity]="ecsField"
+                [expanded]="true"
+                [ecsFieldTypes]="ecsFieldTypes"
+                [ecsFieldLevels]="ecsFieldLevels"
+                [requestResponse]="requestResponseEcsField"
+                (updateEcsField)="updateEcsField.emit($event)"
+                (delete)="deleteEcsField.emit($event)"
+              >
+              </app-ecs-field>
+            </div>
+          </ng-container>
+          <!--<cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
+          </cdk-virtual-scroll-viewport>-->
+          <!--import {ScrollingModule} from '@angular/cdk/scrolling';
+          <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
+              <div *cdkVirtualFor="let item of items" class="example-item">{{item}}</div>
+          </cdk-virtual-scroll-viewport>-->
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<!-- lazyFields$ | async -->
+<!-- <cdk-virtual-scroll-viewport itemSize="100" class="h-24">
+       <ng-container *cdkVirtualFor="let ecsField of ecsFields; trackBy: trackByFn" class="h-16">
+  </ng-container>
+</cdk-virtual-scroll-viewport>-->

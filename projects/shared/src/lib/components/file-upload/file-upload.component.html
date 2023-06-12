@@ -1,0 +1,3 @@
+<input type="file" hidden [accept]="accept" [multiple]="multiple" (change)="onFileSelected($event)" #input>
+
+<div [ngClass]="{'text-gray-500': disabled}">{{ fileName || placeholder }}</div>

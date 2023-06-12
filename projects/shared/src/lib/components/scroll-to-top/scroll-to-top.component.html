@@ -1,0 +1,13 @@
+<ng-container *ngIf="elementScrolled">
+  <div class="fixed bottom-6 right-6 transition duration-200 ease-in-out">
+    <button
+      mat-mini-fab
+      color="primary"
+      class="hover:opacity-70"
+      [matTooltip]="'shared.BUTTONS.SCROLL_TO_TOP' | transloco"
+      (click)="scrollToTop()"
+    >
+      <mat-icon class="dark:text-white">keyboard_arrow_up</mat-icon>
+    </button>
+  </div>
+</ng-container>

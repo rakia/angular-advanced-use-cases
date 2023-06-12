@@ -1,0 +1,96 @@
+<div class="flex items-center">
+  <!-- if isRestoreMode -->
+  <ng-container *ngIf="isRestoreMode && !isEditMode">
+    <button
+      class="mr-4"
+      type="button"
+      id="restoreButton"
+      mat-button
+      color="accent"
+      [matTooltip]="'shared.BUTTONS.RESTORE' | transloco"
+      (click)="$event.stopPropagation(); clickRestore.emit()"
+    >
+      <mat-icon>restore</mat-icon>
+      {{ "shared.BUTTONS.RESTORE" | transloco }}
+    </button>
+  </ng-container>
+
+  <!-- Restore with Changes -->
+  <ng-container *ngIf="isRestoreMode && isEditMode">
+    <button
+      class="mr-4"
+      type="button"
+      id="restoreButton"
+      mat-button
+      color="accent"
+      [matTooltip]="'shared.BUTTONS.RESTORE' | transloco"
+      (click)="$event.stopPropagation(); clickModifiedRestore.emit()"
+    >
+      <mat-icon>restore</mat-icon>
+      {{ "shared.BUTTONS.RESTORE" | transloco }}
+    </button>
+  </ng-container>
+
+  <!-- if Not isEditMode & Not isCreateMode && Not CreateMode -->
+  <ng-container *ngIf="!isEditMode && !isCreateMode && !isRestoreMode">
+    <div
+      *ngFor="let actionButton of customActionsButtons"
+      [matTooltip]="actionButton.tooltipMessage || actionButton.label | transloco"
+    >
+      <button
+        type="button"
+        id="clickAction"
+        mat-button
+        color="accent"
+        [disabled]="actionButton.disabled"
+        (click)="$event.stopPropagation(); clickAction.emit(actionButton.name)"
+      >
+        <mat-icon>{{ actionButton.icon }}</mat-icon>
+        {{ actionButton.label | transloco }}
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isEditMode && !isCreateMode">
+    <button
+      type="button"
+      id="editButton"
+      mat-button
+      color="accent"
+      [matTooltip]="'shared.BUTTONS.UPDATE' | transloco"
+      (click)="$event.stopPropagation(); clickEdit.emit()"
+    >
+      <mat-icon>edit</mat-icon>
+      {{ "shared.BUTTONS.UPDATE" | transloco }}
+    </button>
+  </ng-container>
+
+  <!-- if isEditMode or isCreateMode -->
+  <ng-container *ngIf="isEditMode || isCreateMode">
+    <div class="flex items-center mr-4">
+      <button
+        type="button"
+        id="cancelButton"
+        mat-stroked-button
+        [matTooltip]="'shared.BUTTONS.CANCEL' | transloco"
+        (click)="$event.stopPropagation(); clickCancel.emit()"
+      >
+        {{ "shared.BUTTONS.CANCEL" | transloco }}
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="(isEditMode && !isRestoreMode) || isCreateMode">
+    <button
+      type="button"
+      id="saveButton"
+      mat-flat-button
+      color="primary"
+      [matTooltip]="'shared.BUTTONS.SAVE' | transloco"
+      [disabled]="form.invalid || !form.dirty"
+      (click)="$event.stopPropagation(); clickSave.emit()"
+    >
+      {{ "shared.BUTTONS.SAVE" | transloco }}
+    </button>
+  </ng-container>
+</div>

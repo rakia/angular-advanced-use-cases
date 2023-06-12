@@ -1,0 +1,19 @@
+table {
+  width: 100%;
+  max-width: 100%;
+}
+.mat-mdc-table {
+  table-layout: fixed; /* otherwise the table's width will change */
+  tr.mat-mdc-row,
+  tr.mat-mdc-footer-row {
+    height: 35px;
+    min-height: 35px;
+  }
+  tr.mat-mdc-header-row.small-header {
+    height: 32px !important;
+    min-height: 32px !important;
+  }
+  td.mat-mdc-cell.bg-highlighted {
+    @apply bg-blue-300 #{'!important'};
+  }
+}

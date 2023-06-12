@@ -1,0 +1,353 @@
+/* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.example {
+  font-family: Consolas, Menlo, DejaVu Sans Mono, Bitstream Vera Sans Mono, Lucida Console, monospace;
+}
+
+.bg-card {
+  @apply bg-white dark:bg-black dark:bg-opacity-20 #{'!important'};
+}
+
+.bg-accent {
+  background-color: #ff4081 !important;
+  opacity: 90% !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Font smoothing
+/* -------------------------------------------------------------------------- */
+*[class*="mat-"],
+*[class*="mat-mdc-"] {
+  -webkit-font-smoothing: auto !important;
+  -moz-osx-font-smoothing: auto !important;
+
+  * {
+    -webkit-font-smoothing: auto !important;
+    -moz-osx-font-smoothing: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+/*  Mat Accordion
+/* ------------------------------------------------------------------------- */
+.mat-expansion-panel {
+  border-radius: 1rem !important;
+  transition: box-shadow 225ms cubic-bezier(0.4, 0, 0.2, 1);
+  @apply shadow #{'!important'};
+
+  &.mat-expanded,
+  &:hover {
+    @apply shadow-lg dark:shadow-gray-600 #{'!important'};
+  }
+
+  &:not(.mat-expanded) {
+    .mat-expansion-panel-header {
+      &:not([aria-disabled="true"]) {
+        &.cdk-keyboard-focused,
+        &.cdk-program-focused,
+        &:hover {
+          background: transparent !important;
+        }
+      }
+    }
+  }
+
+  .mat-expansion-panel-header {
+    border-radius: unset !important;
+    .mat-expansion-indicator {
+      &:after {
+        border-color: currentColor !important;
+        @apply dark:text-gray-400 #{'!important'};
+      }
+    }
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Mat Dialog
+/* -------------------------------------------------------------------------- */
+.mat-mdc-dialog-container {
+  .mdc-dialog__surface {
+    border-radius: 16px !important;
+    padding: 24px;
+  }
+}
+.mdc-dialog .mdc-dialog__content {
+  padding: 0 !important;
+}
+.mat-mdc-dialog-container,
+.mdc-dialog .mdc-dialog__content {
+  @apply text-gray-800 dark:text-gray-100 #{'!important'};
+}
+
+/* ------------------------------------------------------------------------- */
+/*  Mat Tab Nav
+/* ------------------------------------------------------------------------- */
+.mat-mdc-tab-nav-bar.mat-tabs-with-background > .mat-mdc-tab-link-container .mat-mdc-tab-link .mdc-tab__text-label {
+  color: white !important;
+  opacity: 0.9 !important;
+}
+.mat-mdc-tab-nav-bar.mat-tabs-with-background
+  > .mat-mdc-tab-link-container
+  .mat-mdc-tab-link:not(.mat-mdc-tab-disabled)
+  .mdc-tab__text-label {
+  opacity: 0.6 !important;
+}
+.mat-mdc-tab-nav-bar.mat-tabs-with-background > .mat-mdc-tab-link-container .mdc-tab-indicator__content--underline {
+  border-color: #ff4081 !important;
+  min-height: 2px;
+}
+
+.mat-mdc-tab-nav-bar.sticky-header > .mat-mdc-tab-link-container .mdc-tab-indicator__content--underline {
+  @apply dark:border-blue-200 #{'!important'};
+  min-height: 2px;
+}
+
+/* Optimize contrast mat-tabs labels & border-color */
+.mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label,
+.mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label,
+.mat-mdc-tab-link:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label,
+.mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label,
+.mat-mdc-tab-link:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
+  @apply dark:text-blue-200 #{'!important'};
+}
+
+.mat-mdc-tab:not(.mat-mdc-tab-disabled) .mdc-tab-indicator__content--underline {
+  @apply dark:border-blue-200 #{'!important'};
+}
+
+/* ----------------------------------------------------------------------------------------------------- */
+/*  Mat Button Toggle
+/* ----------------------------------------------------------------------------------------------------- */
+.mat-button-toggle-group {
+  .mat-button-toggle {
+    font-weight: 500;
+    &.mat-button-toggle-checked {
+      @apply bg-accent #{'!important'};
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+/*  Mat Form
+/* ------------------------------------------------------------------------- */
+
+/* When form-field is disabled */
+.mat-form-field-disabled {
+  .mat-mdc-input-element,
+  .mat-mdc-form-field-type-mat-native-select,
+  .mat-mdc-form-field-infix::after,
+  .mat-mdc-form-field-label,
+  .mat-mdc-select .mat-mdc-select-value,
+  .mat-mdc-select .mat-mdc-select-arrow,
+  .mat-mdc-option-text {
+    @apply text-gray-500 dark:text-gray-400 #{'!important'};
+    font-size: 14px;
+  }
+}
+
+/* Optimize contrast for selected items in a drop-down in dark mode */
+.mat-primary .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+  @apply dark:text-blue-200 #{'!important'};
+}
+
+/* appearance = outline */
+.mat-form-field-appearance-outline:not(mat-focused) .mat-mdc-form-field-outline-think {
+  @apply text-gray-200 dark:text-gray-600 #{'!important'};
+  font-size: 14px;
+}
+
+/* "outline" appearance */
+.mat-mdc-form-field.mat-form-field-appearance-outline {
+  font-size: 14px;
+
+  /* Fix: Tailwind's global border setting caused an extra border on the right side of the notch */
+  .mat-mdc-text-field-wrapper {
+    .mat-mdc-form-field-flex {
+      .mdc-notched-outline {
+        .mdc-notched-outline__notch {
+          border-right-style: none !important;
+        }
+      }
+    }
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Mat Textarea
+/* -------------------------------------------------------------------------- */
+textarea.mat-mdc-input-element {
+  box-sizing: content-box !important;
+}
+
+/* Default style tweaks and enhancements */
+.mat-mdc-text-field-wrapper {
+  padding: 0;
+
+  /* Form field */
+  .mat-mdc-form-field-flex {
+    display: flex;
+    align-items: stretch;
+
+    /* Infix */
+    .mat-mdc-form-field-infix {
+      position: static;
+      display: flex;
+      align-items: center;
+      min-height: 48px;
+      padding: 0;
+      border: 0;
+
+      /* Textarea */
+      textarea.mat-mdc-input-element {
+        margin: 12px 0;
+        padding: 0 6px 0 0;
+      }
+    }
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+/*  Mat Button
+/* ------------------------------------------------------------------------- */
+/* Rounded corners */
+.mat-mdc-button,
+.mat-mdc-flat-button,
+.mat-mdc-raised-button,
+.mat-mdc-outlined-button,
+.mat-mdc-unelevated-button {
+  padding: 0 20px !important;
+  border-radius: 9999px !important;
+}
+
+.mat-mdc-flat-button,
+.mat-mdc-raised-button {
+  &[disabled="true"] {
+    @apply dark:text-gray-400 #{'!important'};
+  }
+}
+.mat-mdc-icon-button,
+.mat-mdc-stroked-button,
+.mat.mdc-fab,
+.mat-mdc-mini-fab {
+  &:not([disabled="true"]) {
+    @apply dark:text-gray-400 #{'!important'};
+  }
+  &[disabled="true"] {
+    @apply dark:text-gray-400 #{'!important'};
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Overlay
+/* -------------------------------------------------------------------------- */
+.overlay-backdrop {
+  @apply bg-transparent #{'!important'};
+}
+
+.overlay-content {
+  max-height: 300px; /* default height */
+  max-width: 700px; /* default width */
+}
+@media screen and (max-width: 768px) {
+  .overlay-content {
+    max-height: 200px; /* adjust for smaller screens */
+    max-width: 600px;
+  }
+}
+@media screen and (max-width: 480px) {
+  .overlay-content {
+    max-height: 150px; /* adjust for even smaller screens */
+    max-width: 450px;
+  }
+}
+
+/* ------------------------------------------------------------------------- */
+/*  Alert
+/* ------------------------------------------------------------------------- */
+
+/* Alert Appearance Fill: */
+/* Info */
+.mat-mdc-snack-bar-container.alert-type-fill-info .mdc-snackbar__surface {
+  @apply bg-gray-600 #{'!important'};
+}
+
+/* Success */
+.mat-mdc-snack-bar-container.alert-type-fill-success .mdc-snackbar__surface {
+  @apply bg-green-600 #{'!important'};
+}
+
+/* Error */
+.mat-mdc-snack-bar-container.alert-type-fill-error .mdc-snackbar__surface {
+  @apply bg-red-600 #{'!important'};
+}
+
+.mat-mdc-snack-bar-container.alert-type-fill-info .mdc-snackbar__surface,
+.mat-mdc-snack-bar-container.alert-type-fill-success .mdc-snackbar__surface,
+.mat-mdc-snack-bar-container.alert-type-fill-error .mdc-snackbar__surface,
+.mat-mdc-snack-bar-container .mdc-snackbar__label {
+  @apply text-white #{'!important'};
+  .mat-mdc-button {
+    @apply text-white #{'!important'};
+  }
+}
+
+/* Alert Appearance Outline: */
+/* Info */
+.alert-outline-info,
+.mat-mdc-snack-bar-container.alert-type-outline-info .mdc-snackbar__surface {
+  @apply bg-gray-100 dark:bg-gray-700 ring-1 ring-gray-400 ring-inset #{'!important'};
+  @apply text-gray-700 dark:text-gray-100 #{'!important'};
+}
+
+/* Success */
+.mat-mdc-snack-bar-container.alert-type-outline-success .mdc-snackbar__surface {
+  @apply bg-green-50 ring-1 ring-green-400 ring-inset #{'!important'};
+  @apply text-green-700 #{'!important'};
+}
+
+.disclaimer-type-outline {
+  font-size: 14px;
+}
+/* Error */
+.disclaimer-type-outline,
+.mat-mdc-snack-bar-container.alert-type-outline-error .mdc-snackbar__surface {
+  @apply bg-red-50 dark:bg-red-900 ring-1 ring-red-400 ring-inset #{'!important'};
+  @apply text-red-700 dark:text-red-100 #{'!important'};
+}
+
+/* Alert Appearance Soft: */
+/* Info */
+.mat-mdc-snack-bar-container.alert-type-soft-info .mdc-snackbar__surface {
+  @apply bg-gray-100 #{'!important'};
+  @apply text-gray-700 #{'!important'};
+}
+
+/* Success */
+.mat-mdc-snack-bar-container.alert-type-soft-success .mdc-snackbar__surface {
+  @apply bg-green-50 #{'!important'};
+  @apply text-green-700 #{'!important'};
+}
+
+/* Error */
+.mat-mdc-snack-bar-container.alert-type-soft-error .mdc-snackbar__surface {
+  @apply bg-red-50 #{'!important'};
+  @apply text-red-700 #{'!important'};
+}
+
+/* Common */
+.alert-outline-info,
+.mat-mdc-snack-bar-container.alert-type-outline-info .mdc-snackbar__surface,
+.mat-mdc-snack-bar-container.alert-type-outline-success .mdc-snackbar__surface,
+.mat-mdc-snack-bar-container.alert-type-outline-error .mdc-snackbar__surface,
+.mat-mdc-snack-bar-container.alert-type-soft-info .mdc-snackbar__surface,
+.mat-mdc-snack-bar-container.alert-type-soft-success .mdc-snackbar__surface,
+.mat-mdc-snack-bar-container.alert-type-soft-error .mdc-snackbar__surface {
+  .mat-mdc-button {
+    @apply text-black #{'!important'};
+  }
+}

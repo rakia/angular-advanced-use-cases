@@ -1,0 +1,15 @@
+<table mat-table [dataSource]="dataSource" matSort #sort="matSort" class="mat-elevation-z2">
+  <ng-container *ngFor="let col of displayColumnDefs" [matColumnDef]="col.key">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ col.label }}</th>
+
+    <td mat-cell *matCellDef="let element; let i = index" [ngClass]="{ 'bg-highlighted': highlightRowIndex === i }">
+      <div *ngIf="col.type === 'number'">{{ element[col.key] | number : "1.2" }}</div>
+      <!-- : locale -->
+      <div *ngIf="col.type === 'date'">{{ element[col.key] | date : "dd.MM.yyyy" }}</div>
+      <div *ngIf="col.type !== 'number' && col.type !== 'date'">{{ element[col.key] }}</div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="small-header bg-gray-300"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selectRow(row)"></tr>
+</table>

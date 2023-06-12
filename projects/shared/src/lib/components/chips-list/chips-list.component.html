@@ -1,0 +1,41 @@
+<ng-container *ngIf="values?.length || stringValues?.length">
+  <div>
+    <div class="font-medium mb-3" *ngIf="title" [matTooltip]="hoverDescription">{{ title }}</div>
+
+    <div class="flex flex-wrap mb-3 px-2">
+      <ng-container *ngFor="let value of values; trackBy: trackByFn">
+        <div
+          class="mx-1 mb-2 py-0.5 px-3 rounded-full text-sm font-medium"
+          [ngClass]="{
+            'text-gray-500 bg-gray-200 dark:text-gray-200 dark:bg-gray-600':
+              !(isClickable && selectedId === value[id]) && !allSelected,
+            'bg-blue-800 text-white dark:bg-blue-800 dark:text-gray-100':
+              (isClickable && selectedId === value[id]) || allSelected,
+            'hover:shadow-lg hover:cursor-pointer hover:bg-opacity-60 dark:hover:bg-opacity-60': isClickable
+          }"
+          [matTooltip]="value['short'] || ''"
+          [routerLink]="['./']"
+          [fragment]="value[id] ?? null"
+          (click)="clickValue.emit(value)"
+        >
+          <span *ngIf="keyToDisplay">{{ value[keyToDisplay] }}</span>
+          <span *ngIf="!keyToDisplay">{{ value }}</span>
+        </div>
+      </ng-container>
+
+      <ng-container *ngFor="let stringValue of stringValues; trackBy: trackByFn">
+        <div
+          class="mx-1 mb-2 py-0.5 px-3 rounded-full text-sm font-medium text-gray-500 bg-gray-200 dark:text-gray-200 dark:bg-gray-600"
+          [ngClass]="{
+            'bg-blue-800 text-white dark:bg-blue-800 dark:text-gray-100':
+              (isClickable && selectedId === stringValue) || allSelected,
+            'hover:shadow-lg hover:cursor-pointer hover:bg-opacity-60 dark:hover:bg-opacity-60': isClickable
+          }"
+          (click)="clickStringValue.emit(stringValue)"
+        >
+          <span>{{ stringValue }}</span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>

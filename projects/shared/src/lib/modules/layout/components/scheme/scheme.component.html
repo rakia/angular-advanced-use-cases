@@ -1,0 +1,28 @@
+<button mat-icon-button [matMenuTriggerFor]="schemeMenu" aria-label="Light/dark mode">
+  <!-- Light -->
+  <mat-icon *ngIf="selectedScheme === 'light'">wb_sunny</mat-icon>
+  <!-- Dark -->
+  <mat-icon *ngIf="selectedScheme === 'dark'">brightness_3</mat-icon>
+  <!-- Auto -->
+  <mat-icon *ngIf="selectedScheme === 'auto'">desktop_windows</mat-icon>
+</button>
+
+<mat-menu #schemeMenu="matMenu">
+  <!-- Light -->
+  <button mat-menu-item (click)="setSelectedScheme('light')">
+    <mat-icon>wb_sunny</mat-icon>
+    <span>{{ "shared.SCHEME.LIGHT" | transloco }}</span>
+  </button>
+
+  <!-- Dark -->
+  <button mat-menu-item (click)="setSelectedScheme('dark')">
+    <mat-icon>brightness_3</mat-icon>
+    <span>{{ "shared.SCHEME.DARK" | transloco }}</span>
+  </button>
+
+  <!-- Auto -->
+  <button mat-menu-item (click)="setSelectedScheme('auto')">
+    <mat-icon>desktop_windows</mat-icon>
+    <span>{{ "shared.SCHEME.SYSTEM" | transloco }}</span>
+  </button>
+</mat-menu>

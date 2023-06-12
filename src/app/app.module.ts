@@ -8,8 +8,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { FileUploadComponent } from '../../projects/file-upload/src/public-api';
+import { FileUploadComponent } from '../../projects/shared/src/public-api';
+import { LayoutModule, SharedModule } from '../../projects/shared/src/public-api';
 import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -26,8 +28,11 @@ import { AppComponent } from './app.component';
     MatButtonModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    CoreModule,
+    SharedModule,
+    LayoutModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
