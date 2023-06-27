@@ -111,21 +111,21 @@
     },
     "file-upload": {
       "projectType": "library",
-      "root": "projects/file-upload",
-      "sourceRoot": "projects/file-upload/src",
+      "root": "projects/shared",
+      "sourceRoot": "projects/shared/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/file-upload/ng-package.json"
+            "project": "projects/shared/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/file-upload/tsconfig.lib.prod.json"
+              "tsConfig": "projects/shared/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/file-upload/tsconfig.lib.json"
+              "tsConfig": "projects/shared/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -133,7 +133,7 @@
         "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
-            "tsConfig": "projects/file-upload/tsconfig.spec.json",
+            "tsConfig": "projects/shared/tsconfig.spec.json",
             "polyfills": [
               "zone.js",
               "zone.js/testing"
