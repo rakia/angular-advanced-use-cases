@@ -141,10 +141,8 @@ export class EcsFieldComponent extends EditableEntityComponent<EcsField> impleme
       this.entity.customComment = this.form?.controls['customComment'].value;
       this.entity.customHelp = this.form?.controls['customHelp'].value;
 
-      const normalizeItems = (this.form.controls['normalize'] as FormArray).getRawValue();
-      const expectedValues = (this.form.controls['expectedValues'] as FormArray).getRawValue();
-      this.entity.normalize = normalizeItems.map((item) => item.name);
-      this.entity.expectedValues = expectedValues.map((item) => item.name);
+      this.entity.normalize = (this.form.controls['normalize'] as FormArray).getRawValue();
+      this.entity.expectedValues = (this.form.controls['expectedValues'] as FormArray).getRawValue();
       updatedEcsField = this.entity;
     }
     const updatedEntity: UpdatedEntity<UpdatableEcsFieldAttributes> = {

@@ -19,9 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { ActionsButtonsComponent } from './components/actions-buttons/actions-buttons.component';
 import { CardComponent } from './components/card/card.component';
-import { ChipsListComponent } from './components/chips-list/chips-list.component';
 import { CreateEntityComponent } from './components/create-entity/create-entity.component';
-import { EditChipsListComponent } from './components/edit-chips-list/edit-chips-list.component';
 import { EditableEntityComponent } from './components/editable-entity/editable-entity.component';
 import { ExpansionCardComponent } from './components/expansion-card/expansion-card.component';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
@@ -43,8 +41,6 @@ import { TranslocoCoreModule } from './transloco/transloco.module';
     ActionsButtonsComponent,
     NavigationBarComponent,
     SearchComponent,
-    ChipsListComponent,
-    EditChipsListComponent,
     ExpansionCardComponent,
     CardComponent,
     GetKeysPipe,
@@ -83,8 +79,6 @@ import { TranslocoCoreModule } from './transloco/transloco.module';
     ActionsButtonsComponent,
     NavigationBarComponent,
     SearchComponent,
-    ChipsListComponent,
-    EditChipsListComponent,
     ExpansionCardComponent,
     CardComponent,
     GetKeysPipe,

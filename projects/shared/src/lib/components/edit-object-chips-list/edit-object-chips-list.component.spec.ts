@@ -4,18 +4,19 @@ import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/ma
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
-import { EditChipsListComponent } from './edit-chips-list.component';
+import { EditObjectChipsListComponent } from './edit-object-chips-list.component';
 import { FormService } from '../../services/form-service/form.service';
 import { getTranslocoTestingModule } from '../../transloco/transloco-testing.module';
 
-describe('EditChipsListComponent', () => {
-  let component: EditChipsListComponent;
-  let fixture: ComponentFixture<EditChipsListComponent>;
+describe('EditObjectChipsListComponent', () => {
+  let component: EditObjectChipsListComponent;
+  let fixture: ComponentFixture<EditObjectChipsListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditChipsListComponent],
+      declarations: [],
       imports: [
+        EditObjectChipsListComponent,
         getTranslocoTestingModule(),
         NoopAnimationsModule,
         FormsModule,
@@ -27,16 +28,14 @@ describe('EditChipsListComponent', () => {
       providers: [FormService],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EditChipsListComponent);
+    fixture = TestBed.createComponent(EditObjectChipsListComponent);
     component = fixture.componentInstance;
     component.form = new FormGroup({});
     component.nameFormArray = 'test';
     component.form.addControl(component.nameFormArray, new FormArray([]));
-    component.formArrayControls = (component.form.get(component.nameFormArray) as FormArray)?.controls;
-    component.id = 'test-id';
     component.keyToDisplay = 'name';
     component.prefix = 'test-prefix';
-    component.optionList = [
+    component.autocompleteOptions = [
       { id: '1', name: 'option 1' },
       { id: '2', name: 'option 2' },
     ];
@@ -50,68 +49,51 @@ describe('EditChipsListComponent', () => {
   it('should filter options based on input value', () => {
     component.optionInputCtrl.setValue('1');
     component.ngOnInit();
-    component.filteredOptionList?.subscribe((filteredResult) => {
+    component.filteredOptions?.subscribe((filteredResult) => {
       expect(filteredResult).toEqual([{ id: '1', name: 'option 1' }]);
     });
   });
 
-  it('should select option and add to formArray and chipSelectedOptionList', () => {
+  it('should select option and add to formArray and selectedOptions', () => {
     jest.spyOn(component, 'updateSelectedOptionsAndForm');
     component.selectOption({ option: { viewValue: 'option 1' } } as MatAutocompleteSelectedEvent);
     expect(component.updateSelectedOptionsAndForm).toHaveBeenCalled();
-
-    expect(component.formArrayControls.length).toEqual(1);
-    expect(component.chipSelectedOptionList).toEqual([{ id: '1', name: 'test-prefixoption 1' }]);
+    expect(component.selectedOptions).toEqual([{ id: '1', name: 'test-prefixoption 1' }]);
   });
 
-  it('should emit labelAdded event on adding label', () => {
-    component.labelAdded.subscribe((label) => {
-      expect(label).toEqual('test-prefixoption 1');
-    });
+  it('should emit chipAdded event on adding label', () => {
     component.selectOption({ option: { viewValue: 'option 1' } } as MatAutocompleteSelectedEvent);
-    component.itemAdded.subscribe((item) => {
+    component.chipAdded.subscribe((item) => {
       expect(item).toEqual({ id: '1', name: 'test-prefixoption 1' });
     });
     component.selectOption({ option: { viewValue: 'option 1' } } as MatAutocompleteSelectedEvent);
   });
 
-  it('should emit itemDeleted event on removing label', () => {
-    component.itemDeleted.subscribe((index) => {
+  it('should emit chipDeleted event on removing label', () => {
+    component.chipDeleted.subscribe((index) => {
       expect(index).toEqual(0);
     });
     component.removeFormSelectedOptions(0);
   });
 
-  it('should remove option from formArray and chipSelectedOptionList on removing label', () => {
+  it('should remove option from formArray and selectedOptions on removing label', () => {
     component.selectOption({ option: { viewValue: 'option 1' } } as MatAutocompleteSelectedEvent);
     component.removeFormSelectedOptions(0);
-    expect(component.formArrayControls.length).toEqual(0);
-    expect(component.chipSelectedOptionList).toEqual([]);
+    expect(component.selectedOptions).toEqual([]);
   });
 
-  it('should emit labelAdded event on adding chip', () => {
-    component.labelAdded.subscribe((label) => {
-      expect(label).toEqual('test-prefixtest');
-    });
-    component.addOption({ input: component.optionInput.nativeElement, value: 'test' } as MatChipInputEvent);
-  });
-
-  it('should not add chip on chipInputEvent when optionList is not empty', () => {
+  it('should not add chip on chipInputEvent when autocompleteOptions is not empty', () => {
     jest.spyOn(component, 'updateSelectedOptionsAndForm');
-    jest.spyOn(component.labelAdded, 'emit');
     component.addOption({ input: component.optionInput.nativeElement, value: 'test' } as MatChipInputEvent);
 
     expect(component.updateSelectedOptionsAndForm).toBeCalledTimes(0);
-    expect(component.labelAdded.emit).toBeCalledTimes(0);
   });
 
-  it('should add chip on chipInputEvent when optionList is empty', () => {
+  it('should add chip on chipInputEvent when autocompleteOptions is empty', () => {
     jest.spyOn(component, 'updateSelectedOptionsAndForm');
-    jest.spyOn(component.labelAdded, 'emit');
 
-    component.optionList = [];
+    component.autocompleteOptions = [];
     component.addOption({ input: component.optionInput.nativeElement, value: 'test' } as MatChipInputEvent);
     expect(component.updateSelectedOptionsAndForm).toBeCalledTimes(1);
-    expect(component.labelAdded.emit).toBeCalledTimes(1);
   });
 });

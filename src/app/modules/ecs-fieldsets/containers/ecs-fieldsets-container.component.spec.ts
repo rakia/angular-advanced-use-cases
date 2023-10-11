@@ -1,26 +1,23 @@
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material/button';
-import { MatButtonHarness } from '@angular/material/button/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
-import { KeycloakService } from 'keycloak-angular';
-import { MockComponents, MockModule, MockProvider } from 'ng-mocks';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonHarness } from '@angular/material/button/testing';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MockComponent, MockModule, MockProvider } from 'ng-mocks';
 import { of } from 'rxjs';
 
+import { AlertService } from 'src/app/core/alert/alert.service';
 import { getTranslocoTestingModule } from 'src/app/core/transloco/transloco-testing.module';
-import { AlertService } from '../../../core/alert/alert.service';
-import { ReleasesStoreService } from '../../releases/services/releases-store.service';
-import { ReleasesService } from '../../releases/services/releases.service';
-import { EcsFieldsetsWithDetailsComponent } from '../presenters/ecs-fieldsets-with-details/ecs-fieldsets-with-details.component';
-import { UploadEcsFieldsetsComponent } from '../presenters/upload-ecs-fieldsets/upload-ecs-fieldsets.component';
 import { EcsFieldsetsStoreService } from '../services/ecs-fieldsets/ecs-fieldsets-store.service';
+import { UploadEcsFieldsetsComponent } from '../presenters/upload-ecs-fieldsets/upload-ecs-fieldsets.component';
 import { EcsFieldsetsContainerComponent } from './ecs-fieldsets-container.component';
+import { EcsFieldsetsWithDetailsComponent } from '../presenters/ecs-fieldsets-with-details/ecs-fieldsets-with-details.component';
 
-describe('FieldsetsContainerComponent', () => {
+describe('EcsFieldsetsContainerComponent', () => {
   let component: EcsFieldsetsContainerComponent;
   let fixture: ComponentFixture<EcsFieldsetsContainerComponent>;
   let loader: HarnessLoader;
@@ -29,8 +26,8 @@ describe('FieldsetsContainerComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         EcsFieldsetsContainerComponent,
-        MockComponents(UploadEcsFieldsetsComponent),
-        MockComponents(EcsFieldsetsWithDetailsComponent),
+        MockComponent(UploadEcsFieldsetsComponent),
+        MockComponent(EcsFieldsetsWithDetailsComponent),
       ],
       imports: [
         getTranslocoTestingModule(),
@@ -41,9 +38,6 @@ describe('FieldsetsContainerComponent', () => {
       ],
       providers: [
         MockProvider(EcsFieldsetsStoreService),
-        ReleasesStoreService,
-        MockProvider(ReleasesService),
-        MockProvider(KeycloakService),
         MockProvider(AlertService),
         { provide: ActivatedRoute, useValue: { params: of({ releaseId: 'sfsd-1233' }) } },
       ],

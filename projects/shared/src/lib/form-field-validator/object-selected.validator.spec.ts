@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { objectSelectedValidator } from './custom-validators.helper';
+import { objectSelectedValidator } from './object-selected.validator';
 
 describe('objectNotSelectedValidator', () => {
   const objectSelectedValidatorInstance = objectSelectedValidator();

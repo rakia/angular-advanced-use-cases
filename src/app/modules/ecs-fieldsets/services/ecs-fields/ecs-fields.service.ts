@@ -19,6 +19,9 @@ import {
   THREAT_ECS_FIELDS_RESPONSE,
   TLS_ECS_FIELDS_RESPONSE
 } from './ecs-fields.const';
+// import { ECS_FIELDS } from './all-ecs-fields.const';
+
+const ECS_FIELDS: EcsField[] = [];
 
 @Injectable()
 export class EcsFieldsService {
@@ -32,6 +35,10 @@ export class EcsFieldsService {
   }
 
   getEcsFieldsByEcsVersionId(versionId: string, query?: string): Observable<HttpResponse<EcsField>> {
+    if (environment.mockRequests && !query) {
+      // Return all ECS Fields
+      return of({ data: ECS_FIELDS });
+    }
     const searchQuery = query ? `?search=${query}` : '';
     return this.httpClient.get<HttpResponse<EcsField>>(
       `${environment.apiBase}/ecsversions/${versionId}/fields${searchQuery}`

@@ -34,13 +34,14 @@ export * from './lib/components/file-upload/file-upload.component';
 export * from './lib/components/navigation-bar/navigation-bar.component';
 export * from './lib/modules/custom-autocomplete/components/custom-autocomplete/custom-autocomplete.component';
 export * from './lib/components/search/search.component';
-export * from './lib/components/edit-chips-list/edit-chips-list.component';
+export * from './lib/components/edit-object-chips-list/edit-object-chips-list.component';
+export * from './lib/components/edit-string-chips-list/edit-string-chips-list.component';
 export * from './lib/components/scroll-to-top/scroll-to-top.component';
 
 // Helpers
 export * from './lib/helpers/count-keys-in-object.helper';
-export * from './lib/helpers/custom-validators.helper';
-export * from './lib/helpers/is-valid-json.validator';
+export * from './lib/form-field-validator/object-selected.validator';
+export * from './lib/form-field-validator/is-valid-json.validator';
 export * from './lib/helpers/scroll.helper';
 export * from './lib/helpers/snake-case-to-camel-case.helper';
 export * from './lib/helpers/transform-sort.helper';

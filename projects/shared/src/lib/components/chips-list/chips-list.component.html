@@ -1,11 +1,12 @@
 <ng-container *ngIf="values?.length || stringValues?.length">
   <div>
-    <div class="font-medium mb-3" *ngIf="title" [matTooltip]="hoverDescription">{{ title }}</div>
+    <div class="font-medium mb-3" id="title" *ngIf="title" [matTooltip]="hoverDescription">{{ title }}</div>
 
     <div class="flex flex-wrap mb-3 px-2">
-      <ng-container *ngFor="let value of values; trackBy: trackByFn">
+      <ng-container *ngFor="let value of values; let i = index; trackBy: trackByFn">
         <div
-          class="mx-1 mb-2 py-0.5 px-3 rounded-full text-sm font-medium"
+          class="mx-1 mb-2 py-0.5 px-3 rounded-full text-sm font-medium chip"
+          [id]="'chip-' + i"
           [ngClass]="{
             'text-gray-500 bg-gray-200 dark:text-gray-200 dark:bg-gray-600':
               !(isClickable && selectedId === value[id]) && !allSelected,
@@ -23,9 +24,10 @@
         </div>
       </ng-container>
 
-      <ng-container *ngFor="let stringValue of stringValues; trackBy: trackByFn">
+      <ng-container *ngFor="let stringValue of stringValues; let i = index; trackBy: trackByFn">
         <div
           class="mx-1 mb-2 py-0.5 px-3 rounded-full text-sm font-medium text-gray-500 bg-gray-200 dark:text-gray-200 dark:bg-gray-600"
+          [id]="'string-chip-' + i"
           [ngClass]="{
             'bg-blue-800 text-white dark:bg-blue-800 dark:text-gray-100':
               (isClickable && selectedId === stringValue) || allSelected,

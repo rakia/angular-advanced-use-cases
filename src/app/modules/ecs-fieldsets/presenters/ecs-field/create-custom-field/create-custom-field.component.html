@@ -196,22 +196,22 @@
         </div>
 
         <!-- normalize -->
-        <lib-edit-chips-list
+        <lib-edit-string-chips-list
           [form]="form"
           [nameFormArray]="'normalize'"
           [title]="'ECS_FIELDSETS.ATTRIBUTES.NORMALIZE' | transloco"
           [hoverDescription]="parameterDescriptions.get('normalize') || ''"
-          [stringValues]="[]"
-        ></lib-edit-chips-list>
+          [values]="[]"
+        ></lib-edit-string-chips-list>
 
         <!-- expectedValues -->
-        <lib-edit-chips-list
+        <lib-edit-string-chips-list
           [form]="form"
           [nameFormArray]="'expectedValues'"
           [title]="'ECS_FIELDSETS.ATTRIBUTES.EXPECTED_VALUES' | transloco"
           [hoverDescription]="parameterDescriptions.get('expectedValues') || ''"
-          [stringValues]="[]"
-        ></lib-edit-chips-list>
+          [values]="[]"
+        ></lib-edit-string-chips-list>
 
         <!-- Custom Fields -->
         <div class="font-medium mb-4">{{ "ECS_FIELDSETS.ATTRIBUTES.ADDITIONAL_PARAMETERS" | transloco }}</div>

@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared.module';
 import { DynamicFormComponent } from './dynamic-form.component';
 import { CustomAutocompleteModule } from '../custom-autocomplete/custom-autocomplete.module';
+import {EditStringChipsListComponent} from "../../components/edit-string-chips-list/edit-string-chips-list.component";
 
 @NgModule({
   declarations: [DynamicFormComponent],
@@ -32,6 +33,7 @@ import { CustomAutocompleteModule } from '../custom-autocomplete/custom-autocomp
     MatSlideToggleModule,
     CommonModule,
     MatButtonModule,
+    EditStringChipsListComponent,
   ],
   exports: [DynamicFormComponent],
   providers: [],

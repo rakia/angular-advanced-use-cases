@@ -277,22 +277,22 @@
 
           <ng-container *ngIf="!entity.isEcs && isEditMode">
             <!-- normalize -->
-            <lib-edit-chips-list
+            <lib-edit-string-chips-list
               [form]="form"
               [nameFormArray]="'normalize'"
               [title]="'ECS_FIELDSETS.ATTRIBUTES.NORMALIZE' | transloco"
               [hoverDescription]="parameterDescriptions.get('normalize') || ''"
-              [stringValues]="entity.normalize || []"
-            ></lib-edit-chips-list>
+              [values]="entity.normalize || []"
+            ></lib-edit-string-chips-list>
 
             <!-- expectedValues -->
-            <lib-edit-chips-list
+            <lib-edit-string-chips-list
               [form]="form"
               [nameFormArray]="'expectedValues'"
               [title]="'ECS_FIELDSETS.ATTRIBUTES.EXPECTED_VALUES' | transloco"
               [hoverDescription]="parameterDescriptions.get('expectedValues') || ''"
-              [stringValues]="entity.expectedValues || []"
-            ></lib-edit-chips-list>
+              [values]="entity.expectedValues || []"
+            ></lib-edit-string-chips-list>
           </ng-container>
 
           <!-- ecsMultifields -->

@@ -177,13 +177,13 @@
     <!-- chipsList -->
     <ng-container *ngSwitchCase="'chipsList'">
       <div class="py-3 w-full">
-        <lib-edit-chips-list
+        <lib-edit-string-chips-list
           [form]="form"
           [nameFormArray]="formControl.key"
           [title]="formControl.label | transloco"
           [hoverDescription]="formControl.description || ''"
-          [stringValues]="formControl.defaultValue"
-        ></lib-edit-chips-list>
+          [values]="formControl.defaultValue"
+        ></lib-edit-string-chips-list>
       </div>
     </ng-container>
 

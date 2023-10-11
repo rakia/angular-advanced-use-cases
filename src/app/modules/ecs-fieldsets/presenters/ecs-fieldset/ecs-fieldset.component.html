@@ -238,19 +238,18 @@
               </ng-container>
 
               <ng-container *ngIf="!entity.isEcs && isEditMode && form.get('name')?.value">
-                <lib-edit-chips-list
+                <lib-edit-object-chips-list
                   [form]="form"
                   [nameFormArray]="'reuses'"
                   [keyToDisplay]="'reusedAs'"
-                  [id]="'ecsFieldset'"
                   [prefix]="form.get('name')?.value + '.'"
-                  [optionList]="ecsFieldsetsLightList"
+                  [autocompleteOptions]="ecsFieldsetsLightList"
                   [values]="entity.reuses || []"
                   [title]="'ECS_FIELDSETS.ATTRIBUTES.REUSES' | transloco"
                   [hoverDescription]="fieldsetParameterDescriptions.get('reuses') || ''"
-                  (itemDeleted)="onDeleteReuse($event)"
-                  (itemAdded)="onAddReuse($event)"
-                ></lib-edit-chips-list>
+                  (chipDeleted)="onDeleteReuse($event)"
+                  (chipAdded)="onAddReuse($event)"
+                ></lib-edit-object-chips-list>
               </ng-container>
 
               <!-- Filter -->
@@ -348,9 +347,9 @@
           </div>
         </ng-container>
 
-        <!-- If all ECS Fields are selected -->
+        <!-- If all ECS Fields are selected | -->
         <ng-container *ngIf="openAllFields">
-          <ng-container *ngFor="let ecsField of fields; trackBy: trackByFn">
+          <ng-container *ngFor="let ecsField of lazyFields$ | async; trackBy: trackByFn">
             <div class="mt-2">
               <app-ecs-field
                 [entity]="ecsField"
@@ -364,25 +363,8 @@
               </app-ecs-field>
             </div>
           </ng-container>
-<!-- .example-viewport {
-  height: 200px;
-  width: 500px; /* 100% */
-  overflow: auto;
-  border: 1px solid black;
-}
-          <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
-          </cdk-virtual-scroll-viewport>-->
-          <!--import {ScrollingModule} from '@angular/cdk/scrolling';
-          <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
-              <div *cdkVirtualFor="let item of items" class="example-item">{{item}}</div>
-          </cdk-virtual-scroll-viewport>-->
         </ng-container>
       </div>
     </ng-container>
   </div>
 </div>
-<!-- lazyFields$ | async -->
-<!-- <cdk-virtual-scroll-viewport itemSize="100" class="h-24">
-       <ng-container *cdkVirtualFor="let ecsField of ecsFields; trackBy: trackByFn" class="h-16">
-  </ng-container>
-</cdk-virtual-scroll-viewport>-->

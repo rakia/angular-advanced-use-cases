@@ -52,7 +52,8 @@
             [formControlName]="'uploadFile'"
             [required]="true"
             [placeholder]="'ECS_FIELDSETS.SELECT_YAML_FILE' | transloco"
-            [accept]="'text/yaml,.yaml,.yml'">
+            [accept]="'text/yaml,.yaml,.yml'"
+          >
           </lib-file-upload>
           <mat-icon matSuffix>attach_file</mat-icon>
           <mat-error *ngIf="form.get('uploadFile')?.hasError('required')">

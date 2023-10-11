@@ -115,10 +115,8 @@ export class CreateCustomFieldComponent extends CreateEntityComponent<EcsField> 
     if (this.form?.controls['scalingFactor'].value) {
       this.entity.scalingFactor = this.form?.controls['ignoreAbove'].value;
     }
-    const normalizeItems = (this.form.controls['normalize'] as FormArray).getRawValue();
-    const expectedValues = (this.form.controls['expectedValues'] as FormArray).getRawValue();
-    this.entity.normalize = normalizeItems.map((item) => item.name);
-    this.entity.expectedValues = expectedValues.map((item) => item.name);
+    this.entity.normalize = (this.form.controls['normalize'] as FormArray).getRawValue();
+    this.entity.expectedValues = (this.form.controls['expectedValues'] as FormArray).getRawValue();
     super.onClickSave();
   }
 }

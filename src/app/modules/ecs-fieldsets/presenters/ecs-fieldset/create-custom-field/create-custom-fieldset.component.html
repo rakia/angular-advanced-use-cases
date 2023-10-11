@@ -144,17 +144,17 @@
 
       <!-- Reuses -->
       <ng-container *ngIf="form.get('name')?.value">
-        <lib-edit-chips-list
+        <lib-edit-object-chips-list
           [form]="form"
           [nameFormArray]="'reuses'"
           [keyToDisplay]="'reusedAs'"
           [id]="'ecsFieldset'"
           [prefix]="form.get('name')?.value + '.'"
-          [optionList]="ecsFieldsetsLightList"
+          [autocompleteOptions]="ecsFieldsetsLightList"
           [values]="[]"
           [title]="'ECS_FIELDSETS.ATTRIBUTES.REUSES' | transloco"
           [hoverDescription]="fieldsetParameterDescriptions.get('reuses') || ''"
-        ></lib-edit-chips-list>
+        ></lib-edit-object-chips-list>
       </ng-container>
 
       <!-- Custom Fields -->

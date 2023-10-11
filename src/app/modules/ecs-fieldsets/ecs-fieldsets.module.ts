@@ -18,7 +18,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
-import { FileUploadComponent, FormService, SharedModule } from 'projects/shared/src/public-api';
+import { ChipsListComponent, EditObjectChipsListComponent, EditStringChipsListComponent, FileUploadComponent, FormService, SharedModule } from 'projects/shared/src/public-api';
 import { EcsFieldsetsContainerComponent } from './containers/ecs-fieldsets-container.component';
 import { ecsFieldsetsRoutes } from './ecs-fieldsets.routes';
 import { EcsFieldAllowedValuesComponent } from './presenters/ecs-field-allowed-values/ecs-field-allowed-values.component';
@@ -69,6 +69,9 @@ import {CdkFixedSizeVirtualScroll, CdkVirtualScrollViewport} from "@angular/cdk/
     MatButtonToggleModule,
     MatDividerModule,
     FileUploadComponent,
+    ChipsListComponent,
+    EditObjectChipsListComponent,
+    EditStringChipsListComponent,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
   ],

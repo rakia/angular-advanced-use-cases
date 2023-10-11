@@ -1,27 +1,14 @@
-import { Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ObjectType } from '../../models/object.types';
-import { isValidJSON } from '../../helpers/is-valid-json.validator';
+import { isValidJSON } from '../../form-field-validator/is-valid-json.validator';
 import { FormControlDef } from '../../modules/dynamic-form/models/form-control-def.model';
 
 @Injectable()
 export class FormService {
-  constructor(private formBuilder: FormBuilder) {}
-
-  /**
-   * Create FormGroup from entity that is a string
-   * @param entity
-   * @param populate
-   */
-  createFormGroupFromString(entity: string, populate = true): FormGroup {
-    const formGroup = new FormGroup({});
-
-    const value = populate ? entity : '';
-    const formControl = new FormControl(value);
-    formGroup.addControl(entity.trim(), formControl);
-    return formGroup;
-  }
+  private destroyRef = inject(DestroyRef);
+  private formBuilder = inject(FormBuilder);
 
   /**
    * Create FormGroup from entity
@@ -39,36 +26,28 @@ export class FormService {
     return formGroup;
   }
 
-  initFormArrayItems(form: FormGroup, formArrayName: string, items: ObjectType[] | undefined): void {
+  /**
+   * Method to init a FormArray with a list of ObjectType
+   */
+  initFormArrayWithItems(form: FormGroup, formArrayName: string, items: ObjectType[] | undefined): void {
     // to make sure there are no other items in the FormArray
     form.setControl(formArrayName, this.formBuilder.array([]));
 
-    const formArrayItems = form.get(formArrayName) as FormArray;
     items?.forEach((item) => {
-      formArrayItems.push(this.createFormGroupFromEntity(item));
+      (form.get(formArrayName) as FormArray).push(new FormControl(item));
     });
   }
 
-  initFormArrayStrings(form: FormGroup, formArrayName: string, items: string[] | undefined): void {
+  /**
+   * Method to init a FormArray with a list of strings
+   */
+  initFormArrayWithStrings(form: FormGroup, formArrayName: string, items: string[] | undefined): void {
     // to make sure there are no other items in the FormArray
     form.setControl(formArrayName, this.formBuilder.array([]));
 
-    const formArrayItems = form.get(formArrayName) as FormArray;
-    items?.forEach((item) => {
-      formArrayItems.push(this.createFormGroupFromString(item));
+    items?.forEach((value) => {
+      (form.get(formArrayName) as FormArray).push(new FormControl(value));
     });
-  }
-
-  addEmptyFormGrouptoFormArrayStrings(form: FormGroup, formArrayName: string, formItem: string): void {
-    const control = form.get(formArrayName) as FormArray;
-    const formGroup = this.createFormGroupFromString(formItem, false);
-    control.push(formGroup);
-  }
-
-  addEmptyFormGrouptoFormArray(form: FormGroup, formArrayName: string, formItem: ObjectType): void {
-    const control = form.get(formArrayName) as FormArray;
-    const formGroup = this.createFormGroupFromEntity(formItem, false);
-    control.push(formGroup);
   }
 
   /**
@@ -111,65 +90,71 @@ export class FormService {
     return formArray;
   }
 
-  private createAppropriateFormControl(formControlDef: FormControlDef, formGroup: FormGroup) {
+  private createFormControlByDefinition(formControlDef: FormControlDef, formGroup: FormGroup) {
     if (formControlDef.group) {
       formControlDef.group.forEach((fcDef) => {
         if (!fcDef.group && !fcDef.formArray && !fcDef.groupRow) {
           this.createFormControl(fcDef, formGroup);
         } else {
-          this.createAppropriateFormControl(fcDef, formGroup);
+          this.createFormControlByDefinition(fcDef, formGroup);
         }
       });
     } else if (formControlDef.formArray) {
-      this.initFormArrayItems(formGroup, formControlDef.key, []);
+      this.initFormArrayWithItems(formGroup, formControlDef.key, []);
     } else {
       this.createFormControl(formControlDef, formGroup);
     }
   }
 
   /**
-   * Create form from FormControlDef[]
+   * Create FormGroup from FormControlDef[]
+   *
    */
-  /* createFormGroup(formModel: FormControlDef[], destroy$: Subject<void>): FormGroup {
+  createFormGroupByDefinitions(formModel: FormControlDef[]): FormGroup {
     const formGroup = new FormGroup({});
 
     formModel.forEach((formControlDef) => {
-      this.createAppropriateFormControl(formControlDef, formGroup);
+      this.createFormControlByDefinition(formControlDef, formGroup);
     });
 
     // Dynamic callback functions
     formModel.forEach((formControlDef) => {
       if (!formControlDef.group) {
         if (formControlDef.valueChangeCallback) {
-          formGroup.controls[formControlDef.key].valueChanges.pipe(takeUntil(destroy$)).subscribe((value: any) => {
-            // @ts-ignore
-            formControlDef.valueChangeCallback(formGroup, value);
-          });
+          // @ts-ignore
+          formGroup.controls[formControlDef.key].valueChanges
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((value: any) => {
+              // @ts-ignore
+              formControlDef.valueChangeCallback(formGroup, value);
+            });
         }
       } else {
         formControlDef.group?.forEach((fcDef: FormControlDef) => {
           if (fcDef.valueChangeCallback) {
-            formGroup.controls[fcDef.key].valueChanges.pipe(takeUntil(destroy$)).subscribe((value: any) => {
-              // @ts-ignore
-              fcDef.valueChangeCallback(formGroup, value);
-            });
+            // @ts-ignore
+            formGroup.controls[fcDef.key].valueChanges
+              .pipe(takeUntilDestroyed(this.destroyRef))
+              .subscribe((value: any) => {
+                // @ts-ignore
+                fcDef.valueChangeCallback(formGroup, value);
+              });
           }
         });
       }
     });
     return formGroup;
-  } */
+  }
 
   /**
    * @param formControlDef
    * @param formGroup
    * @private
    */
-  private createFormControl(formControlDef: FormControlDef, formGroup: FormGroup<{}>) {
-    const defaultValue = formControlDef.defaultValue || '';
+  private createFormControl(formControlDef: FormControlDef, formGroup: FormGroup<{}>): void {
     const formControl = formControlDef.required
-      ? new FormControl(defaultValue, Validators.required)
-      : new FormControl(defaultValue);
+      ? new FormControl(formControlDef.defaultValue, Validators.required)
+      : new FormControl(formControlDef.defaultValue);
 
     if (formControlDef.minLength) {
       formControl.addValidators(Validators.minLength(formControlDef.minLength));
