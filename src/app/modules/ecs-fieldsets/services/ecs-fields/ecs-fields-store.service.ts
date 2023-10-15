@@ -11,7 +11,6 @@ import { EcsField, EcsFieldLevel, EcsFieldType, UpdatableEcsFieldAttributes } fr
 import { FilterEvent } from '../../models/filter-event.interface';
 import { ParameterDescription } from '../../models/parameter-description.interface';
 import { EcsFieldsService } from './ecs-fields.service';
-import {ECS_FIELDS_RESPONSE} from "./ecs-fields.const";
 
 @Injectable()
 export class EcsFieldsStoreService {

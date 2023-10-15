@@ -3,7 +3,10 @@
   <ng-container *ngIf="formControl.group">
     <div class="flex flex-col">
       <div class="mb-4">
-        <div *ngIf="formControl.label" class="font-semibold mb-4">{{ formControl.label | transloco }}</div>
+        <div *ngIf="formControl.label" class="mb-4">
+          <span *ngIf="formControl.translate">{{ formControl.label | transloco }}</span>
+          <span *ngIf="!formControl.translate">{{ formControl.label }}</span>
+        </div>
 
         <div class="flex space-x-2">
           <div class="flex flex-auto flex-wrap items-center">
@@ -86,7 +89,10 @@
   <ng-container [ngSwitch]="formControl.controlType">
     <!-- Input -->
     <mat-form-field *ngSwitchCase="'textbox'" class="pr-2 w-1/3">
-      <mat-label [matTooltip]="formControl.description">{{ formControl.label | transloco }}</mat-label>
+      <mat-label [matTooltip]="formControl.description">
+        <span *ngIf="formControl.translate">{{ formControl.label | transloco }}</span>
+        <span *ngIf="!formControl.translate">{{ formControl.label }}</span>
+      </mat-label>
       <input
         matInput
         [formControl]="formGroup.get(formControl.key)"
@@ -104,7 +110,10 @@
 
     <!-- Textarea -->
     <mat-form-field *ngSwitchCase="'textarea'" class="pr-2 w-1/3">
-      <mat-label [matTooltip]="formControl.description">{{ formControl.label | transloco }}</mat-label>
+      <mat-label [matTooltip]="formControl.description">
+        <span *ngIf="formControl.translate">{{ formControl.label | transloco }}</span>
+        <span *ngIf="!formControl.translate">{{ formControl.label }}</span>
+      </mat-label>
       <textarea matInput [formControl]="formGroup.get(formControl.key)" cdkTextareaAutosize></textarea>
       <mat-hint>{{ formControl.hint }}</mat-hint>
       <mat-error *ngIf="formGroup.get(formControl.key)?.hasError('required')">
@@ -123,9 +132,10 @@
         [matTooltip]="formControl.description"
         class="pr-2 w-1/6"
       >
-        <mat-button-toggle *ngFor="let option of formControl.options" [value]="option.value">{{
-          option.label | transloco
-        }}</mat-button-toggle>
+        <mat-button-toggle *ngFor="let option of formControl.options" [value]="option.value">
+          <span *ngIf="formControl.translate">{{ formControl.label | transloco }}</span>
+          <span *ngIf="!formControl.translate">{{ formControl.label }}</span>
+        </mat-button-toggle>
       </mat-button-toggle-group>
       <mat-error *ngIf="formGroup.get(formControl.key)?.hasError('required')">{{
         "shared.MESSAGES.REQUIRED_FIELD" | transloco
@@ -140,8 +150,10 @@
         [formControl]="formGroup.get(formControl.key)"
         [checked]="formGroup.get(formControl.key).value"
         [matTooltip]="formControl.description"
+        [aria-label]="formControl.description"
       >
-        {{ formControl.label | transloco }}
+        <span *ngIf="formControl.translate">{{ formControl.label | transloco }}</span>
+        <span *ngIf="!formControl.translate">{{ formControl.label }}</span>
       </mat-slide-toggle>
       <mat-error *ngIf="formGroup.get(formControl.key)?.hasError('required')">{{
         "shared.MESSAGES.REQUIRED_FIELD" | transloco
@@ -152,16 +164,22 @@
     <ng-container *ngSwitchCase="'checkbox'">
       <mat-checkbox
         [formControl]="formGroup.get(formControl.key)"
+        [checked]="formGroup.get(formControl.key).value"
         [matTooltip]="formControl.description"
+        [aria-label]="formControl.description"
         class="pr-2 w-1/6"
       >
-        {{ formControl.label | transloco }}
+        <span *ngIf="formControl.translate">{{ formControl.label | transloco }}</span>
+        <span *ngIf="!formControl.translate">{{ formControl.label }}</span>
       </mat-checkbox>
     </ng-container>
 
     <!-- dropdown -->
     <mat-form-field *ngSwitchCase="'dropdown'" class="pr-2 w-1/3">
-      <mat-label [matTooltip]="formControl.description">{{ formControl.label | transloco }}</mat-label>
+      <mat-label [matTooltip]="formControl.description">
+        <span *ngIf="formControl.translate">{{ formControl.label | transloco }}</span>
+        <span *ngIf="!formControl.translate">{{ formControl.label }}</span>
+      </mat-label>
       <!--(valueChange)="onDropdownlistChange($event, formControl.key, formGroup)"-->
       <mat-select [id]="formControl.key" [formControl]="formGroup.get(formControl.key)">
         <mat-option *ngFor="let option of formControl.options" [value]="option">{{ option }}</mat-option>
@@ -178,13 +196,32 @@
     <ng-container *ngSwitchCase="'chipsList'">
       <div class="py-3 w-full">
         <lib-edit-string-chips-list
-          [form]="form"
-          [nameFormArray]="formControl.key"
-          [title]="formControl.label | transloco"
-          [hoverDescription]="formControl.description || ''"
+          [formControl]="formGroup.get(formControl.key)"
+          [required]="formControl.required"
           [values]="formControl.defaultValue"
+          [title]="!formControl.translate ? formControl.label : (formControl.label | transloco)"
+          [hoverDescription]="formControl.description || ''"
         ></lib-edit-string-chips-list>
       </div>
+    </ng-container>
+
+    <!-- keyValueList (it's similar to chipsList, but it accepts only chips with the syntax key:value from the user) -->
+    <ng-container *ngSwitchCase="'keyValueList'">
+      <div class="py-3 w-full">
+        <lib-edit-key-value-chips-list
+          [formControl]="formGroup.get(formControl.key)"
+          [required]="formControl.required"
+          [values]="formControl.defaultValue"
+          [title]="!formControl.translate ? formControl.label : (formControl.label | transloco)"
+          [hoverDescription]="formControl.description || ''"
+        ></lib-edit-key-value-chips-list>
+      </div>
+    </ng-container>
+
+    <!-- TODO: keyValue (it accepts only text with the syntax key:value from the user) -->
+    <ng-container *ngSwitchCase="'keyValue'">
+      <!--<div class="py-3 w-full">
+      </div>-->
     </ng-container>
 
     <!-- customAutocomplete -->
@@ -195,7 +232,7 @@
           [filterableColumns]="formControl.filterableColumns"
           [formControl]="formGroup.get(formControl.key)"
           [required]="formControl.required"
-          [searchLabel]="formControl.label"
+          [searchLabel]="!formControl.translate ? formControl.label : (formControl.label | transloco)"
           [displayColumnDefs]="formControl.displayColumnDefs"
           [optionsList]="formControl.valueOptions"
         >

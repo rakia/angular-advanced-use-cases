@@ -22,23 +22,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { map, Observable, startWith } from 'rxjs';
-import { TranslocoCoreModule } from '../../transloco/transloco.module';
-import { keyValueValidator } from '../../form-field-validator/key-value-validator';
-import { NameIdEntity } from '../../models/name-id-entity.interface';
-import { FormService } from '../../services/form-service/form.service';
-import { ObjectType } from '../../models/object.types';
+import { TranslocoCoreModule } from '../../../transloco/transloco.module';
+import { keyValueValidator } from '../../../form-field-validator/key-value-validator';
+import { NameIdEntity } from '../../../models/name-id-entity.interface';
+import { FormService } from '../../../services/form-service/form.service';
 
 /**
  * This chips-list component supports an autocomplete when autocompleteOptions is not empty.
- * It also supports an input values which is a list of objects.
- *
- * The keyToDisplay (the name of the attribute to display) is required as input.
+ * It also supports an input values which is a list of strings.
  *
  * prefix is needed in the case of "reuses" in ecs-fieldset component & it's added to the label that is displayed.
  */
 @Component({
-  selector: 'lib-edit-object-chips-list',
-  templateUrl: './edit-object-chips-list.component.html',
+  selector: 'lib-edit-string-chips-list',
+  templateUrl: './edit-string-chips-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
@@ -52,7 +49,7 @@ import { ObjectType } from '../../models/object.types';
     TranslocoCoreModule,
   ],
 })
-export class EditObjectChipsListComponent implements OnInit, OnChanges {
+export class EditStringChipsListComponent implements OnInit, OnChanges {
   destroyRef = inject(DestroyRef);
   private formService = inject(FormService);
 
@@ -60,22 +57,21 @@ export class EditObjectChipsListComponent implements OnInit, OnChanges {
    * form is the formGroup in the hosting component that contains the formArray (with the name nameFormArray)
    */
   @Input() form!: FormGroup;
-  @Input({ required: true }) nameFormArray!: string;
+  @Input() nameFormArray!: string; // { required: true }
   @Input() required?: boolean = false;
   /**
-   * values is the list of values to display as chips (when the hosting component uses objects)
+   * values is the list of values to display as chips (when the hosting component uses strings)
    */
-  @Input() values: ObjectType[] = [];
+  @Input() values: string[] = [];
   /**
    * autocompleteOptions is the list of options that should be used to fill the options on the autocomplete
    */
   @Input() autocompleteOptions: NameIdEntity[] = [];
-  @Input({ required: true }) keyToDisplay!: string;
   @Input() prefix!: string;
   @Input() title?: string;
   @Input() hoverDescription = '';
   @Input() useKeyValueValidator = false;
-  @Output() chipAdded = new EventEmitter<ObjectType>();
+  @Output() chipAdded = new EventEmitter<string>();
   @Output() chipDeleted = new EventEmitter<number>();
 
   @ViewChild('optionInput') optionInput!: ElementRef<HTMLInputElement>;
@@ -85,7 +81,7 @@ export class EditObjectChipsListComponent implements OnInit, OnChanges {
 
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   filteredOptions: Observable<NameIdEntity[]> | undefined;
-  selectedOptions: ObjectType[] = [];
+  selectedOptions: string[] = [];
 
   /**
    * Logic for the autocomplete
@@ -117,7 +113,7 @@ export class EditObjectChipsListComponent implements OnInit, OnChanges {
     );
     if (result?.length) {
       const prefix = this.prefix || '';
-      this.updateSelectedOptionsAndForm(prefix + event.option.viewValue, result[0]?.id);
+      this.updateSelectedOptionsAndForm(prefix + event.option.viewValue);
     }
   }
   // ---- End Logic for the autocomplete
@@ -136,9 +132,7 @@ export class EditObjectChipsListComponent implements OnInit, OnChanges {
     }
     if (changes['values']?.currentValue?.length) {
       this.selectedOptions = this.values;
-      // eslint-disable-next-line no-return-assign,no-param-reassign
-      this.selectedOptions.forEach((option) => (option['name'] = option[this.keyToDisplay]));
-      this.formService.initFormArrayWithItems(this.form, this.nameFormArray, this.selectedOptions);
+      this.formService.initFormArrayWithStrings(this.form, this.nameFormArray, this.values);
     }
   }
 
@@ -157,8 +151,8 @@ export class EditObjectChipsListComponent implements OnInit, OnChanges {
   }
 
   /**
-   * This method is used when the user manually types an option and wants to add it by entering ENTER or COMMA.
-   * When mat-autocomplete is used (autocompleteOptions is not empty), adding an option is possible only with selectOption() method.
+   * This method is useful when the user manually types an option and wants to add it.
+   * When mat-autocomplete is used (autocompleteOptionList is not empty), adding an option is possible only with selectOption() method.
    * If validation is used, and the user types an option that is invalid, the method won't do anything.
    * @param event
    */
@@ -166,22 +160,21 @@ export class EditObjectChipsListComponent implements OnInit, OnChanges {
     if (this.autocompleteOptions?.length || this.optionInputCtrl.errors) {
       return;
     }
+    const value = (event.value || '').trim();
     const prefix = this.prefix || '';
-    const value = prefix + (event.value || '').trim();
-    this.updateSelectedOptionsAndForm(value, this.selectedOptions.length);
+    this.updateSelectedOptionsAndForm(prefix + value);
   }
 
-  updateSelectedOptionsAndForm(value: string, id: number | string): void {
+  updateSelectedOptionsAndForm(value: string): void {
     if (value) {
-      const selectedOption: ObjectType = { name: value, id };
-      this.selectedOptions.push(selectedOption);
-      this.updateFormArray(this.form, this.nameFormArray, selectedOption);
-      this.chipAdded.emit(selectedOption);
+      this.selectedOptions.push(value);
+      this.updateFormArray(this.form, this.nameFormArray, value);
+      this.chipAdded.emit(value);
     }
     this.resetInputs();
   }
 
-  private updateFormArray(form: FormGroup, formArrayName: string, formItem: ObjectType): void {
+  private updateFormArray(form: FormGroup, formArrayName: string, formItem: string): void {
     (form.get(formArrayName) as FormArray).push(new FormControl(formItem));
     (form.get(formArrayName) as FormArray).markAsDirty(); // notify parent FormGroup
   }

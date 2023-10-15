@@ -9,6 +9,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 @Component({
   selector: 'lib-create-entity',
   template: ``,
+  standalone: true,
 })
 export class CreateEntityComponent<T extends BaseEntity> {
   @Input() entity!: T;

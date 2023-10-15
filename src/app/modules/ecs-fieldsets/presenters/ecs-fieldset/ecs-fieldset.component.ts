@@ -3,7 +3,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter, inject,
+  EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnInit,
@@ -55,6 +56,7 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
 
   fieldsetParameterDescriptions: Map<string, string> = new Map<string, string>();
   fieldParameterDescriptions: Map<string, string> = new Map<string, string>();
+  lazyFields$: Observable<EcsField[]> = of([]);
 
   /**
    * - When the Fieldset's type is ECS, then only 'customDescription' & 'customComment' are editable.
@@ -73,7 +75,6 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
 
   isCreateMode: boolean = false;
   updatedReuses: Reuse[] = [];
-  // lazyFields$: Observable<EcsField[]> = of([]);
   get reusesFormArray(): FormArray {
     return this.form?.get('reuses') as FormArray;
   }
@@ -84,7 +85,7 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
 
   override ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
-    if (changes['fields']?.currentValue) { //  && !changes['fields']?.firstChange
+    if (changes['fields']?.currentValue) {
       this.ecsFields = this.fields.filter((field) => field.isEcs);
       this.customFields = this.fields.filter((field) => !field.isEcs);
 
@@ -93,7 +94,6 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
       }
     }
     if (changes['ecsFieldsetsLightList']?.currentValue) {
-      // TODO: check if the current ecsFieldset should be removed from the frop-down list for reuses (autocomplete)
       this.ecsFieldsetsLightList = this.ecsFieldsetsLightList.filter(
         (ecsFieldset) => ecsFieldset.id !== this.entity.id
       );
@@ -152,7 +152,7 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
       customComment: [{ value: this.entity?.customComment, disabled: true }],
       reuses: this.formBuilder.array([]),
     });
-    this.formService.initFormArrayItems(this.form, 'reuses', this.entity?.reuses);
+    this.formService.initFormArrayWithItems(this.form, 'reuses', this.entity?.reuses);
   }
 
   onClickActionButton(actionName: ActionType) {
@@ -240,7 +240,7 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
     this.openAllFields = !this.openAllFields;
     this.selectedEcsField = undefined;
     this.selectedId = undefined;
-    // this.lazyFields$ = this.openAllFields ? of(this.fields).pipe(lazyArray()) : of([]);
+    this.lazyFields$ = this.openAllFields ? of(this.fields).pipe(lazyArray()) : of([]);
   }
 
   override onClickCancel(): void {

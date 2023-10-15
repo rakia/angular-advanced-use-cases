@@ -4,7 +4,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TranslocoModule } from '@ngneat/transloco';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslocoCoreModule } from '../../transloco/transloco.module';
 import { CustomAutocompleteComponent } from './components/custom-autocomplete/custom-autocomplete.component';
 import { DynamicTableModule } from '../dynamic-table/dynamic-table.module';
 
@@ -13,11 +14,12 @@ import { DynamicTableModule } from '../dynamic-table/dynamic-table.module';
   imports: [
     CommonModule,
     DynamicTableModule,
-    TranslocoModule,
+    TranslocoCoreModule,
     MatInputModule,
     OverlayModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatTooltipModule,
   ],
   exports: [CustomAutocompleteComponent],
   providers: [],

@@ -1,11 +1,17 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { TranslocoCoreModule } from '../../transloco/transloco.module';
 
 @Component({
   selector: 'lib-search',
   templateUrl: './search.component.html',
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [MatFormFieldModule, MatIconModule, ReactiveFormsModule, TranslocoCoreModule, MatInputModule],
 })
 export class SearchComponent implements OnInit, OnDestroy {
   @Input() debounce = 300;

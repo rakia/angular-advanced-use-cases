@@ -1,36 +1,4 @@
 <div class="flex items-center">
-  <!-- if isRestoreMode -->
-  <ng-container *ngIf="isRestoreMode && !isEditMode">
-    <button
-      class="mr-4"
-      type="button"
-      id="restoreButton"
-      mat-button
-      color="accent"
-      [matTooltip]="'shared.BUTTONS.RESTORE' | transloco"
-      (click)="$event.stopPropagation(); clickRestore.emit()"
-    >
-      <mat-icon>restore</mat-icon>
-      {{ "shared.BUTTONS.RESTORE" | transloco }}
-    </button>
-  </ng-container>
-
-  <!-- Restore with Changes -->
-  <ng-container *ngIf="isRestoreMode && isEditMode">
-    <button
-      class="mr-4"
-      type="button"
-      id="restoreButton"
-      mat-button
-      color="accent"
-      [matTooltip]="'shared.BUTTONS.RESTORE' | transloco"
-      (click)="$event.stopPropagation(); clickModifiedRestore.emit()"
-    >
-      <mat-icon>restore</mat-icon>
-      {{ "shared.BUTTONS.RESTORE" | transloco }}
-    </button>
-  </ng-container>
-
   <!-- if Not isEditMode & Not isCreateMode && Not CreateMode -->
   <ng-container *ngIf="!isEditMode && !isCreateMode && !isRestoreMode">
     <div

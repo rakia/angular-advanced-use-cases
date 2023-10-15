@@ -8,6 +8,7 @@ export class FormFieldDefinition {
   defaultValueLabel?: any;
   key: string;
   label: string;
+  translate?: boolean;
   hint?: string;
   description?: string;
   minLength?: number;
@@ -101,6 +102,7 @@ export declare type ControlType =
   | 'combobox'
   | 'textboxNum'
   | 'chipsList'
+  | 'keyValueList'
   | 'dropdown'
   | 'dropdownlist'
   | 'customAutocomplete'

@@ -7,12 +7,16 @@ const routes: Routes = [
     loadChildren: () => import('./modules/ecs-fieldsets/ecs-fieldsets.module').then((m) => m.EcsFieldsetsModule),
   },
   {
+    path: 'ecs-schema',
+    loadChildren: () => import('./modules/ecs-schema/ecs-schema.module').then((m) => m.EcsSchemaModule),
+  },
+  {
     path: 'file-upload',
     loadChildren: () => import('./modules/ecs-fieldsets/ecs-fieldsets.module').then((m) => m.EcsFieldsetsModule),
   },
   {
     path: '**',
-    redirectTo: '/ecs-fieldsets',
+    redirectTo: '/ecs-schema/ecs-fieldsets',
     pathMatch: 'full',
   },
 ];

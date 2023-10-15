@@ -5,7 +5,6 @@
 // export styles TODO how to handle that
 
 // Modules
-export * from './lib/shared.module';
 export * from './lib/modules/dynamic-form/dynamic-form.module';
 export * from './lib/modules/dynamic-table/dynamic-table.module';
 export * from './lib/modules/custom-autocomplete/custom-autocomplete.module';
@@ -19,14 +18,15 @@ export * from './lib/services/form-service/form.service';
 export * from './lib/modules/loading-progress/services/loading.service';
 
 // Components
+export * from './lib/components/breadcrumb/breadcrumb.component';
 export * from './lib/modules/layout/components/sidenav-wrapper/sidenav-wrapper.component';
 export * from './lib/modules/loading-progress/components/loading-progress.component';
-export * from './lib/components/actions-buttons/actions-buttons.component';
+export * from './lib/components/actions-buttons/action-buttons.component';
 export * from './lib/components/card/card.component';
 export * from './lib/components/chips-list/chips-list.component';
 export * from './lib/components/confirm-dialog/confirm-dialog.component';
 export * from './lib/components/create-entity/create-entity.component';
-export * from './lib/modules/dynamic-form/dynamic-form.component';
+export * from './lib/modules/dynamic-form/components/dynamic-form.component';
 export * from './lib/modules/dynamic-table/components/dynamic-table.component';
 export * from './lib/components/editable-entity/editable-entity.component';
 export * from './lib/components/expansion-card/expansion-card.component';
@@ -34,8 +34,8 @@ export * from './lib/components/file-upload/file-upload.component';
 export * from './lib/components/navigation-bar/navigation-bar.component';
 export * from './lib/modules/custom-autocomplete/components/custom-autocomplete/custom-autocomplete.component';
 export * from './lib/components/search/search.component';
-export * from './lib/components/edit-object-chips-list/edit-object-chips-list.component';
-export * from './lib/components/edit-string-chips-list/edit-string-chips-list.component';
+export * from './lib/components/edit-chips-list/edit-object-chips-list/edit-object-chips-list.component';
+export * from './lib/components/edit-chips-list/edit-string-chips-list/edit-string-chips-list.component';
 export * from './lib/components/scroll-to-top/scroll-to-top.component';
 
 // Helpers
@@ -65,11 +65,12 @@ export * from './lib/models/server-response-error.interface';
 export * from './lib/models/name-id-entity.interface';
 export * from './lib/models/ecs-version.interface';
 export * from './lib/modules/layout/models/sidenav-item.interface';
+export * from './lib/components/breadcrumb/models/breadcrumb-item.interface';
 
 // TODO move
 export * from './lib/components/actions-buttons/action-button.interface';
 export * from './lib/components/confirm-dialog/dialog-data.interface';
-export * from './lib/components/navigation-bar/navigation-tab.interface';
+export * from './lib/components/navigation-bar/models/navigation-tab.interface';
 export * from './lib/modules/dynamic-form/models/form-control-def.model';
 export * from './lib/modules/dynamic-form/models/form-field-definition.model';
 

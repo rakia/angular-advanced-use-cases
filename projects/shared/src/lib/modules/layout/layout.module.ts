@@ -9,18 +9,18 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { TranslocoModule } from '@ngneat/transloco';
-import { LoadingModule } from '../loading-progress/loading.module';
-import { SchemeComponent } from './components/scheme/scheme.component';
+import { TranslocoCoreModule } from '../../transloco/transloco.module';
 import { SidenavWrapperComponent } from './components/sidenav-wrapper/sidenav-wrapper.component';
 import { UserMenuComponent } from './components/user-menu/user-menu.component';
+import { SchemeComponent } from './components/scheme/scheme.component';
+import { LoadingModule } from '../loading-progress/loading.module';
 import { MetaInfoService } from './services/meta-info.service';
 
 @NgModule({
   declarations: [SidenavWrapperComponent, UserMenuComponent, SchemeComponent],
   imports: [
     CommonModule,
-    TranslocoModule,
+    TranslocoCoreModule,
     RouterModule,
     MatSidenavModule,
     MatIconModule,

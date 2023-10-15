@@ -9,8 +9,12 @@ import {
   EventEmitter,
   ChangeDetectorRef,
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { distinctUntilChanged, fromEvent, Subject, takeUntil } from 'rxjs';
+import { TranslocoCoreModule } from '../../transloco/transloco.module';
 
 /**
  * Example of how tho use the component:
@@ -23,6 +27,8 @@ import { distinctUntilChanged, fromEvent, Subject, takeUntil } from 'rxjs';
   selector: 'lib-scroll-to-top',
   templateUrl: './scroll-to-top.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [CommonModule, MatTooltipModule, TranslocoCoreModule, MatIconModule, MatButtonModule],
 })
 export class ScrollToTopComponent implements OnInit, OnDestroy {
   @Input() element: HTMLElement | undefined;

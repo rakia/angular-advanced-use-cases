@@ -9,8 +9,8 @@ import {
 } from 'projects/shared/src/public-api';
 import { EcsFileToUpload } from '../models/data-to-upload.interface';
 import { EcsFieldset, UpdatableEcsFieldsetAttributes } from '../models/ecs-fieldset.interface';
-import { FilterEvent } from '../models/filter-event.interface';
 import { EcsFieldsetsStoreService } from '../services/ecs-fieldsets/ecs-fieldsets-store.service';
+import { FilterEvent } from '../models/filter-event.interface';
 
 @Component({
   selector: 'app-ecs-fieldsets-container',

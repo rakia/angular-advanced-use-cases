@@ -9,8 +9,8 @@ describe('ExpansionCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ExpansionCardComponent],
-      imports: [MockModule(MatExpansionModule)],
+      declarations: [],
+      imports: [ExpansionCardComponent, MockModule(MatExpansionModule)],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ExpansionCardComponent);

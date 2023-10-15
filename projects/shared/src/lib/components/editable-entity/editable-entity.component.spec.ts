@@ -2,11 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MockComponent, MockProvider } from 'ng-mocks';
-import { KeycloakService } from 'keycloak-angular';
 import { DatePipe } from '@angular/common';
 import { SimpleChanges } from '@angular/core';
 import { EditableEntityComponent } from './editable-entity.component';
-import { ActionsButtonsComponent } from '../actions-buttons/actions-buttons.component';
+import { ActionButtonsComponent } from '../actions-buttons/action-buttons.component';
 import { getTranslocoTestingModule } from '../../transloco/transloco-testing.module';
 
 const MOCK_USE_CASE: any = {
@@ -31,9 +30,9 @@ describe('EditableEntityComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditableEntityComponent, MockComponent(ActionsButtonsComponent)],
+      declarations: [EditableEntityComponent, MockComponent(ActionButtonsComponent)],
       imports: [getTranslocoTestingModule()],
-      providers: [FormBuilder, MockProvider(MatDialog), DatePipe, MockProvider(KeycloakService)],
+      providers: [FormBuilder, MockProvider(MatDialog), DatePipe],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditableEntityComponent<any>);

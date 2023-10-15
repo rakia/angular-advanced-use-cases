@@ -11,7 +11,7 @@ import { SIDENAV_ITEMS } from './sidenav-items';
 export class AppComponent implements OnInit {
   sidenavItems: SidenavItem[] = SIDENAV_ITEMS;
   formBuilder = inject(FormBuilder);
-  title = 'angular-advanced';
+  title = 'angular-advanced use cases';
   fileToUpload: string = '';
   public form!: FormGroup;
 

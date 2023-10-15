@@ -7,7 +7,7 @@
             <!-- ECS FIELD PARAMETER -->
             <div class="text-base font-semibold mb-4">{{ "ECS_FIELDSETS.ECS_FIELDSET_PARAMETER" | transloco }}</div>
 
-            <lib-actions-buttons
+            <lib-action-buttons
               [isEditMode]="isEditMode"
               [form]="form"
               [customActionsButtons]="entity.isEcs ? [] : customActionsButtons"
@@ -15,7 +15,7 @@
               (clickCancel)="onClickCancel()"
               (clickSave)="onClickSave()"
               (clickAction)="onClickActionButton($event)"
-            ></lib-actions-buttons>
+            ></lib-action-buttons>
           </ng-container>
 
           <ng-container ngProjectAs="[cardContent]">

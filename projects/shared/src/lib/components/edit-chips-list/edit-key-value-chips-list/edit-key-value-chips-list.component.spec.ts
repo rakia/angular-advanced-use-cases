@@ -1,22 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormArray, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
-import { EditStringChipsListComponent } from './edit-string-chips-list.component';
-import { FormService } from '../../services/form-service/form.service';
-import { getTranslocoTestingModule } from '../../transloco/transloco-testing.module';
+import { EditKeyValueChipsListComponent } from './edit-key-value-chips-list.component';
+import { getTranslocoTestingModule } from '../../../transloco/transloco-testing.module';
 
-describe('EditStringChipsListComponent', () => {
-  let component: EditStringChipsListComponent;
-  let fixture: ComponentFixture<EditStringChipsListComponent>;
+describe('EditKeyValueChipsListComponent', () => {
+  let component: EditKeyValueChipsListComponent;
+  let fixture: ComponentFixture<EditKeyValueChipsListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [],
       imports: [
-        EditStringChipsListComponent,
+        EditKeyValueChipsListComponent,
         getTranslocoTestingModule(),
         NoopAnimationsModule,
         FormsModule,
@@ -25,14 +24,10 @@ describe('EditStringChipsListComponent', () => {
         MatInputModule,
         MatChipsModule,
       ],
-      providers: [FormService],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EditStringChipsListComponent);
+    fixture = TestBed.createComponent(EditKeyValueChipsListComponent);
     component = fixture.componentInstance;
-    component.form = new FormGroup({});
-    component.nameFormArray = 'test';
-    component.form.addControl(component.nameFormArray, new FormArray([]));
     component.prefix = 'test-prefix';
     component.autocompleteOptions = [
       { id: '1', name: 'option 1' },

@@ -1,0 +1,44 @@
+<div class="font-medium" *ngIf="title" [matTooltip]="hoverDescription">{{ title }}</div>
+
+<div class="flex flex-wrap mt-1 mb-3">
+  <mat-form-field class="w-full">
+    <mat-chip-grid #chipGrid [formControl]="chipsFormControl" [attr.aria-label]="'GENERAL.VALUE_SELECTION' | transloco">
+      <mat-chip-row *ngFor="let option of selectedOptions; let i = index" (removed)="removeFormSelectedOptions(i)">
+        {{ option }}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+
+      <!-- Disable AddOnBlur when mat-autocomplete is used (when autocompleteOptions.length) -->
+      <input
+        #optionInput
+        [formControl]="optionInputCtrl"
+        [placeholder]="'GENERAL.ADD_NEW_VALUE' | transloco"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipGrid"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur && (!autocompleteOptions || !autocompleteOptions.length)"
+        (matChipInputTokenEnd)="addOption($event)"
+      />
+    </mat-chip-grid>
+    <mat-error *ngIf="chipsFormControl.hasError('keyValueError')">
+      {{ "shared.MESSAGES.KEY_VALUE_SYNTAX_EXPECTED" | transloco }}
+    </mat-error>
+    <mat-hint
+      *ngIf="
+        !chipsFormControl.disabled &&
+        !optionInputCtrl.hasError('keyValueError') &&
+        (!autocompleteOptions || !autocompleteOptions.length)
+      "
+    >
+      {{ "shared.MESSAGES.ENTER_OR_COMMA_AFTER_EACH_TAG" | transloco : { syntax: "key:value" } }}
+    </mat-hint>
+
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectOption($event)">
+      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

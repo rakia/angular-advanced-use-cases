@@ -1,0 +1,48 @@
+<div class="m-4">
+  <!--<h2>{{ "RELEASES.TITLE" | transloco }}</h2>-->
+
+    <div class="flex flex-row space-x-2">
+      <!--<mat-form-field class="flex w-full">
+        <mat-label>Search Query</mat-label>
+        <input
+          matInput
+          [formControl]="searchFormControl"
+          autocomplete="off"
+          cdkOverlayOrigin
+          #searchInputField="cdkOverlayOrigin"
+          (focus)="onFocusSearchField()"
+          (blur)="onBlurSearchField()"
+        />
+      </mat-form-field>-->
+    </div>
+
+    <div class="flex items-center w-full">
+      <div class="w-full">
+        <div class="flex-col mat-elevation-z2 overflow-y-auto overlay-content">
+          <lib-dynamic-table
+            [dataList]="dataSource"
+            [displayColumnDefs]="displayColumnDefs"
+            [highlightRowIndex]="highlightRowIndex"
+            (rowSelected)="selectRow($event)"
+          ><!--dataSource.filteredData-->
+            <!-- Row shown when there is no matching data -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4"><!-- | transloco-->
+                {{ "shared.MESSAGES.NO_DATA_FOUND" }}
+              </td>
+            </tr>
+          </lib-dynamic-table>
+          <!--<lib-custom-autocomplete
+            [searchColumn]="'processorType'"
+            [filterableColumns]="filterableColumns"
+            [formControlName]="'processorType'"
+            [searchLabel]="'MAPPING.SELECT_FUNCTION' | transloco"
+            [displayColumnDefs]="displayColumnDefs"
+            [optionsList]="(ecsFields$ | async) || []"
+            [required]="true"
+          >
+          </lib-custom-autocomplete>-->
+        </div>
+      </div>
+    </div>
+</div>

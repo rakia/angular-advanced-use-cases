@@ -3,12 +3,12 @@
     <ng-container ngProjectAs="[cardHeader]">
       <div class="font-semibold">{{ "ECS_FIELDSETS.NEW_CUSTOM_FIELD" | transloco }}</div>
 
-      <lib-actions-buttons
+      <lib-action-buttons
         [isCreateMode]="true"
         [form]="form"
         (clickCancel)="onClickCancel()"
         (clickSave)="onClickSave()"
-      ></lib-actions-buttons>
+      ></lib-action-buttons>
     </ng-container>
 
     <ng-container ngProjectAs="[cardContent]">

@@ -5,10 +5,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
-import { FormService } from '../../services/form-service/form.service';
+import { getTranslocoTestingModule } from '../../../transloco/transloco-testing.module';
 import { DynamicFormComponent } from './dynamic-form.component';
-import { FormControlDef } from './models/form-control-def.model';
-import { getTranslocoTestingModule } from '../../transloco/transloco-testing.module';
+import { FormControlDef } from '../models/form-control-def.model';
+import { FormService } from '../../../services/form-service/form.service';
 
 describe('DynamicFormComponent', () => {
   let component: DynamicFormComponent;

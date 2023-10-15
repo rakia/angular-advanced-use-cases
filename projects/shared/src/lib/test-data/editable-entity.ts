@@ -1,0 +1,15 @@
+export const MOCK_USE_CASE: any = {
+  id: 'e62938cf-9239901',
+  usecaseInstanceId: 'e62938cf-9236f911',
+  version: 1,
+  name: 'Erlaubte Administration',
+  requester: 'Test 1',
+  description: 'Super Use Cases',
+  outputType: 'Low Alarm',
+  usecasePriority: 'Mittel',
+  usecaseStatus: 'active',
+  created: new Date().toISOString(),
+  createdBy: 'test',
+  responsePlanItemsCount: 0,
+  detectionRulesCount: 0,
+};

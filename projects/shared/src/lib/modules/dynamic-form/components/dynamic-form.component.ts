@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { FormControlDef } from './models/form-control-def.model';
-import { FormService } from '../../services/form-service/form.service';
+import { FormControlDef } from '../models/form-control-def.model';
+import { FormService } from '../../../services/form-service/form.service';
 
 @Component({
   selector: 'lib-dynamic-form',

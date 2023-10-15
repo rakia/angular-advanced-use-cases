@@ -1,5 +1,6 @@
 {
   "APP_SHORT_TITLE": "Angular: Rendering Performance Case Study",
+  "APP_LONG_TITLE": "Angular: Advanced Case Studies",
   "TOOLBAR": {
     "TITLE": "Angular: Rendering Performance Case Study"
   },
@@ -8,7 +9,8 @@
     "FILE_UPLOAD": "Upload File"
   },
   "GENERAL": {
-    "FIELDSETS": "Fieldsets"
+    "FIELDSETS": "Fieldsets",
+    "FIELDS": "Fields"
   },
   "ECS_FIELDSETS": {
     "TITLE": "ECS-Schema",
@@ -31,6 +33,7 @@
     "YAML_FILE": "*.yaml file",
     "CREATE_NEW_CUSTOM_FIELDSET": "Create a custom fieldset",
     "CREATE_NEW_CUSTOM_FIELD": "Create a custom field",
+    "VERSION": "Version {{value}}",
     "ATTRIBUTES": {
       "TITLE": "Title",
       "NAME": "Name",

@@ -5,27 +5,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HarnessLoader } from '@angular/cdk/testing';
-import { MockModule } from 'ng-mocks';
-import { ActionsButtonsComponent } from './actions-buttons.component';
+import { ActionButtonsComponent } from './action-buttons.component';
 import { getTranslocoTestingModule } from '../../transloco/transloco-testing.module';
 
-describe('ActionsButtonsComponent', () => {
-  let component: ActionsButtonsComponent;
-  let fixture: ComponentFixture<ActionsButtonsComponent>;
+describe('ActionButtonsComponent', () => {
+  let component: ActionButtonsComponent;
+  let fixture: ComponentFixture<ActionButtonsComponent>;
   let loader: HarnessLoader;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ActionsButtonsComponent],
-      imports: [
-        getTranslocoTestingModule(),
-        MockModule(MatButtonModule),
-        MockModule(MatIconModule),
-        MockModule(MatTooltipModule),
-      ],
+      declarations: [],
+      imports: [ActionButtonsComponent, getTranslocoTestingModule(), MatButtonModule, MatIconModule, MatTooltipModule],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ActionsButtonsComponent);
+    fixture = TestBed.createComponent(ActionButtonsComponent);
     loader = TestbedHarnessEnvironment.loader(fixture);
     component = fixture.componentInstance;
     fixture.detectChanges();

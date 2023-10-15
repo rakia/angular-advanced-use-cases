@@ -1,0 +1,24 @@
+<div class="relative flex flex-0">
+  <!-- Breadcrumbs -->
+  <mat-toolbar class="flex flex-wrap items-center font-medium pl-4 h-14" color="primary">
+    <!-- This breadcrumbPrefix content projection allows us to inject a GoBack button for example -->
+    <ng-content select="[breadcrumbPrefix]"></ng-content>
+
+    <ng-container *ngFor="let breadcrumbItem of breadcrumbItems; let i = index">
+      <div class="items-center whitespace-nowrap" [ngClass]="{ 'ml-4': i === 0, 'flex ml-1': i > 0 }">
+        <mat-icon *ngIf="i > 0" class="icon-size-5 text-secondary">chevron_right</mat-icon>
+        <a
+          class="ml-1 text-primary-500"
+          [ngClass]="{ 'hover:opacity-70': breadcrumbItem.routerLink }"
+          [routerLink]="breadcrumbItem.routerLink"
+          [fragment]="breadcrumbItem.fragment!"
+        >
+          <span *ngIf="!breadcrumbItem.translate">{{ breadcrumbItem.label }}</span>
+          <span *ngIf="breadcrumbItem.translate">{{
+            breadcrumbItem.label | transloco : breadcrumbItem.messageParams
+          }}</span>
+        </a>
+      </div>
+    </ng-container>
+  </mat-toolbar>
+</div>

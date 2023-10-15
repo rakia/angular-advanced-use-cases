@@ -2,7 +2,7 @@
   <div class="flex flex-col w-full">
     <lib-expansion-card [title]="entity!.name" [id]="entity.id" [expanded]="expanded">
       <ng-container ngProjectAs="[cardHeader]">
-        <lib-actions-buttons
+        <lib-action-buttons
           [isEditMode]="isEditMode"
           [form]="form"
           [customActionsButtons]="entity.isEcs ? [] : customActionsButtons"
@@ -10,7 +10,7 @@
           (clickCancel)="onClickCancel()"
           (clickSave)="onClickSave()"
           (clickAction)="onClickActionButton($event)"
-        ></lib-actions-buttons>
+        ></lib-action-buttons>
       </ng-container>
 
       <ng-container ngProjectAs="[cardContent]">

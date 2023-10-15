@@ -9,21 +9,22 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslocoModule } from '@ngneat/transloco';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../../shared.module';
-import { DynamicFormComponent } from './dynamic-form.component';
+import { TranslocoCoreModule } from '../../transloco/transloco.module';
+import { DynamicFormComponent } from './components/dynamic-form.component';
+import { EditStringChipsListComponent } from '../../components/edit-chips-list/edit-string-chips-list/edit-string-chips-list.component';
+import { EditKeyValueChipsListComponent } from '../../components/edit-chips-list/edit-key-value-chips-list/edit-key-value-chips-list.component';
 import { CustomAutocompleteModule } from '../custom-autocomplete/custom-autocomplete.module';
-import {EditStringChipsListComponent} from "../../components/edit-string-chips-list/edit-string-chips-list.component";
 
 @NgModule({
   declarations: [DynamicFormComponent],
   imports: [
-    TranslocoModule,
+    EditStringChipsListComponent,
+    EditKeyValueChipsListComponent,
+    TranslocoCoreModule,
     MatInputModule,
     OverlayModule,
     CustomAutocompleteModule,
-    SharedModule,
     MatButtonToggleModule,
     MatIconModule,
     MatSelectModule,
@@ -33,7 +34,6 @@ import {EditStringChipsListComponent} from "../../components/edit-string-chips-l
     MatSlideToggleModule,
     CommonModule,
     MatButtonModule,
-    EditStringChipsListComponent,
   ],
   exports: [DynamicFormComponent],
   providers: [],

@@ -12,8 +12,15 @@ describe('SearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SearchComponent],
-      imports: [getTranslocoTestingModule(), ReactiveFormsModule, NoopAnimationsModule, MatInputModule, MatIconModule],
+      declarations: [],
+      imports: [
+        SearchComponent,
+        getTranslocoTestingModule(),
+        ReactiveFormsModule,
+        NoopAnimationsModule,
+        MatInputModule,
+        MatIconModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SearchComponent);

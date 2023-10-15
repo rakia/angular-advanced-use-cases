@@ -1,4 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
+import { CdkFixedSizeVirtualScroll, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +19,17 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
-import { ChipsListComponent, EditObjectChipsListComponent, EditStringChipsListComponent, FileUploadComponent, FormService, SharedModule } from 'projects/shared/src/public-api';
+import {
+  ActionButtonsComponent,
+  CardComponent,
+  ExpansionCardComponent,
+  ChipsListComponent,
+  EditObjectChipsListComponent,
+  EditStringChipsListComponent,
+  FileUploadComponent,
+  FormService,
+  SearchComponent,
+} from 'projects/shared/src/public-api';
 import { EcsFieldsetsContainerComponent } from './containers/ecs-fieldsets-container.component';
 import { ecsFieldsetsRoutes } from './ecs-fieldsets.routes';
 import { EcsFieldAllowedValuesComponent } from './presenters/ecs-field-allowed-values/ecs-field-allowed-values.component';
@@ -34,7 +45,6 @@ import { EcsFieldsetsReusedStoreService } from './services/ecs-fieldsets-reused/
 import { EcsFieldsetsReusedService } from './services/ecs-fieldsets-reused/ecs-fieldsets-reused.service';
 import { EcsFieldsetsStoreService } from './services/ecs-fieldsets/ecs-fieldsets-store.service';
 import { EcsFieldsetsService } from './services/ecs-fieldsets/ecs-fieldsets.service';
-import {CdkFixedSizeVirtualScroll, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 
 @NgModule({
   declarations: [
@@ -47,8 +57,8 @@ import {CdkFixedSizeVirtualScroll, CdkVirtualScrollViewport} from "@angular/cdk/
     CreateCustomFieldComponent,
     EcsFieldAllowedValuesComponent,
   ],
+  exports: [EcsFieldsetsContainerComponent],
   imports: [
-    SharedModule,
     CommonModule,
     RouterModule.forChild(ecsFieldsetsRoutes),
     TranslocoModule,
@@ -72,6 +82,10 @@ import {CdkFixedSizeVirtualScroll, CdkVirtualScrollViewport} from "@angular/cdk/
     ChipsListComponent,
     EditObjectChipsListComponent,
     EditStringChipsListComponent,
+    CardComponent,
+    ExpansionCardComponent,
+    ActionButtonsComponent,
+    SearchComponent,
     CdkVirtualScrollViewport,
     CdkFixedSizeVirtualScroll,
   ],

@@ -2,6 +2,7 @@ import { Directive, EventEmitter, ElementRef, HostListener, Output } from '@angu
 
 @Directive({
   selector: '[libClickInsideOutside]',
+  standalone: true,
 })
 export class ClickInsideOutsideDirective {
   @Output() clickOutside = new EventEmitter<MouseEvent>();

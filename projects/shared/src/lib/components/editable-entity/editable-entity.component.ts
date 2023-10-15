@@ -20,6 +20,7 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 @Component({
   selector: 'lib-editable-entity',
   template: ``,
+  standalone: true,
 })
 export class EditableEntityComponent<T extends BaseEntity> implements OnInit, OnChanges {
   protected formBuilder = inject(FormBuilder);
