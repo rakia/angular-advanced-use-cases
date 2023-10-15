@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
 import { BreadcrumbItem, NavigationTab } from 'projects/shared/src/public-api';
 import { EcsSchemaTabName } from '../../models/ecs-schema-tab-name.types';
 
@@ -22,10 +21,9 @@ export class EcsSchemaDetailsContainerComponent implements OnInit {
     'ecs-fields': 'GENERAL.FIELDS',
   };
   navTabs: NavigationTab[] = [
-    { label: 'GENERAL.FIELDSETS', link: './ecs-fieldsets', index: 0 },
-    { label: 'GENERAL.FIELDS', link: './ecs-fields', index: 1 },
+    { label: 'GENERAL.FIELDSETS', name: 'ecs-fieldsets', link: './ecs-fieldsets', index: 0 },
+    { label: 'GENERAL.FIELDS', name: 'ecs-fields', link: './ecs-fields', index: 1 },
   ];
-  breadcrumbItems$: Observable<BreadcrumbItem[]> = of([]);
   breadcrumbItems: BreadcrumbItem[] = [];
 
   /**
@@ -34,9 +32,7 @@ export class EcsSchemaDetailsContainerComponent implements OnInit {
    */
   async ngOnInit(): Promise<void> {
     // this.version = this.activatedRoute.snapshot?.paramMap.get('version');
-
     this.setActiveTab();
-    this.breadcrumbItems$ = of(this.getBreadcrumbItems());
     this.breadcrumbItems = this.getBreadcrumbItems();
   }
 
@@ -57,9 +53,8 @@ export class EcsSchemaDetailsContainerComponent implements OnInit {
    * @param selectedTab
    */
   onSelectedIndexChange(selectedTab: NavigationTab): void {
-    // slice(2) to remove './' from the link
-    this.tabName = selectedTab?.link?.slice(2) as EcsSchemaTabName;
-    this.breadcrumbItems$ = of(this.getBreadcrumbItems());
+    this.tabName = selectedTab?.name as EcsSchemaTabName;
+    // this.breadcrumbItems[2].label = this.tabLabels[this.tabName];
     this.breadcrumbItems = this.getBreadcrumbItems();
   }
 

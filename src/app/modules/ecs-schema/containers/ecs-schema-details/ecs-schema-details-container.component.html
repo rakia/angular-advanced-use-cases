@@ -8,30 +8,5 @@ test
   <div class="overflow-hidden overflow-y-auto">
     <!-- Tabs -->
     <lib-navigation-bar [navTabs]="navTabs" (selectedIndexChange)="onSelectedIndexChange($event)"></lib-navigation-bar>
-    <!--<nav
-      mat-tab-nav-bar
-      mat-stretch-tabs="false"
-      class="sticky-header border-b dark:border-gray-600 bg-white dark:bg-gray-900"
-      [tabPanel]="tabPanel"
-    >
-      <ng-container *ngFor="let tab of navTabs">
-        <a
-          mat-tab-link
-          [routerLink]="tab?.link"
-          routerLinkActive
-          #rla="routerLinkActive"
-          [active]="rla.isActive"
-          (click)="onSelectedIndexChange(tab)"
-        >
-          {{ tab.label | transloco }}
-        </a>
-      </ng-container>
-    </nav>
-
-    <mat-tab-nav-panel #tabPanel class="h-full">
-      <div class="p-3 overflow-hidden overflow-y-auto">
-        <router-outlet></router-outlet>
-      </div>
-    </mat-tab-nav-panel>-->
   </div>
 </div>
