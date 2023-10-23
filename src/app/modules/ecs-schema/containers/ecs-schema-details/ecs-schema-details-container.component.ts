@@ -30,7 +30,7 @@ export class EcsSchemaDetailsContainerComponent implements OnInit {
    * In this lifecycle hook, we get the version from the URL.
    * We also initialize the active tab on the view and determine the breadcrumb items.
    */
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     // this.version = this.activatedRoute.snapshot?.paramMap.get('version');
     this.setActiveTab();
     this.breadcrumbItems = this.getBreadcrumbItems();

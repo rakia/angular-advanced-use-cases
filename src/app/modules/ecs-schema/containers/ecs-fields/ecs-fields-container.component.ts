@@ -16,9 +16,11 @@ export class EcsFieldsContainerComponent implements OnInit {
 
   readonly ecsFields$: Observable<EcsField[]> = this.storeService.ecsFields$;
   displayColumnDefs = [
+    { key: 'name', label: 'Name' },
     { key: 'flatName', label: 'Flat Name' },
     { key: 'short', label: 'Short Description' },
     { key: 'isEcs', label: 'Is Ecs' },
+    { key: 'description', label: 'Long Description' },
   ];
   private filterableColumns = ['flatName', 'short'];
   dataSource: EcsField[] = [];
