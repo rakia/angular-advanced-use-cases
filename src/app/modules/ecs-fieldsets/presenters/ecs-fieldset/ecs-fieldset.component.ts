@@ -29,7 +29,7 @@ import { EcsFieldset, UpdatableEcsFieldsetAttributes } from '../../models/ecs-fi
 import { FieldType } from '../../models/field-type.types';
 import { ParameterDescription } from '../../models/parameter-description.interface';
 import { Reuse } from '../../models/reuse.interface';
-import {lazyArray} from "../../helpers/lazy-array.helper";
+import { lazyArray } from '../../helpers/lazy-array.helper';
 
 @Component({
   selector: 'app-ecs-fieldset',
