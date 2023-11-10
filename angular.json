@@ -73,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular-advanced-use-cases:build:production"
+              "buildTarget": "angular-advanced-use-cases:build:production"
             },
             "development": {
-              "browserTarget": "angular-advanced-use-cases:build:development"
+              "buildTarget": "angular-advanced-use-cases:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -84,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-advanced-use-cases:build"
+            "buildTarget": "angular-advanced-use-cases:build"
           }
         },
         "test": {
