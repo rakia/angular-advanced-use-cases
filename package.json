@@ -39,6 +39,6 @@
     "ng-packagr": "^16.2.3",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
-    "typescript": "~5.0.2"
+    "typescript": "~5.2.2"
   }
 }
