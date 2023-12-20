@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom, of } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, forkJoin, map, of, take } from 'rxjs';
 import {
   DeleteEvent,
   EcsVersion,
@@ -13,7 +13,9 @@ import { EcsFileToUpload } from '../../models/data-to-upload.interface';
 import { EcsFieldset, UpdatableEcsFieldsetAttributes } from '../../models/ecs-fieldset.interface';
 import { FieldType } from '../../models/field-type.types';
 import { EcsFieldsetsService } from './ecs-fieldsets.service';
-import {Release} from "../../models/release.interface";
+import { Release } from '../../models/release.interface';
+import { FieldClass } from '../../models/field-class.interface';
+import { OutputKey } from '../../models/output-key.interface';
 
 @Injectable()
 export class EcsFieldsetsStoreService {
@@ -37,6 +39,12 @@ export class EcsFieldsetsStoreService {
 
   readonly fieldTypes = new BehaviorSubject<FieldType[]>([]);
   readonly fieldTypes$ = this.fieldTypes.asObservable();
+
+  readonly fieldClasses = new BehaviorSubject<FieldClass[]>([]);
+  readonly fieldClasses$ = this.fieldClasses.asObservable();
+
+  private readonly outputKeys = new BehaviorSubject<OutputKey[]>([]);
+  readonly outputKeys$ = this.outputKeys.asObservable();
 
   private readonly requestResponse = new BehaviorSubject<RequestResponse<EcsFieldset> | null>(null);
   readonly requestResponse$ = this.requestResponse.asObservable();
@@ -174,5 +182,42 @@ export class EcsFieldsetsStoreService {
         this.selectedRelease.next(response.data);
       }
     });
+  }
+
+  async getFieldClasses(): Promise<void> {
+    await firstValueFrom(this.service.getFieldClasses()).then((response: HttpResponse<FieldClass>) => {
+      this.fieldClasses.next(response.data);
+    });
+  }
+
+  /**
+   * This method gets all the output keys for the given fieldClasses and save them in the state.
+   * @param fieldClasses
+   */
+  async getOutputKeysForFieldClasses(fieldClasses: FieldClass[]): Promise<void> {
+    if (fieldClasses.length === 0) {
+      this.outputKeys.next([]);
+    }
+    // create an observable for all fieldClasses to get each output keys
+    const responseObservables = fieldClasses.map((fieldClass) =>
+      this.service.getOutputKeysForFieldClass(fieldClass.id)
+    );
+    // get all responses
+    forkJoin(responseObservables)
+      .pipe(
+        take(1),
+        map((allObservableResponses) => {
+          // only get data obect in response
+          const mergedResponses = allObservableResponses.map((response) => response.data);
+          // flatten all resulting arrays into one single array
+          const flatResponse = mergedResponses.flat();
+          // create an object for each output key to fit lib-lucene-editor input
+          const outputKeyObjects = flatResponse.map((outputkey) => ({ value: outputkey }));
+          return outputKeyObjects;
+        })
+      )
+      .subscribe((response) => {
+        this.outputKeys.next(response);
+      });
   }
 }

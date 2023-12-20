@@ -4,7 +4,6 @@
 
 export const environment = {
   production: false,
-  // apiBase: 'http://localhost:8000/api/v1',
-  apiBase: '/api/v1',
+  apiBase: 'http://localhost:3000/api',
   mockRequests: true,
 };

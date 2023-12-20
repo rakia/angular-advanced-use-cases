@@ -27,6 +27,7 @@ import { FieldType } from '../../models/field-type.types';
 import { FilterEvent } from '../../models/filter-event.interface';
 import { ParameterDescription } from '../../models/parameter-description.interface';
 import { EcsFieldsStoreService } from '../../services/ecs-fields/ecs-fields-store.service';
+import { FieldClass } from '../../models/field-class.interface';
 
 @Component({
   selector: 'app-ecs-fieldsets-with-details',
@@ -45,6 +46,7 @@ import { EcsFieldsStoreService } from '../../services/ecs-fields/ecs-fields-stor
 export class EcsFieldsetsWithDetailsComponent implements OnChanges, OnDestroy {
   @Input() ecsVersion: EcsVersion | null = null;
   @Input() ecsFieldsets!: EcsFieldset[];
+  @Input() fieldClasses!: FieldClass[];
   @Input() requestResponse: RequestResponse<EcsFieldset> | null | undefined;
   @Input() isCreateMode: boolean = false;
   @Output() cancelCreateMode = new EventEmitter<void>();
@@ -53,6 +55,7 @@ export class EcsFieldsetsWithDetailsComponent implements OnChanges, OnDestroy {
   @Output() deleteEcsFieldset = new EventEmitter<DeleteEvent>();
   @Output() createCustomFieldset = new EventEmitter<EcsFieldset | Partial<EcsFieldset>>();
   @Output() filterEcsFieldsets = new EventEmitter<FilterEvent>();
+  @Output() getOutputKeys = new EventEmitter<FieldClass[]>();
 
   selectedEcsFieldset: EcsFieldset | undefined;
   selectedFieldTypes: FieldType[] = [];
@@ -144,6 +147,10 @@ export class EcsFieldsetsWithDetailsComponent implements OnChanges, OnDestroy {
     this.currentSort = sortEvent;
     // TODO: call REST API to get data sorted
   }
+
+  /*getOutputKeys(fieldClasses: FieldClass[]): void {
+    this.getOutputKeys.emit(fieldClasses);
+  }*/
 
   /**
    * Track by function for ngFor loops
