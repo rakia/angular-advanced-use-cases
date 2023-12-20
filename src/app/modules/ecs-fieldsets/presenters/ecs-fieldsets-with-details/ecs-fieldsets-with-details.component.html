@@ -3,10 +3,12 @@
   <app-create-custom-fieldset
     [ecsVersion]="ecsVersion?.id!"
     [ecsFieldsetsLightList]="ecsFieldsetsLightList"
+    [fieldClasses]="fieldClasses"
     [requestResponse]="requestResponse"
     [parameterDescriptions]="(parameterDescriptions$ | async) || []"
     (save)="createCustomFieldset.emit($event)"
     (removeCreateForm)="cancelCreateMode.emit()"
+    (getOutputKeysForFieldClasses)="getOutputKeys.emit($event)"
   >
   </app-create-custom-fieldset>
 </ng-container>

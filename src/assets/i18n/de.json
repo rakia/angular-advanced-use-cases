@@ -2,7 +2,7 @@
   "APP_SHORT_TITLE": "Angular: Rendering Performance Case Study",
   "APP_LONG_TITLE": "Angular: Advanced Case Studies",
   "TOOLBAR": {
-    "TITLE": "Angular: Rendering Performance Case Study"
+    "TITLE": "Advanced Case Study"
   },
   "SIDENAV": {
     "ECS_FIELDSETS": "ECS Fieldsets",
@@ -74,5 +74,17 @@
       "ALLOWED_VALUES": "Allowed Values",
       "ADDITIONAL_PARAMETERS": "Zusätzliche Parameter"
     }
+  },
+  "FIELD_CLASSES": {
+    "TITLE": "Feldklassen",
+    "PLACEHOLDER": "Feldklasse auswählen",
+    "FIELD_CLASS": "Feldklasse",
+    "BUTTONS": {
+      "CREATE": "Feldklasse Hinzufügen",
+      "DELETE": "Feldklasse Entfernen"
+    }
+  },
+  "ERRORS": {
+    "OBJECT_NOT_SELECTED": "Bitte ein Objekt auswählen"
   }
 }

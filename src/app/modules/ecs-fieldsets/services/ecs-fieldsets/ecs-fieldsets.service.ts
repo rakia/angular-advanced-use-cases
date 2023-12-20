@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { EcsFieldset, UpdatableEcsFieldsetAttributes } from '../../models/ecs-fieldset.interface';
 import { ECS_FIELDSETS_RESPONSE } from './ecs-fieldsets.const';
 import { RELEASE_RESPONSE } from './release.const';
+import { FieldClass } from '../../models/field-class.interface';
 import { FieldType } from '../../models/field-type.types';
 import { Release } from '../../models/release.interface';
 
@@ -71,5 +72,17 @@ export class EcsFieldsetsService {
 
   createCustomFieldset(entity: EcsFieldset): Observable<HttpEntityResponse<EcsFieldset>> {
     return this.httpClient.post<HttpEntityResponse<EcsFieldset>>(`${environment.apiBase}/ecsfieldsets`, entity);
+  }
+
+  getFieldClasses(): Observable<HttpResponse<FieldClass>> {
+    return this.httpClient.get<HttpResponse<FieldClass>>(`${environment.apiBase}/field-classes`);
+  }
+
+  /**
+   * this method fetches the output keys from the API for a given fieldClass.
+   * @param fieldClassId
+   */
+  getOutputKeysForFieldClass(fieldClassId: string): Observable<HttpResponse<string>> {
+    return this.httpClient.get<HttpResponse<string>>(`${environment.apiBase}/field-classes/outputkeys`);
   }
 }

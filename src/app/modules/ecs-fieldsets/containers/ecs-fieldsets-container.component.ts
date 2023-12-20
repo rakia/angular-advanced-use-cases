@@ -11,6 +11,7 @@ import { EcsFileToUpload } from '../models/data-to-upload.interface';
 import { EcsFieldset, UpdatableEcsFieldsetAttributes } from '../models/ecs-fieldset.interface';
 import { EcsFieldsetsStoreService } from '../services/ecs-fieldsets/ecs-fieldsets-store.service';
 import { FilterEvent } from '../models/filter-event.interface';
+import {FieldClass} from "../models/field-class.interface";
 
 @Component({
   selector: 'app-ecs-fieldsets-container',
@@ -23,6 +24,7 @@ export class EcsFieldsetsContainerComponent implements OnInit, OnDestroy {
   uploadStatus$: Observable<EcsFileToUpload | null> = this.storeService.uploadStatus$;
   ecsVersion$: Observable<EcsVersion | null> = this.storeService.ecsVersion$;
   ecsFieldsets$: Observable<EcsFieldset[]> = this.storeService.ecsFieldsets$;
+  fieldClasses$: Observable<FieldClass[]> = this.storeService.fieldClasses$;
   requestResponse$: Observable<RequestResponse<EcsFieldset> | null> = this.storeService.requestResponse$;
 
   isCreateMode: boolean = false;
@@ -34,6 +36,7 @@ export class EcsFieldsetsContainerComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<void> {
     this.releaseId = this.activatedRoute.parent?.snapshot?.paramMap.get('releaseId');
     this.storeService.getRelease(this.releaseId!);
+    this.storeService.getFieldClasses();
 
     this.storeService.selectedRelease$.pipe(takeUntil(this.destroy$)).subscribe((response: any) => {
       this.releaseId = response?.id;
@@ -71,6 +74,10 @@ export class EcsFieldsetsContainerComponent implements OnInit, OnDestroy {
 
   filterEcsFieldsets(event: FilterEvent): void {
     this.storeService.filterEcsFieldsets(event.query, event.fieldTypes);
+  }
+
+  getOutputKeys(fieldClasses: FieldClass[]): void {
+    this.storeService.getOutputKeysForFieldClasses(fieldClasses);
   }
 
   ngOnDestroy(): void {

@@ -1,5 +1,14 @@
 # angular-advanced-use-cases
+
 A collection of how to implement advanced requirements or complex components with Angular
+
+# Run the Mock REST API
+
+You need to run this command: `npm run mock:server`
+
+# Run the application
+
+You need to run this command: `ng serve`
 
 # AngularAdvanced
 
