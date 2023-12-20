@@ -37,6 +37,7 @@
 <app-ecs-fieldsets-with-details
   [ecsVersion]="ecsVersion$ | async"
   [ecsFieldsets]="(ecsFieldsets$ | async) || []"
+  [fieldClasses]="(fieldClasses$ | async) || []"
   [requestResponse]="requestResponse$ | async"
   [isCreateMode]="isCreateMode"
   (cancelCreateMode)="isCreateMode = false"
@@ -45,5 +46,6 @@
   (deleteEcsFieldset)="deleteEcsFieldset($event)"
   (createCustomFieldset)="createCustomFieldset($event)"
   (filterEcsFieldsets)="filterEcsFieldsets($event)"
+  (getOutputKeys)="getOutputKeys($event)"
 >
 </app-ecs-fieldsets-with-details>

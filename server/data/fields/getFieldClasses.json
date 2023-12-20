@@ -1,0 +1,8 @@
+{
+  "data": [
+    { "id": "1", "name": "iOS" },
+    { "id": "2", "name": "Windows" },
+    { "id": "3", "name": "Android" },
+    { "id": "4", "name": "Linux" }
+  ]
+}

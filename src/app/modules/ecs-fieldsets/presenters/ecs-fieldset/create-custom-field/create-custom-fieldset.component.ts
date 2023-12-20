@@ -2,17 +2,20 @@ import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
+  Component, DestroyRef, EventEmitter, inject,
   Input,
   OnChanges,
-  OnInit,
+  OnInit, Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateEntityComponent, NameIdEntity, RequestResponse } from 'projects/shared/src/public-api';
 import { EcsFieldset } from '../../../models/ecs-fieldset.interface';
 import { ParameterDescription } from '../../../models/parameter-description.interface';
+import { FieldClass } from '../../../models/field-class.interface';
+import { map, Observable, startWith } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-create-custom-fieldset',
@@ -20,10 +23,13 @@ import { ParameterDescription } from '../../../models/parameter-description.inte
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateCustomFieldsetComponent extends CreateEntityComponent<EcsFieldset> implements OnInit, OnChanges {
+  private readonly destroyRef = inject(DestroyRef);
   @Input() ecsVersion!: string;
   @Input() requestResponse: RequestResponse<EcsFieldset> | null | undefined;
   @Input() ecsFieldsetsLightList!: NameIdEntity[];
   @Input() parameterDescriptions: ParameterDescription[] = [];
+  @Input() fieldClasses!: FieldClass[];
+  @Output() getOutputKeysForFieldClasses = new EventEmitter<FieldClass[]>();
   fieldsetParameterDescriptions: Map<string, string> = new Map<string, string>();
 
   constructor(
@@ -35,8 +41,68 @@ export class CreateCustomFieldsetComponent extends CreateEntityComponent<EcsFiel
     super(formBuilder, dialog, cdRef, datePipe);
   }
 
+  filteredFieldClasses: Array<Observable<FieldClass[]>> = [];
+
+  get fieldClassItemsFormArray(): FormArray {
+    return this.form?.get('fieldClasses') as FormArray;
+  }
+
   ngOnInit(): void {
     this.updateForm();
+
+    // get output keys for all selected fieldClasses
+    this.fieldClassItemsFormArray.valueChanges
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        map((allSelectedFieldClasses: Array<string | FieldClass>) => {
+          const selectedFieldClasses: FieldClass[] = <FieldClass[]>(
+            allSelectedFieldClasses.filter((fieldClass) => typeof fieldClass !== 'string')
+          );
+          this.getOutputKeysForFieldClasses.emit(selectedFieldClasses);
+        })
+      )
+      .subscribe();
+  }
+
+  /**
+   * This method is called when the user selects a fieldClass from the autocomplete dropdown.
+   * It emits an event to get output keys for all selected fieldClasses.
+   */
+  onSelectFieldClass(): void {
+    const fieldClasses = this.fieldClassItemsFormArray.controls
+      .filter((control) => control.value)
+      .map((control) => {
+        return { id: control.value.id } as FieldClass;
+      });
+    this.getOutputKeysForFieldClasses.emit(fieldClasses);
+  }
+
+  onClickAddFieldClassItem(): void {
+    const controlToAdd = new FormControl('', [Validators.required]);
+    this.filteredFieldClasses?.push(
+      controlToAdd.valueChanges.pipe(
+        takeUntilDestroyed(this.destroyRef),
+        startWith(''),
+        map((value: FieldClass | string | null) => {
+          const userInput = typeof value === 'string' ? value : this.fieldClassAutocompleteDisplayFn(value);
+          return this.filterFieldClasses(
+            this.fieldClasses,
+            userInput || '',
+            this.fieldClassItemsFormArray.controls.map((o) => <FieldClass>o.value)
+          );
+        })
+      )
+    );
+    this.fieldClassItemsFormArray.push(controlToAdd);
+  }
+
+  onClickRemoveFieldClassItem(index: number): void {
+    this.fieldClassItemsFormArray.removeAt(index);
+    this.filteredFieldClasses.splice(index, 1);
+  }
+
+  fieldClassAutocompleteDisplayFn(fieldClass: FieldClass | null): string {
+    return fieldClass && fieldClass.id ? `${fieldClass.name}` : '';
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -82,6 +148,7 @@ export class CreateCustomFieldsetComponent extends CreateEntityComponent<EcsFiel
       customDescription: [''],
       customComment: [''],
       reuses: this.formBuilder.array([]),
+      fieldClasses: this.formBuilder.array([]),
     });
   }
 
@@ -112,5 +179,22 @@ export class CreateCustomFieldsetComponent extends CreateEntityComponent<EcsFiel
       ecsFieldset: item.id,
       topLevel: true,
     }));
+  }
+
+  /** This function returns all non-assigned fieldClasses that match the user input
+   * @param allFieldClasses all fieldClasses
+   * @param value user input
+   * @param alreadyAssignedFieldClasses fieldClasses that are already assigned
+   */
+  filterFieldClasses(allFieldClasses: FieldClass[], value: string, alreadyAssignedFieldClasses: FieldClass[] = []): FieldClass[] {
+    const userInput = value.toLowerCase();
+
+    const resultingFieldClasses: FieldClass[] = allFieldClasses.filter((fieldClass) => {
+      const matchingFieldClass = fieldClass.name.toLowerCase().includes(userInput);
+
+      return matchingFieldClass && !alreadyAssignedFieldClasses.find((o) => o.name === fieldClass.name);
+    });
+
+    return resultingFieldClasses;
   }
 }

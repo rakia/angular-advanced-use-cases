@@ -188,6 +188,68 @@
           ></textarea>
         </mat-form-field>
       </div>
+
+      <!-- Field Classes -->
+      <div class="flex-col">
+        <h4>{{ "FIELD_CLASSES.TITLE" | transloco }}</h4>
+
+        <div class="flex-col">
+          <ng-container
+            [formArrayName]="'fieldClasses'"
+            *ngFor="let fieldClassItemControl of fieldClassItemsFormArray.controls; let i = index"
+          >
+            <div class="flex top-4 items-center">
+              <mat-form-field class="w-full pr-2">
+                <mat-label>{{ "FIELD_CLASSES.FIELD_CLASS" | transloco }}</mat-label>
+                <input
+                  [formControlName]="i"
+                  type="text"
+                  [placeholder]="'FIELD_CLASSES.PLACEHOLDER' | transloco"
+                  matInput
+                  [matAutocomplete]="fieldClassAuto"
+                />
+                <mat-autocomplete (optionSelected)="onSelectFieldClass()" [displayWith]="fieldClassAutocompleteDisplayFn" #fieldClassAuto="matAutocomplete">
+                  <mat-option *ngFor="let fieldClass of filteredFieldClasses[i] | async" [value]="fieldClass">
+                    {{ fieldClass.name }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error *ngIf="fieldClassItemControl.hasError('objectNotSelected')">
+                  {{ "ERRORS.OBJECT_NOT_SELECTED" | transloco }}
+                </mat-error>
+              </mat-form-field>
+
+              <div class="items-center mb-4">
+                <button
+                  type="button"
+                  (click)="onClickRemoveFieldClassItem(i)"
+                  class="hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
+                  mat-mini-fab
+                  color="primary"
+                  [attr.aria-label]="'FIELD_CLASSES.BUTTONS.DELETE' | transloco"
+                  [matTooltip]="'FIELD_CLASSES.BUTTONS.DELETE' | transloco"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="items-center mb-4"> <!-- (optionSelected)="onSelectFieldClass()" -->
+            <button
+              type="button"
+              (click)="onClickAddFieldClassItem()"
+              class="hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
+              mat-raised-button
+              color="primary"
+              [attr.aria-label]="'FIELD_CLASSES.BUTTONS.CREATE' | transloco"
+              [matTooltip]="'FIELD_CLASSES.BUTTONS.CREATE' | transloco"
+            >
+              {{ "FIELD_CLASSES.BUTTONS.CREATE" | transloco }}
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
     </form>
   </ng-container>
 </lib-card>
