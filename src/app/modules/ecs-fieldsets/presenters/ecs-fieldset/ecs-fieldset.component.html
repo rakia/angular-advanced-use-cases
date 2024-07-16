@@ -32,7 +32,8 @@
                     [placeholder]="'ECS_FIELDSETS.ATTRIBUTES.TITLE' | transloco"
                   />
                 </mat-form-field>
-                <!-- Name -->
+
+               <!-- Name -->
                 <mat-form-field class="w-1/2">
                   <mat-label [matTooltip]="fieldsetParameterDescriptions.get('name') || ''" [matTooltipDisabled]="false">{{
                     "ECS_FIELDSETS.ATTRIBUTES.NAME" | transloco
@@ -322,6 +323,9 @@
               [ecsFieldLevels]="ecsFieldLevels"
               [requestResponse]="requestResponseEcsField"
               [parameterDescriptions]="fieldParameterDescriptions"
+              [nameAlreadyExists]="nameAlreadyExists"
+              (checkIfNameExists)="checkIfNameExists.emit($event)"
+              (cancelEdit)="cancelEdit.emit()"
               (save)="createCustomField.emit($event)"
               (removeCreateForm)="isCreateMode = false"
             >
@@ -340,6 +344,9 @@
               [ecsFieldLevels]="ecsFieldLevels"
               [requestResponse]="requestResponseEcsField"
               [parameterDescriptions]="fieldParameterDescriptions"
+              [nameAlreadyExists]="nameAlreadyExists"
+              (checkIfNameExists)="checkIfNameExists.emit($event)"
+              (cancelEdit)="cancelEdit.emit()"
               (updateEcsField)="updateEcsField.emit($event)"
               (delete)="deleteEcsField.emit($event)"
             >
@@ -357,6 +364,9 @@
                 [ecsFieldTypes]="ecsFieldTypes"
                 [ecsFieldLevels]="ecsFieldLevels"
                 [requestResponse]="requestResponseEcsField"
+                [nameAlreadyExists]="nameAlreadyExists"
+                (checkIfNameExists)="checkIfNameExists.emit($event)"
+                (cancelEdit)="cancelEdit.emit()"
                 (updateEcsField)="updateEcsField.emit($event)"
                 (delete)="deleteEcsField.emit($event)"
               >

@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -12,7 +13,7 @@ import {
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { Sort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import {
   DeleteEvent,
   EcsVersion,
@@ -44,6 +45,7 @@ import { FieldClass } from '../../models/field-class.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcsFieldsetsWithDetailsComponent implements OnChanges, OnDestroy {
+  private storeService = inject(EcsFieldsStoreService);
   @Input() ecsVersion: EcsVersion | null = null;
   @Input() ecsFieldsets!: EcsFieldset[];
   @Input() fieldClasses!: FieldClass[];
@@ -64,6 +66,7 @@ export class EcsFieldsetsWithDetailsComponent implements OnChanges, OnDestroy {
   ecsFieldsetsLightList: NameIdEntity[] = [];
   private currentSort: Sort | undefined;
   private destroy$ = new Subject<void>();
+  nameAlreadyExists$ = new BehaviorSubject<boolean>(false);
 
   ecsFields$: Observable<EcsField[]> = this.storeService.ecsFields$;
   ecsFieldTypes$: Observable<EcsFieldType[]> = this.storeService.ecsFieldTypes$;
@@ -71,12 +74,25 @@ export class EcsFieldsetsWithDetailsComponent implements OnChanges, OnDestroy {
   requestResponseEcsField$: Observable<RequestResponse<EcsField> | null> = this.storeService.requestResponse$;
   parameterDescriptions$: Observable<ParameterDescription[] | null> = this.storeService.parameterDescriptions$;
 
-  constructor(private storeService: EcsFieldsStoreService, private activatedRoute: ActivatedRoute) {
+  constructor(private activatedRoute: ActivatedRoute) {
     this.activatedRoute.fragment.pipe(takeUntil(this.destroy$)).subscribe((ecsFieldsetId) => {
       if (ecsFieldsetId) {
         this.openEcsFieldsetById(ecsFieldsetId);
       }
     });
+  }
+
+  /**
+   * This method calls the store service and sets the boolean nameAlreadyExists depending on the result.
+   * @param name
+   */
+  checkIfNameExists(name: string): void {
+    const res: boolean = this.storeService.checkIfNameExists(name);
+    this.nameAlreadyExists$.next(res);
+  }
+
+  onCancelEdit(): void {
+    this.nameAlreadyExists$.next(false);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -89,6 +105,8 @@ export class EcsFieldsetsWithDetailsComponent implements OnChanges, OnDestroy {
         name: ecsFieldset.name,
         id: ecsFieldset.id!,
       }));
+
+      this.nameAlreadyExists$.next(false);
     }
   }
 
@@ -121,7 +139,9 @@ export class EcsFieldsetsWithDetailsComponent implements OnChanges, OnDestroy {
   }
 
   updateEcsField(updatedEntity: UpdatedEntity<UpdatableEcsFieldAttributes>): void {
-    this.storeService.updateEcsField(updatedEntity);
+    this.storeService.updateEcsField(updatedEntity).then(() => {
+      this.nameAlreadyExists$.next(false);
+    });
   }
 
   deleteEcsField(event: DeleteEvent): void {
@@ -130,7 +150,9 @@ export class EcsFieldsetsWithDetailsComponent implements OnChanges, OnDestroy {
 
   createCustomField(entity: EcsField | Partial<EcsField>): void {
     // @ts-ignore
-    this.storeService.createCustomField(entity);
+    this.storeService.createCustomField(entity).then(() => {
+      this.nameAlreadyExists$.next(false);
+    });
   }
 
   onFieldsetTypesChange(selectedFieldTypes: MatButtonToggleChange): void {
@@ -147,10 +169,6 @@ export class EcsFieldsetsWithDetailsComponent implements OnChanges, OnDestroy {
     this.currentSort = sortEvent;
     // TODO: call REST API to get data sorted
   }
-
-  /*getOutputKeys(fieldClasses: FieldClass[]): void {
-    this.getOutputKeys.emit(fieldClasses);
-  }*/
 
   /**
    * Track by function for ngFor loops

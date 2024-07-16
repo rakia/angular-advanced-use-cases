@@ -86,5 +86,8 @@
   },
   "ERRORS": {
     "OBJECT_NOT_SELECTED": "Bitte ein Objekt auswählen"
+  },
+  "WARNING": {
+    "DUPLICATE_NAME": "Warning: This name exists already."
   }
 }

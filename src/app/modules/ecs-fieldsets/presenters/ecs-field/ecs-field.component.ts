@@ -3,17 +3,21 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter, inject,
+  DestroyRef,
+  EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormArray, FormBuilder } from '@angular/forms';
 import {
   ActionButton,
-  ActionType,
+  ActionType, ConfirmDialogComponent, DialogData,
   EditableEntityComponent,
   FormService,
   UpdatedEntity,
@@ -26,6 +30,7 @@ import { EcsField, EcsFieldLevel, EcsFieldType, UpdatableEcsFieldAttributes } fr
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcsFieldComponent extends EditableEntityComponent<EcsField> implements OnInit, OnChanges {
+  private readonly destroyRef = inject(DestroyRef);
   override formBuilder = inject(FormBuilder);
   override cdRef = inject(ChangeDetectorRef);
   override datePipe = inject(DatePipe);
@@ -34,6 +39,9 @@ export class EcsFieldComponent extends EditableEntityComponent<EcsField> impleme
   @Input() ecsFieldLevels: EcsFieldLevel[] = [];
   @Input() expanded: boolean = false;
   @Input() parameterDescriptions: Map<string, string> = new Map<string, string>();
+  @Input() nameAlreadyExists: boolean | null = false;
+  @Output() checkIfNameExists = new EventEmitter<string>();
+  @Output() cancelEdit = new EventEmitter<void>();
   @Output() updateEcsField = new EventEmitter<UpdatedEntity<UpdatableEcsFieldAttributes>>();
 
   override editableFields: string[] = ['customDescription', 'customComment', 'customHelp', 'customExample'];
@@ -44,8 +52,47 @@ export class EcsFieldComponent extends EditableEntityComponent<EcsField> impleme
     super.ngOnInit();
   }
 
+  private notifyParentComponentWhenNameChanges(): void {
+    this.form
+      ?.get('name')
+      ?.valueChanges.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      debounceTime(300), // debounce user input
+      distinctUntilChanged()
+    )
+      .subscribe((name) => {
+        if (name) {
+          this.checkIfNameExists.emit(name);
+        }
+      });
+  }
+
   override ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
+  }
+
+  override onClickCancel(): void {
+    if (this.form?.touched && this.form?.dirty) {
+      const dialogData: DialogData = {
+        hasActions: true,
+        mode: 'confirmAction',
+        text: '',
+        title: 'shared.MESSAGES.CONFIRM_CANCEL.TITLE',
+      };
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        disableClose: true,
+        data: dialogData,
+      });
+      dialogRef.afterClosed().subscribe((data: boolean) => {
+        if (data) {
+          this.updateForm();
+          this.disableEditMode();
+          this.cancelEdit.emit();
+        }
+      });
+    } else {
+      this.disableEditMode();
+    }
   }
 
   override enableEditMode(): void {
@@ -99,6 +146,7 @@ export class EcsFieldComponent extends EditableEntityComponent<EcsField> impleme
     });
     this.formService.addItemsToFormArray('normalize', this.entity?.normalize, this.form);
     this.formService.addItemsToFormArray('expectedValues', this.entity?.expectedValues, this.form);
+    this.notifyParentComponentWhenNameChanges();
   }
 
   onClickActionButton(actionName: ActionType) {

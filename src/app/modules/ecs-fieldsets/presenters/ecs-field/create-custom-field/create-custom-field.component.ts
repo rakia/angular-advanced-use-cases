@@ -3,11 +3,17 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
+  EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateEntityComponent, RequestResponse } from 'projects/shared/src/public-api';
@@ -19,11 +25,14 @@ import { EcsField, EcsFieldLevel, EcsFieldType } from '../../../models/ecs-field
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateCustomFieldComponent extends CreateEntityComponent<EcsField> implements OnInit, OnChanges {
+  private readonly destroyRef = inject(DestroyRef);
   @Input() ecsFieldset!: string;
   @Input() requestResponse: RequestResponse<EcsField> | null | undefined;
   @Input() ecsFieldTypes: EcsFieldType[] = [];
   @Input() ecsFieldLevels: EcsFieldLevel[] = [];
   @Input() parameterDescriptions: Map<string, string> = new Map<string, string>();
+  @Input() nameAlreadyExists: boolean | null = false;
+  @Output() checkIfNameExists = new EventEmitter<string>();
 
   constructor(
     protected override formBuilder: FormBuilder,
@@ -36,6 +45,22 @@ export class CreateCustomFieldComponent extends CreateEntityComponent<EcsField> 
 
   ngOnInit(): void {
     this.updateForm();
+    this.notifyParentComponentWhenNameChanges();
+  }
+
+  private notifyParentComponentWhenNameChanges(): void {
+    this.form
+      ?.get('name')
+      ?.valueChanges.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      debounceTime(300), // debounce user input
+      distinctUntilChanged()
+    )
+      .subscribe((name) => {
+        if (name) {
+          this.checkIfNameExists.emit(name);
+        }
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -82,6 +107,7 @@ export class CreateCustomFieldComponent extends CreateEntityComponent<EcsField> 
       normalize: this.formBuilder.array([]),
       expectedValues: this.formBuilder.array([]),
     });
+    this.notifyParentComponentWhenNameChanges();
   }
 
   override onClickSave() {

@@ -13,6 +13,14 @@
 
     <ng-container ngProjectAs="[cardContent]">
       <form class="flex flex-col w-full" [formGroup]="form">
+
+        <!-- Warning: Name already exists -->
+        <ng-container *ngIf="nameAlreadyExists">
+          <div class="mb-4 text-red-600">
+            {{ "WARNING.DUPLICATE_NAME" | transloco }}
+          </div>
+        </ng-container>
+
         <mat-form-field class="w-full">
           <mat-label [matTooltip]="parameterDescriptions.get('name') || ''" [matTooltipDisabled]="false">{{
             "ECS_FIELDSETS.ATTRIBUTES.NAME" | transloco

@@ -123,4 +123,14 @@ export class EcsFieldsStoreService {
       }
     );
   }
+
+  /**
+   * This method gets the count of entities, filtered by name, and returns a boolean depending on the count.
+   * If the count is 0, it returns false.
+   * @param name
+   */
+  checkIfNameExists(name: string): boolean {
+    const escFields = this.ecsFields.getValue();
+    return escFields.some((item) => item.name === name);
+  }
 }
