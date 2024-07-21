@@ -23,6 +23,7 @@ import {
   UpdatedEntity,
 } from 'projects/shared/src/public-api';
 import { EcsField, EcsFieldLevel, EcsFieldType, UpdatableEcsFieldAttributes } from '../../models/ecs-field.interface';
+import { EcsFieldsStoreService } from '../../services/ecs-fields/ecs-fields-store.service';
 
 @Component({
   selector: 'app-ecs-field',
@@ -31,6 +32,7 @@ import { EcsField, EcsFieldLevel, EcsFieldType, UpdatableEcsFieldAttributes } fr
 })
 export class EcsFieldComponent extends EditableEntityComponent<EcsField> implements OnInit, OnChanges {
   private readonly destroyRef = inject(DestroyRef);
+  private storeService = inject(EcsFieldsStoreService);
   override formBuilder = inject(FormBuilder);
   override cdRef = inject(ChangeDetectorRef);
   override datePipe = inject(DatePipe);
@@ -39,11 +41,9 @@ export class EcsFieldComponent extends EditableEntityComponent<EcsField> impleme
   @Input() ecsFieldLevels: EcsFieldLevel[] = [];
   @Input() expanded: boolean = false;
   @Input() parameterDescriptions: Map<string, string> = new Map<string, string>();
-  @Input() nameAlreadyExists: boolean | null = false;
-  @Output() checkIfNameExists = new EventEmitter<string>();
-  @Output() cancelEdit = new EventEmitter<void>();
   @Output() updateEcsField = new EventEmitter<UpdatedEntity<UpdatableEcsFieldAttributes>>();
 
+  nameAlreadyExists: boolean | null = false;
   override editableFields: string[] = ['customDescription', 'customComment', 'customHelp', 'customExample'];
   override readOnlyFields: string[] = ['isEcs', 'created', 'createdBy', 'updated', 'updatedBy', 'flatName'];
   customActionsButtons: ActionButton[] = [{ name: 'delete', label: 'shared.BUTTONS.DELETE', icon: 'delete' }];
@@ -62,13 +62,16 @@ export class EcsFieldComponent extends EditableEntityComponent<EcsField> impleme
     )
       .subscribe((name) => {
         if (name) {
-          this.checkIfNameExists.emit(name);
+          this.nameAlreadyExists = this.storeService.checkIfNameExists(name);
         }
       });
   }
 
   override ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
+    if(changes['entity'].currentValue) {
+      this.nameAlreadyExists = false;
+    }
   }
 
   override onClickCancel(): void {
@@ -87,7 +90,7 @@ export class EcsFieldComponent extends EditableEntityComponent<EcsField> impleme
         if (data) {
           this.updateForm();
           this.disableEditMode();
-          this.cancelEdit.emit();
+          this.nameAlreadyExists = false;
         }
       });
     } else {

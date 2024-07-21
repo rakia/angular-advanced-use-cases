@@ -49,9 +49,6 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
   @Input() ecsFieldTypes: EcsFieldType[] = [];
   @Input() ecsFieldLevels: EcsFieldLevel[] = [];
   @Input() parameterDescriptions: ParameterDescription[] | null | undefined;
-  @Input() nameAlreadyExists: boolean | null = false;
-  @Output() checkIfNameExists = new EventEmitter<string>();
-  @Output() cancelEdit = new EventEmitter<void>();
   @Output() updateEcsFieldset = new EventEmitter<UpdatedEntity<UpdatableEcsFieldsetAttributes>>();
   @Output() updateEcsField = new EventEmitter<UpdatedEntity<UpdatableEcsFieldAttributes>>();
   @Output() deleteEcsField = new EventEmitter<DeleteEvent>();

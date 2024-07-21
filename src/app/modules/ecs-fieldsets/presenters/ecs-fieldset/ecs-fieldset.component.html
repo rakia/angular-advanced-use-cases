@@ -323,9 +323,6 @@
               [ecsFieldLevels]="ecsFieldLevels"
               [requestResponse]="requestResponseEcsField"
               [parameterDescriptions]="fieldParameterDescriptions"
-              [nameAlreadyExists]="nameAlreadyExists"
-              (checkIfNameExists)="checkIfNameExists.emit($event)"
-              (cancelEdit)="cancelEdit.emit()"
               (save)="createCustomField.emit($event)"
               (removeCreateForm)="isCreateMode = false"
             >
@@ -344,9 +341,6 @@
               [ecsFieldLevels]="ecsFieldLevels"
               [requestResponse]="requestResponseEcsField"
               [parameterDescriptions]="fieldParameterDescriptions"
-              [nameAlreadyExists]="nameAlreadyExists"
-              (checkIfNameExists)="checkIfNameExists.emit($event)"
-              (cancelEdit)="cancelEdit.emit()"
               (updateEcsField)="updateEcsField.emit($event)"
               (delete)="deleteEcsField.emit($event)"
             >
@@ -364,9 +358,6 @@
                 [ecsFieldTypes]="ecsFieldTypes"
                 [ecsFieldLevels]="ecsFieldLevels"
                 [requestResponse]="requestResponseEcsField"
-                [nameAlreadyExists]="nameAlreadyExists"
-                (checkIfNameExists)="checkIfNameExists.emit($event)"
-                (cancelEdit)="cancelEdit.emit()"
                 (updateEcsField)="updateEcsField.emit($event)"
                 (delete)="deleteEcsField.emit($event)"
               >
