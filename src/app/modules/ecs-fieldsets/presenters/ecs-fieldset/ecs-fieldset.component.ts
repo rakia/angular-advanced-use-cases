@@ -73,6 +73,7 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
   selectedEcsField: EcsField | undefined;
   selectedId: string | undefined;
 
+  // isCreateMode is used to know when to show the create-form for ecsFieldset
   isCreateMode: boolean = false;
   updatedReuses: Reuse[] = [];
   get reusesFormArray(): FormArray {
