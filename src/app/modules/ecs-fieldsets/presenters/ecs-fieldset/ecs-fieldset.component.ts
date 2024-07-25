@@ -69,7 +69,7 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
   ecsFields: EcsField[] = [];
   customFields: EcsField[] = [];
 
-  openAllFields: boolean = false;
+  openAllFields: boolean = false; // when openAllFields = true we show the details of all ecsFields associated to an ecsFieldset
   selectedEcsField: EcsField | undefined;
   selectedId: string | undefined;
 
