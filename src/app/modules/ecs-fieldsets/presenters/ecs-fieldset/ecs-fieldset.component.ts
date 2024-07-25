@@ -66,7 +66,7 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
   override readOnlyFields: string[] = ['isEcs', 'ecsVersion', 'created', 'createdBy', 'updated', 'updatedBy'];
 
   customActionsButtons: ActionButton[] = [{ name: 'delete', label: 'shared.BUTTONS.DELETE', icon: 'delete' }];
-  ecsFields: EcsField[] = [];
+  ecsFields: EcsField[] = []; // test comment 2
   customFields: EcsField[] = []; // fields that are created by user, not the standard ones
 
   openAllFields: boolean = false; // when openAllFields = true we show the details of all ecsFields associated to an ecsFieldset
