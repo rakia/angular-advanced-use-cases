@@ -71,7 +71,7 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
 
   openAllFields: boolean = false; // when openAllFields = true we show the details of all ecsFields associated to an ecsFieldset
   selectedEcsField: EcsField | undefined;
-  selectedId: string | undefined;
+  selectedId: string | undefined; // the ID of the selected item
 
   // isCreateMode is used to know when to show the create-form for ecsFieldset
   isCreateMode: boolean = false;
