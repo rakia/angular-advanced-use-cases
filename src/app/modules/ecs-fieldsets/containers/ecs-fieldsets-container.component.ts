@@ -33,6 +33,9 @@ export class EcsFieldsetsContainerComponent implements OnInit, OnDestroy {
 
   constructor(private storeService: EcsFieldsetsStoreService, private activatedRoute: ActivatedRoute) {}
 
+  /**
+   * In this lifecycle hook we retrieve data from the API that is needed for this component
+   */
   async ngOnInit(): Promise<void> {
     this.releaseId = this.activatedRoute.parent?.snapshot?.paramMap.get('releaseId');
     this.storeService.getRelease(this.releaseId!);
