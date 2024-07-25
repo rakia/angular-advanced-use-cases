@@ -67,7 +67,7 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
 
   customActionsButtons: ActionButton[] = [{ name: 'delete', label: 'shared.BUTTONS.DELETE', icon: 'delete' }];
   ecsFields: EcsField[] = [];
-  customFields: EcsField[] = [];
+  customFields: EcsField[] = []; // fields that are created by user, not the standard ones
 
   openAllFields: boolean = false; // when openAllFields = true we show the details of all ecsFields associated to an ecsFieldset
   selectedEcsField: EcsField | undefined;
