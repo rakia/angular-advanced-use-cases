@@ -83,6 +83,9 @@ export class EcsFieldsetsContainerComponent implements OnInit, OnDestroy {
     this.storeService.getOutputKeysForFieldClasses(fieldClasses);
   }
 
+  /**
+   * In this lifecycle hook we reset the ecsFieldsets in the UI state and we unsubscribe from observables.
+   */
   ngOnDestroy(): void {
     // reset ecsFieldsets state
     this.storeService.ecsFieldsets?.next([]);
