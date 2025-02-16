@@ -9,7 +9,7 @@ import { SIDENAV_ITEMS } from './sidenav-items';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  sidenavItems: SidenavItem[] = SIDENAV_ITEMS;
+  menuItems: SidenavItem[] = SIDENAV_ITEMS;
   formBuilder = inject(FormBuilder);
   title = 'angular-advanced use cases';
   fileToUpload: string = '';
