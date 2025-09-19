@@ -48,7 +48,7 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
   @Input() requestResponseEcsField: RequestResponse<EcsField> | null | undefined;
   @Input() ecsFieldTypes: EcsFieldType[] = [];
   @Input() ecsFieldLevels: EcsFieldLevel[] = [];
-  @Input() parameterDescriptions: ParameterDescription[] | null | undefined;
+  @Input() parameterDesc: ParameterDescription[] | null | undefined;
   @Output() updateEcsFieldset = new EventEmitter<UpdatedEntity<UpdatableEcsFieldsetAttributes>>();
   @Output() updateEcsField = new EventEmitter<UpdatedEntity<UpdatableEcsFieldAttributes>>();
   @Output() deleteEcsField = new EventEmitter<DeleteEvent>();
@@ -105,13 +105,13 @@ export class EcsFieldsetComponent extends EditableEntityComponent<EcsFieldset> i
     if (changes['parameterDescriptions']?.currentValue) {
       this.fieldsetParameterDescriptions = new Map<string, string>();
       this.fieldParameterDescriptions = new Map<string, string>();
-      const fieldsetParameters: ParameterDescription[] | null  | undefined = this.parameterDescriptions?.filter(
+      const fieldsetParameters: ParameterDescription[] | null  | undefined = this.parameterDesc?.filter(
         (p) => p.type === 'fieldset'
       );
       fieldsetParameters?.forEach((p) => {
         this.fieldsetParameterDescriptions.set(p.parameterName, p.description);
       });
-      const fieldParameters: ParameterDescription[] | null  | undefined = this.parameterDescriptions?.filter((p) => p.type === 'field');
+      const fieldParameters: ParameterDescription[] | null  | undefined = this.parameterDesc?.filter((p) => p.type === 'field');
       fieldParameters?.forEach((p) => {
         this.fieldParameterDescriptions.set(p.parameterName, p.description);
       });
